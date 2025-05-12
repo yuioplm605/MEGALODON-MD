@@ -73,7 +73,7 @@ async (conn, mek, m, { from, quoted, reply, isOwner }) => {
 │  ├─∘ *Anti-Del Path:* ${config.ANTI_DEL_PATH}
 │  └─∘ *Dev Number:* ${config.DEV}
 │
-╰───『 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ* 』───❏
+╰───『 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ* 』───❏
 `;
 
         await conn.sendMessage(
@@ -94,7 +94,7 @@ async (conn, mek, m, { from, quoted, reply, isOwner }) => {
         await conn.sendMessage(
             from,
             {
-                audio: { url: 'https://github.com/JawadYT36/KHAN-DATA/raw/refs/heads/main/autovoice/menunew.m4a' },
+                audio: { url: 'https://files.catbox.moe/0rpce6.mp3' },
                 mimetype: 'audio/mp4',
                 ptt: true
             },
