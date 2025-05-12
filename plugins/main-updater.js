@@ -29,7 +29,7 @@ cmd({
             return reply("✅ Your MEGALODON-MD bot is already up-to-date!");
         }
 
-        await reply("🚀 Updating MEGALODON-MD Bot...");
+        await reply("MEGALODON MD UPDATING WAIT PLS 👨‍💻...");
 
         // Download the latest code
         const zipPath = path.join(__dirname, "latest.zip");
@@ -44,7 +44,7 @@ cmd({
 
         // Copy updated files, preserving config.js and app.json
         await reply("🔄 Replacing files...");
-        const sourcePath = path.join(extractPath, "KHAN-MD-main");
+        const sourcePath = path.join(extractPath, "MEGALODON-MD-main");
         const destinationPath = path.join(__dirname, '..');
         copyFolderSync(sourcePath, destinationPath);
 
@@ -75,7 +75,7 @@ function copyFolderSync(source, target) {
         const destPath = path.join(target, item);
 
         // Skip config.js and app.json
-        if (item === "config.js" || item === "app.json") {
+        if (item === "config.js" || item === "app.json" || item === "package.json") {
             console.log(`Skipping ${item} to preserve custom settings.`);
             continue;
         }
