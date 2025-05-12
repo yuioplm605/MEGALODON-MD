@@ -4,10 +4,10 @@ const { runtime } = require('../lib/functions')
 
 cmd({
     pattern: "list",
-    alias: ["listcmd", "commands"],
+    alias: ["listcmd", "❄️"],
     desc: "Show all available commands with descriptions",
     category: "menu",
-    react: "📜",
+    react: "❄️",
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
@@ -68,7 +68,7 @@ cmd({
         }
 
         menuText += `\n📝 *Note*: Use ${config.PREFIX}help <command> for detailed help\n`
-        menuText += `> ${config.DESCRIPTION}`
+        menuText += `> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`
 
         await conn.sendMessage(
             from,
