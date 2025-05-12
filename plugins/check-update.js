@@ -27,7 +27,7 @@ cmd({
     }
 
     // Fetch latest version data from GitHub
-    const rawVersionUrl = 'https://raw.githubusercontent.com/JawadYT36/KHAN-MD/main/data/version.json';
+    const rawVersionUrl = 'https://raw.githubusercontent.com/DybyTech/MEGALODON-MD/main/data/version.json';
     let latestVersion = 'Unknown';
     let latestChangelog = 'No changelog available.';
     try {
