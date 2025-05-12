@@ -1,30 +1,18 @@
 const { cmd } = require('../command');
-
 const config = require('../config');
 
 cmd({
-
     pattern: "thanks",
-
-    alias: ["thanks-to", "credit", "dev"],
-
-    desc: "Display bot credits and thanks",
-
+    alias: ["thanksto", "credit"],
+    desc: "Affiche les crédits et remerciements",
     category: "main",
-
-    react: "👨‍💻",
-
+    react: "🙏",
     filename: __filename
-
 },
-
 async (conn, mek, m, { from }) => {
-
     try {
-
         const message = `
-
-╭───❍ 🤝 *BIG THANKS TO* ❍───╮
+╭──❍ 🤝 *BIG THANKS TO* ❍───╮
 
 │ HI  @${m.sender.split("@")[0]}
 
@@ -35,29 +23,18 @@ async (conn, mek, m, { from }) => {
 │• SIRIUS ★
 
 ╰─────────────────────────╯
-
 `;
 
         await conn.sendMessage(from, {
-
-            image: { url: `https://files.catbox.moe/5qjcy5.jpg` },
-
+            image: { url: 'https://i.imgur.com/A5ZRb2Q.jpg' }, // image stable et illustrative
             caption: message,
-
             contextInfo: {
-
                 mentionedJid: [m.sender]
-
             }
-
         }, { quoted: mek });
 
     } catch (err) {
-
         console.error("ThanksTo Error:", err);
-
-        await conn.sendMessage(from, { text: `An error occurred: ${err.message}` }, { quoted: mek });
-
+        await conn.sendMessage(from, { text: `Une erreur est survenue: ${err.message}` }, { quoted: mek });
     }
-
 });
