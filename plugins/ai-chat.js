@@ -1,61 +1,61 @@
 const { cmd } = require('../command');
 const axios = require('axios');
 
+// Commande AI utilisant la version classique de l'API GiftedTech (GPT-3.5 ou similaire)
 cmd({
     pattern: "ai",
-    alias: ["bot", "dj", "gpt", "gpt4", "bing"],
-    desc: "Chat with an AI model",
+    alias: ["bot", "dj", "gpt"],
+    desc: "Chat avec une IA (giftedtech - openai)",
     category: "ai",
     react: "🤖",
     filename: __filename
-},
-async (conn, mek, m, { from, args, q, reply, react }) => {
+}, async (conn, mek, m, { q, reply, react }) => {
     try {
-        if (!q) return reply("Please provide a message for the AI.\nExample: `.ai Hello`");
+        if (!q) return reply("Veuillez fournir un message pour l'IA.\nExemple : .ai Bonjour");
 
-        const apiUrl = `https://lance-frank-asta.onrender.com/api/gpt?q=${encodeURIComponent(q)}`;
+        const apiUrl = `https://api.giftedtech.web.id/api/ai/openai?apikey=gifted&q=${encodeURIComponent(q)}`;
         const { data } = await axios.get(apiUrl);
 
         if (!data || !data.message) {
             await react("❌");
-            return reply("AI failed to respond. Please try again later.");
+            return reply("L'IA n'a pas pu répondre. Réessaie plus tard.");
         }
 
-        await reply(`🤖 *AI Response:*\n\n${data.message}`);
+        await reply(`🤖 *Réponse IA:*\n\n${data.message}`);
         await react("✅");
     } catch (e) {
-        console.error("Error in AI command:", e);
+        console.error("Erreur dans la commande AI:", e);
         await react("❌");
-        reply("An error occurred while communicating with the AI.");
+        reply("Une erreur est survenue lors de la communication avec l'IA.");
     }
 });
 
+// Commande GPT-4o utilisant l'API GiftedTech GPT-4o
 cmd({
-    pattern: "openai",
-    alias: ["chatgpt", "gpt3", "open-gpt"],
-    desc: "Chat with OpenAI",
+    pattern: "gpt4o",
+    alias: ["gpt-omni", "omni"],
+    desc: "Chat avec GPT-4o (giftedtech)",
     category: "ai",
-    react: "🧠",
+    react: "⚡",
     filename: __filename
-},
-async (conn, mek, m, { from, args, q, reply, react }) => {
+}, async (conn, mek, m, { q, reply, react }) => {
     try {
-        if (!q) return reply("Please provide a message for OpenAI.\nExample: `.openai Hello`");
+        if (!q) return reply("Veuillez fournir un message pour GPT-4o.\nExemple : .gpt4o Bonjour");
 
-        const apiUrl = `https://vapis.my.id/api/openai?q=${encodeURIComponent(q)}`;
+        const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt4o?apikey=gifted&q=${encodeURIComponent(q)}`;
         const { data } = await axios.get(apiUrl);
 
-        if (!data || !data.result) {
+        if (!data || !data.message) {
             await react("❌");
-            return reply("OpenAI failed to respond. Please try again later.");
+            return reply("GPT-4o n'a pas pu répondre. Réessaie plus tard.");
         }
 
-        await reply(`🧠 *OpenAI Response:*\n\n${data.result}`);
+        await reply(`⚡ *GPT-4o:*\n\n${data.message}`);
         await react("✅");
     } catch (e) {
-        console.error("Error in OpenAI command:", e);
+        console.error("Erreur dans la commande GPT-4o:", e);
         await react("❌");
-        reply("An error occurred while communicating with OpenAI.");
+        reply("Une erreur est survenue lors de la communication avec GPT-4o.");
     }
 });
 
