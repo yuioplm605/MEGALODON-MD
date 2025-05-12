@@ -33,7 +33,7 @@ async (conn, mek, m, { from, reply }) => {
 │ ${repoData.description || 'No description'}
 │
 ╰────────────────⳹
-> ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 2: Minimalist
         const style2 = `•——[ GITHUB INFO ]——•
@@ -43,8 +43,8 @@ async (conn, mek, m, { from, reply }) => {
   ├─ ✨ ${repoData.stargazers_count} Stars
   ├─ ⑂ ${repoData.forks_count} Forks
   │
-  •——[ ${config.BOT_NAME} ]——•
-  > ${config.DESCRIPTION}`;
+  •——[ MEGALODON-MD ]——•
+  > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 3: Fancy Borders
         const style3 = `▄▀▄▀▄ REPOSITORY INFO ▄▀▄▀▄
@@ -57,11 +57,11 @@ async (conn, mek, m, { from, reply }) => {
   
   🔗 ${repoData.html_url}
   
-  > ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 4: Code Style
         const style4 = `┌──────────────────────┐
-│  ⚡ ${config.BOT_NAME} REPO  ⚡  │
+│  ⚡ MEGALODON-MD REPO  ⚡  │
 ├──────────────────────┤
 │ • Name: ${repoData.name}
 │ • Owner: ${repoData.owner.login}
@@ -70,7 +70,7 @@ async (conn, mek, m, { from, reply }) => {
 │ • URL: ${repoData.html_url}
 │ • Desc: ${repoData.description || 'None'}
 └──────────────────────┘
-> ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 5: Modern Blocks
         const style5 = `▰▰▰▰▰ REPO INFO ▰▰▰▰▰
@@ -83,20 +83,20 @@ async (conn, mek, m, { from, reply }) => {
   
   📜 ${repoData.description || 'No description'}
   
-  > ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 6: Retro Terminal
         const style6 = `╔══════════════════════╗
-║   ${config.BOT_NAME} REPO    ║
+║   MEGALODON-MD REPO    ║
 ╠══════════════════════╣
-║ > NAME: ${repoData.name}
-║ > OWNER: ${repoData.owner.login}
-║ > STARS: ${repoData.stargazers_count}
-║ > FORKS: ${repoData.forks_count}
-║ > URL: ${repoData.html_url}
-║ > DESC: ${repoData.description || 'None'}
+║   NAME: ${repoData.name}
+║👨‍💻 OWNER: ${repoData.owner.login}
+║⭐️ STARS: ${repoData.stargazers_count}
+║🪮  FORKS: ${repoData.forks_count}
+║🖇 URL: ${repoData.html_url}
+║📃  DESC: ${repoData.description || 'None'}
 ╚══════════════════════╝
-> ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 7: Elegant
         const style7 = `┌───────────────┐
@@ -116,10 +116,10 @@ async (conn, mek, m, { from, reply }) => {
 └───────────────┘
 ${repoData.description || 'No description'}
 
-> ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 8: Social Media Style
-        const style8 = `✦ ${config.BOT_NAME} Repository ✦
+        const style8 = `✦ MEGALODON-MD Repository ✦
 
 📌 *${repoData.name}*
 👤 @${repoData.owner.login}
@@ -131,11 +131,11 @@ ${repoData.description || 'No description'}
 
 ${repoData.description || 'No description available'}
 
-> ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 9: Fancy List
         const style9 = `╔♫═🎧═♫══════════╗
-   ${config.BOT_NAME} REPO
+   MEGALODON-MD REPO
 ╚♫═🎧═♫══════════╝
 
 •・゜゜・* ✧  *・゜゜・•
@@ -149,7 +149,7 @@ ${repoData.description || 'No description available'}
 
 ${repoData.description || 'No description'}
 
-> ${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Format 10: Professional
         const style10 = `┏━━━━━━━━━━━━━━━━━━┓
