@@ -8,18 +8,18 @@ cmd({
     pattern: "menu3",
     desc: "menu the bot",
     category: "menu2",
-    react: "⚡",
+    react: "🤍",
     filename: __filename
 },
 async (conn, mek, m, { from, sender, pushname, reply }) => {
     try {
         const dec = `╭━━━〔 *MEGALODON-MD* 〕━━━╮
-┃ ✨ *Owner:* ${config.OWNER_NAME}
-┃ ⚙️ *Mode:* ${config.MODE}
-┃ 📡 *Platform:* Heroku
-┃ 🧠 *Type:* NodeJs (Multi Device)
-┃ ⌨️ *Prefix:* ${config.PREFIX}
-┃ 🧾 *Version:* 1.0.0 Beta
+┃  *Owner:* ${config.OWNER_NAME}
+┃  *Mode:* ${config.MODE}
+┃  *Platform:* Heroku
+┃  *Type:* NodeJs (Multi Device)
+┃  *Prefix:* ${config.PREFIX}
+┃  *Version:* 1.0.0 Beta
 ╰━━━━━━━━━━━━━━━━━━━━━━━━╯
 
 ╭━━〔 🧩 *Command Categories* 〕━━╮
