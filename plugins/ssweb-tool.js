@@ -5,7 +5,7 @@ const config = require('../config');
 const { cmd } = require('../command');
 
 cmd({
-  pattern: "sss",
+  pattern: "ss",
   alias: ["ssweb"],
   react: "💫",
   desc: "Download screenshot of a given link.",
