@@ -30,7 +30,7 @@ async (conn, mek, m, { from, participants, reply, isGroup, senderNumber, groupAd
         let totalMembers = participants ? participants.length : 0;
         if (totalMembers === 0) return reply("❌ No members found in this group.");
 
-        let emojis = ['📢', '🔊', '🌐', '🔰', '❤‍🩹', '🤍', '🖤', '🩵', '📝', '💗', '🔖', '🪩', '📦', '🎉', '🛡️', '💸', '⏳', '🗿', '🚀', '🎧', '🪀', '⚡', '🚩', '🍁', '🗣️', '👻', '⚠️', '🔥'];
+        let emojis = ['📢', '🔊', '🌐', '🔰', '❤‍🩹', '🤍', '🖤', '🩵', '📝', '💗', '🔖', '🪩', '📦', '🎉', '🛡️', '💸', '⏳', '🗿', '🚀', '❄️', '👨‍💻', '❄️', '❄️', '❄️', '❄️', '❄️', '⚠️', '🔥'];
         let randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
         // Proper message extraction
@@ -44,7 +44,7 @@ async (conn, mek, m, { from, participants, reply, isGroup, senderNumber, groupAd
             teks += `${randomEmoji} @${mem.id.split('@')[0]}\n`;
         }
 
-        teks += "└──✪ MEGALODON ┃ MD ✪──";
+        teks += "└──✪ MEGALODON MD ✪──";
 
         conn.sendMessage(from, { text: teks, mentions: participants.map(a => a.id) }, { quoted: mek });
 
