@@ -7,7 +7,7 @@ cmd({
     alias: ["runtime", "up"],
     desc: "Show bot uptime with stylish formats",
     category: "main",
-    react: "⏱️",
+    react: "🕧",
     filename: __filename
 },
 async (conn, mek, m, { from, reply }) => {
@@ -23,7 +23,7 @@ async (conn, mek, m, { from, reply }) => {
 │ 🚀 Started: ${startTime.toLocaleString()}
 │
 ╰────────────────⳹
-${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Style 2: Minimalist
         const style2 = `•——[ UPTIME ]——•
@@ -31,7 +31,7 @@ ${config.DESCRIPTION}`;
   ├─ ⏳ ${uptime}
   ├─ 🕒 Since: ${startTime.toLocaleTimeString()}
   │
-  •——[ ${config.BOT_NAME} ]——•`;
+  •——[ MEGALODON-MD ]——•`;
 
         // Style 3: Fancy Borders
         const style3 = `▄▀▄▀▄ BOT UPTIME ▄▀▄▀▄
@@ -39,7 +39,7 @@ ${config.DESCRIPTION}`;
   ♢ Running: ${uptime}
   ♢ Since: ${startTime.toLocaleDateString()}
   
-  ${config.DESCRIPTION}`;
+  > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Style 4: Code Style
         const style4 = `┌──────────────────────┐
@@ -47,7 +47,7 @@ ${config.DESCRIPTION}`;
 ├──────────────────────┤
 │ • Time: ${uptime}
 │ • Started: ${startTime.toLocaleString()}
-│ • Version: 4.0.0
+│ • Version: 1.0.0
 └──────────────────────┘`;
 
         // Style 5: Modern Blocks
@@ -56,14 +56,14 @@ ${config.DESCRIPTION}`;
   ⏳ ${uptime}
   🕰️ ${startTime.toLocaleString()}
   
-  ${config.DESCRIPTION}`;
+  > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Style 6: Retro Terminal
         const style6 = `╔══════════════════════╗
-║   ${config.BOT_NAME} UPTIME    ║
+║   MEGALODON-MD UPTIME    ║
 ╠══════════════════════╣
-║ > RUNTIME: ${uptime}
-║ > SINCE: ${startTime.toLocaleString()}
+║ RUNTIME: ${uptime}
+║ SINCE: ${startTime.toLocaleString()}
 ╚══════════════════════╝`;
 
         // Style 7: Elegant
@@ -76,7 +76,7 @@ ${config.DESCRIPTION}`;
 │ Since ${startTime.toLocaleDateString()}
 │
 ┌───────────────┐
-│  ${config.BOT_NAME}  │
+│  MEGALODON-MD  │
 └───────────────┘`;
 
         // Style 8: Social Media Style
@@ -85,7 +85,7 @@ ${config.DESCRIPTION}`;
 🟢 Online for: ${uptime}
 📅 Since: ${startTime.toLocaleString()}
 
-${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         // Style 9: Fancy List
         const style9 = `╔♫═⏱️═♫══════════╗
@@ -105,9 +105,9 @@ ${config.DESCRIPTION}`;
 ◈ Duration: ${uptime}
 ◈ Start Time: ${startTime.toLocaleString()}
 ◈ Stability: 100%
-◈ Version:  4.0.0
+◈ Version:  1.0.0
 
-${config.DESCRIPTION}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         const styles = [style1, style2, style3, style4, style5, style6, style7, style8, style9, style10];
         const selectedStyle = styles[Math.floor(Math.random() * styles.length)];
