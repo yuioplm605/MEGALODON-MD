@@ -306,39 +306,39 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 ┃★╰─────────────────┈⊷
 ╰━━━━━━━━━━━━━━━━━━━┈⊷
 
-╭━━〔 ℹ️ *OTHER MENU* 〕━━┈⊷
-┃★╭─────────────────·๏
-┃★┃•  timenow
-┃★┃•  date
-┃★┃•  count
-┃★┃•  calculate
-┃★┃•  countx
-┃★┃•  flip
-┃★┃•  coinflip
-┃★┃•  rcolor
-┃★┃•  roll
-┃★┃•  fact
-┃★┃•  cpp
-┃★┃•  rw
-┃★┃•  pair
-┃★┃•  pair2
-┃★┃•  pair3
-┃★┃•  fancy
-┃★┃•  logo <text>
-┃★┃•  define
-┃★┃•  news
-┃★┃•  movie
-┃★┃•  weather
-┃★┃•  srepo
-┃★┃•  insult
-┃★┃•  save
-┃★┃•  wikipedia
-┃★┃•  gpass
-┃★┃•  githubstalk
-┃★┃•  yts
-┃★┃•  ytv
-┃★╰─────────────────┈⊷
-╰━━━━━━━━━━━━━━━━━━━┈⊷
+> ╭━━〔 ℹ️ *OTHER MENU* 〕━━┈⊷
+> ┃╭─────────────────·๏
+> ┃┃•  timenow
+> ┃┃•  date
+> ┃┃•  count
+> ┃┃•  calculate
+> ┃┃•  countx
+> ┃┃•  flip
+> ┃┃•  coinflip
+> ┃┃•  rcolor
+> ┃┃•  roll
+> ┃┃•  fact
+> ┃┃•  cpp
+> ┃┃•  rw
+> ┃┃•  pair
+> ┃┃•  pair2
+> ┃┃•  pair3
+> ┃┃•  fancy
+> ┃┃•  logo <text>
+> ┃┃•  define
+> ┃┃•  news
+> ┃┃•  movie
+> ┃┃•  weather
+> ┃┃•  srepo
+> ┃┃•  insult
+> ┃┃•  save
+> ┃┃•  wikipedia
+> ┃┃•  gpass
+> ┃┃•  githubstalk
+> ┃┃•  yts
+> ┃┃•  ytv
+> ┃╰─────────────────┈⊷
+> ╰━━━━━━━━━━━━━━━━━━━┈⊷
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
         await conn.sendMessage(
