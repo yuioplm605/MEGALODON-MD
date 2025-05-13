@@ -4,7 +4,7 @@ const config = require('../config');
 
 cmd({
     pattern: "uptime",
-    alias: ["runtime", "up"],
+    alias: ["runtime", "run"],
     desc: "Show bot uptime with stylish formats",
     category: "main",
     react: "🕧",
