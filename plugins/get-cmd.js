@@ -1,3 +1,5 @@
+//powered by DybyTech 
+
 const { cmd, commands } = require('../command');
 const fs = require('fs');
 const path = require('path');
