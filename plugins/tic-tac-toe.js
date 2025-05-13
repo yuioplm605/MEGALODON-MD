@@ -9,8 +9,7 @@ cmd({
   category: "games",
   react: "❌",
   filename: __filename
-},
-async (conn, mek, m, { from, args }) => {
+}, async (conn, mek, m, { from }) => {
   const sender = m.sender;
   const mention = m.mentionedJid?.[0];
 
@@ -50,7 +49,7 @@ async (conn, mek, m, { from, args }) => {
   }, { quoted: mek });
 });
 
-// Listen to numbers 1-9 as move
+// Move commands: 1 to 9
 for (let i = 1; i <= 9; i++) {
   cmd({
     pattern: String(i),
@@ -97,6 +96,7 @@ for (let i = 1; i <= 9; i++) {
   });
 }
 
+// Helpers
 function renderBoard(board, p1 = "Player 1", p2 = "Player 2") {
   return `🎮 *Tic Tac Toe*\n@${p1.split('@')[0]} ❌ vs @${p2.split('@')[0]} ⭕️\n\n${board.slice(0, 3).join(' ')}\n${board.slice(3, 6).join(' ')}\n${board.slice(6, 9).join(' ')}\n`;
 }
@@ -104,7 +104,7 @@ function renderBoard(board, p1 = "Player 1", p2 = "Player 2") {
 function checkWinner(b) {
   const winCombos = [
     [0,1,2], [3,4,5], [6,7,8], // rows
-    [0,3,6], [1,4,7], [2,5,8], // cols
+    [0,3,6], [1,4,7], [2,5,8], // columns
     [0,4,8], [2,4,6]           // diagonals
   ];
   for (let [a,b_,c] of winCombos) {
@@ -112,7 +112,6 @@ function checkWinner(b) {
   }
   return false;
 }
-
 
 
 
