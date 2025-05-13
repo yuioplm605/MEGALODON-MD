@@ -1,98 +1,114 @@
-const games = {};
-const { cmd } = require("../command");
+const { cmd } = require('../command');
 
-const getBoard = (b) => {
-  return `
-${b[0]} | ${b[1]} | ${b[2]}
----------
-${b[3]} | ${b[4]} | ${b[5]}
----------
-${b[6]} | ${b[7]} | ${b[8]}
-`.trim();
-};
-
-const checkWin = (b, sym) => {
-  const wins = [
-    [0,1,2],[3,4,5],[6,7,8],
-    [0,3,6],[1,4,7],[2,5,8],
-    [0,4,8],[2,4,6]
-  ];
-  return wins.some(([a,b1,c]) => b[a] === sym && b[b1] === sym && b[c] === sym);
-};
-
-const isFull = (b) => b.every(x => x === "❌" || x === "⭕");
+const games = new Map();
 
 cmd({
   pattern: "tictactoe",
-  alias: ["ttt"],
-  desc: "Start a Tic Tac Toe game",
-  category: "game",
+  alias: ["xo", "ttt"],
+  desc: "Start a game of Tic Tac Toe",
+  category: "games",
+  react: "❌",
   filename: __filename
-}, async (conn, m, store, { args, from, reply, mentionByTag }) => {
-  if (games[from]) return reply("❎ A game is already ongoing in this group.");
-  const playerX = m.sender;
-  const playerO = mentionByTag[0];
+},
+async (conn, mek, m, { from, args }) => {
+  const sender = m.sender;
+  const mention = m.mentionedJid?.[0];
 
-  if (!playerO) return reply("❎ Mention a player to start.\n*Example:* .tictactoe @user");
+  if (!mention) {
+    return conn.sendMessage(from, {
+      text: "❎ Please mention your opponent!\n\nExample: *.tictactoe @user*"
+    }, { quoted: mek });
+  }
 
-  games[from] = {
-    board: ["1","2","3","4","5","6","7","8","9"],
-    players: { X: playerX, O: playerO },
-    turn: "X"
+  if (mention === sender) {
+    return conn.sendMessage(from, {
+      text: "❎ You can't play against yourself!"
+    }, { quoted: mek });
+  }
+
+  const gameId = `${from}:${mention}:${sender}`;
+  if (games.has(from)) {
+    return conn.sendMessage(from, {
+      text: "⚠️ A game is already running in this chat!"
+    }, { quoted: mek });
+  }
+
+  const board = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
+  const state = {
+    board,
+    players: [sender, mention],
+    turn: 0
   };
 
-  const boardText = getBoard(games[from].board);
+  games.set(from, state);
+
   await conn.sendMessage(from, {
-    text: `🎮 *Tic Tac Toe*\n\n${boardText}\n\nIt's @${games[from].players.X.split("@")[0]}'s (❌) turn.\nReply with *.play [1-9]*`,
-    mentions: [playerX, playerO]
-  }, { quoted: m });
+    text: renderBoard(board, sender, mention),
+    contextInfo: {
+      mentionedJid: [sender, mention]
+    }
+  }, { quoted: mek });
 });
 
-cmd({
-  pattern: "delttt",
-  desc: "Make a move in Tic Tac Toe",
-  category: "game",
-  filename: __filename
-}, async (conn, m, store, { args, from, reply }) => {
-  const game = games[from];
-  if (!game) return reply("❎ No game in progress. Start a game with .tictactoe @player");
+// Listen to numbers 1-9 as move
+for (let i = 1; i <= 9; i++) {
+  cmd({
+    pattern: String(i),
+    desc: `Play move ${i} in Tic Tac Toe`,
+    category: "games",
+    filename: __filename
+  }, async (conn, mek, m, { from }) => {
+    const game = games.get(from);
+    if (!game) return;
 
-  const position = parseInt(args[0]) - 1;
-  if (isNaN(position) || position < 0 || position > 8) return reply("❎ Choose a position between 1 and 9.");
+    const index = Number(m.body) - 1;
+    const currentPlayer = game.players[game.turn % 2];
 
-  const symbol = game.turn;
-  const player = game.players[symbol];
+    if (m.sender !== currentPlayer) return;
 
-  if (m.sender !== player) return reply("❎ It's not your turn.");
+    if (!["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"].includes(game.board[index])) {
+      return conn.sendMessage(from, {
+        text: "❌ That position is already taken!",
+      }, { quoted: mek });
+    }
 
-  if (game.board[position] === "❌" || game.board[position] === "⭕")
-    return reply("❎ This spot is already taken.");
+    game.board[index] = game.turn % 2 === 0 ? "❌" : "⭕️";
+    game.turn++;
 
-  game.board[position] = symbol === "X" ? "❌" : "⭕";
+    const winner = checkWinner(game.board);
+    if (winner) {
+      await conn.sendMessage(from, {
+        text: `🎉 *Tic Tac Toe Game Over!*\n\nWinner: @${currentPlayer.split('@')[0]}\n\n${renderBoard(game.board)}\n\n*Powered by Megalodon-MD*`,
+        contextInfo: { mentionedJid: [currentPlayer] }
+      }, { quoted: mek });
+      games.delete(from);
+    } else if (game.turn >= 9) {
+      await conn.sendMessage(from, {
+        text: `🤝 *Draw!*\n\n${renderBoard(game.board)}\n\nNo winner this time.`,
+      }, { quoted: mek });
+      games.delete(from);
+    } else {
+      const next = game.players[game.turn % 2];
+      await conn.sendMessage(from, {
+        text: renderBoard(game.board, ...game.players) + `\n\nTurn: @${next.split('@')[0]}`,
+        contextInfo: { mentionedJid: [next] }
+      }, { quoted: mek });
+    }
+  });
+}
 
-  const boardText = getBoard(game.board);
+function renderBoard(board, p1 = "Player 1", p2 = "Player 2") {
+  return `🎮 *Tic Tac Toe*\n@${p1.split('@')[0]} ❌ vs @${p2.split('@')[0]} ⭕️\n\n${board.slice(0, 3).join(' ')}\n${board.slice(3, 6).join(' ')}\n${board.slice(6, 9).join(' ')}\n`;
+}
 
-  if (checkWin(game.board, game.board[position])) {
-    await conn.sendMessage(from, {
-      text: `🎉 *Victory!*\n\n${boardText}\n\nWinner: @${m.sender.split("@")[0]}`,
-      mentions: [m.sender]
-    }, { quoted: m });
-    delete games[from];
-    return;
+function checkWinner(b) {
+  const winCombos = [
+    [0,1,2], [3,4,5], [6,7,8], // rows
+    [0,3,6], [1,4,7], [2,5,8], // cols
+    [0,4,8], [2,4,6]           // diagonals
+  ];
+  for (let [a,b_,c] of winCombos) {
+    if (b[a] === b[b_] && b[b_] === b[c]) return true;
   }
-
-  if (isFull(game.board)) {
-    await conn.sendMessage(from, {
-      text: `🤝 *Draw!*\n\n${boardText}`,
-    }, { quoted: m });
-    delete games[from];
-    return;
-  }
-
-  game.turn = symbol === "X" ? "O" : "X";
-  const nextPlayer = game.players[game.turn];
-  await conn.sendMessage(from, {
-    text: `🎮 *Tic Tac Toe*\n\n${boardText}\n\nIt's @${nextPlayer.split("@")[0]}'s turn (${game.turn === "X" ? "❌" : "⭕"}).`,
-    mentions: [nextPlayer]
-  }, { quoted: m });
-});
+  return false;
+}
