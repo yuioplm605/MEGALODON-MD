@@ -3,12 +3,12 @@ const { cmd } = require("../command");
 
 const API_URL = "https://www.dark-yasiya-api.site/other/font";
 
-// .fancy → Affiche les styles dans un menu déroulant
+// .fancy → Affiche directement les styles disponibles
 cmd({
   pattern: "fancy",
   alias: ["font", "style"],
   react: "✍️",
-  desc: "Convert text into various fonts (selectable).",
+  desc: "Convert text into various fonts.",
   category: "tools",
   filename: __filename
 }, async (conn, m, store, { from, quoted, q, reply }) => {
@@ -24,29 +24,17 @@ cmd({
       return reply("❌ Error fetching fonts. Please try again later.");
     }
 
-    // Création du menu déroulant
-    const sections = [{
-      title: "Available Fancy Styles",
-      rows: fonts.map((item, i) => ({
-        title: `${i + 1}. ${item.name}`,
-        rowId: `.fancy2 ${i + 1} ${q}`,
-        description: item.result
-      }))
-    }];
+    // Génère un message avec tous les styles
+    let resultText = `✨ *Fancy Fonts Converter*\n\n*Text:* ${q}\n\n`;
+    fonts.forEach((item, i) => {
+      resultText += `*${i + 1}. ${item.name}:*\n${item.result}\n\n`;
+    });
 
-    const listMessage = {
-      text: `✨ *Fancy Fonts Converter*\n\nSelect a style from the list below.`,
-      footer: "*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*",
-      title: "Fancy Fonts List",
-      buttonText: "Choose a Fancy Style",
-      sections
-    };
-
-    await conn.sendMessage(from, listMessage, { quoted: m });
+    await reply(resultText.trim());
 
   } catch (error) {
     console.error("❌ Error in .fancy:", error);
-    reply("⚠️ An error occurred while building the list.");
+    reply("⚠️ An error occurred while fetching the fonts.");
   }
 });
 
