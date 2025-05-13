@@ -112,3 +112,23 @@ function checkWinner(b) {
   }
   return false;
 }
+
+
+
+
+cmd({
+  pattern: 'delttt',
+  alias: ['cancelttt', 'stopttt'],
+  desc: 'Annule une partie de Tic Tac Toe en cours.',
+  category: 'games',
+  react: '🗑️',
+  filename: __filename
+}, async (conn, mek, m, { from, isGroup, isAdmins, reply }) => {
+  if (!isGroup) return reply('❌ Cette commande ne peut être utilisée que dans les groupes.');
+  if (!isAdmins) return reply('❌ Seuls les admins peuvent annuler une partie.');
+
+  if (!games.has(from)) return reply('⚠️ Il n’y a aucune partie en cours dans ce groupe.');
+
+  games.delete(from);
+  reply('✅ Partie de *Tic Tac Toe* annulée avec succès.');
+});
