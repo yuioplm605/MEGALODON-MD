@@ -10,22 +10,35 @@ cmd({
 async (conn, mek, m) => {
     const newsletterJid = m.chat;
 
+    // Journaliser l'utilisation de la commande
+    console.log(`[NEWSLETTER] Command used in: ${newsletterJid}`);
+
     if (!newsletterJid.endsWith("@newsletter")) {
         return conn.sendMessage(newsletterJid, {
             text: "This command must be used inside a WhatsApp channel (@newsletter)."
         }, { quoted: mek });
     }
 
-    // Send the channel ID
+    // Optionnel : Vérifie si le JID semble valide (commence par "120")
+    if (!newsletterJid.startsWith("120")) {
+        return conn.sendMessage(newsletterJid, {
+            text: "This does not appear to be a valid WhatsApp channel ID."
+        }, { quoted: mek });
+    }
+
+    // Date et heure actuelle
+    const now = new Date().toLocaleString();
+
+    // Affiche l'ID du canal + date
     await conn.sendMessage(newsletterJid, {
-        text: `Channel ID:\n\n*${newsletterJid}*`
+        text: `Channel ID:\n\n*${newsletterJid}*\n\n🕒 *Executed on:* ${now}`
     }, { quoted: mek });
 
-    // Simulate a forwarded message from another newsletter
+    // Simule un message transféré d’un autre canal
     const fakeNewsletterJid = '120363372853772240@newsletter';
-    const fakeNewsletterName = 'Dybytech News'; // Updated name
+    const fakeNewsletterName = '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡';
     const serverMessageId = 101;
-    const message = "This is an example of a message forwarded from a channel.";
+    const message = `Forwarded from another newsletter:\n\n*${newsletterJid}*`;
 
     await conn.sendMessage(
         newsletterJid,
