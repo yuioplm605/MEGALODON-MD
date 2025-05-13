@@ -35,12 +35,12 @@ cmd({
     const reference = res.data.reference;
 
     let response = `╭━━〔 📖 *BIBLE* 〕━━
-┃
-┃ *${reference}*
-┃
-┃ ${text}
-┃
-╰━━━ POWERED BY MEGALODON-MD 🤍`;
+
+ *${reference}*
+
+ ${text}
+
+╰━━POWERED BY MEGALODON-MD━━━`;
 
     if (query.includes(":")) {
       // If it's a verse, return the specific verse
@@ -48,12 +48,12 @@ cmd({
     } else {
       // If it's a chapter, return the beginning of the chapter
       response = `╭━━〔 📖 *CHAPTER* 〕━━
-┃
-┃ *${reference}* (Full Chapter)
-┃
-┃ ${text.split("\n")[0]}... [See full chapter]
-┃
-╰━━━ POWERED BY MEGALODON-MD`;
+
+ *${reference}* (Full Chapter)
+
+ ${text.split("\n")[0]}... [See full chapter]
+
+╰━━━POWERED BY MEGALODON-MD━━━`;
       reply(response);
     }
   } catch (err) {
