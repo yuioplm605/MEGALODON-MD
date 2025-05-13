@@ -1,118 +1,97 @@
-const { cmd } = require('../command');
+const games = {};
+const { cmd } = require("../command");
 
-const games = new Map();
+const getBoard = (b) => {
+  return `
+${b[0]} | ${b[1]} | ${b[2]}
+---------
+${b[3]} | ${b[4]} | ${b[5]}
+---------
+${b[6]} | ${b[7]} | ${b[8]}
+`.trim();
+};
+
+const checkWin = (b, sym) => {
+  const wins = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  return wins.some(([a,b1,c]) => b[a] === sym && b[b1] === sym && b[c] === sym);
+};
+
+const isFull = (b) => b.every(x => x === "❌" || x === "⭕");
 
 cmd({
-  pattern: "tictactoe",
-  alias: ["xo", "ttt"],
-  desc: "Start a game of Tic Tac Toe",
-  category: "games",
-  react: "❌",
+  pattern: "ttt",
+  desc: "Start or play Tic Tac Toe",
+  category: "game",
   filename: __filename
-}, async (conn, mek, m, { from }) => {
-  const sender = m.sender;
-  const mention = m.mentionedJid?.[0];
+}, async (conn, m, store, { from, reply, args, mentionByTag }) => {
+  const currentGame = games[from];
 
-  if (!mention) {
-    return conn.sendMessage(from, {
-      text: "❎ Please mention your opponent!\n\nExample: *.tictactoe @user*"
-    }, { quoted: mek });
-  }
+  // Start new game
+  if (!args[0]) {
+    if (currentGame) return reply("❎ A game is already in progress in this group.");
+    
+    const playerX = m.sender;
+    const playerO = mentionByTag[0];
+    if (!playerO) return reply("❎ Mention a player to start.\n*Example:* .ttt @user");
 
-  if (mention === sender) {
-    return conn.sendMessage(from, {
-      text: "❎ You can't play against yourself!"
-    }, { quoted: mek });
-  }
+    games[from] = {
+      board: ["1","2","3","4","5","6","7","8","9"],
+      players: { X: playerX, O: playerO },
+      turn: "X"
+    };
 
-  const gameId = `${from}:${mention}:${sender}`;
-  if (games.has(from)) {
-    return conn.sendMessage(from, {
-      text: "⚠️ A game is already running in this chat!"
-    }, { quoted: mek });
-  }
+    const boardText = getBoard(games[from].board);
+    await conn.sendMessage(from, {
+      text: `🎮 *Tic Tac Toe*\n\n${boardText}\n\nIt's @${playerX.split("@")[0]}'s turn (❌)\nReply to this message with *.ttt [1-9]* to play.`,
+      mentions: [playerX, playerO]
+    }, { quoted: m });
 
-  const board = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
-  const state = {
-    board,
-    players: [sender, mention],
-    turn: 0
-  };
+  } else {
+    // Play move
+    if (!currentGame) return reply("❎ No game in progress. Start one with .ttt @user");
 
-  games.set(from, state);
+    const position = parseInt(args[0]) - 1;
+    if (isNaN(position) || position < 0 || position > 8) return reply("❎ Choose a valid number between 1 and 9.");
 
-  await conn.sendMessage(from, {
-    text: renderBoard(board, sender, mention),
-    contextInfo: {
-      mentionedJid: [sender, mention]
+    const symbol = currentGame.turn;
+    const player = currentGame.players[symbol];
+
+    if (m.sender !== player) return reply("❎ It's not your turn.");
+    if (["❌", "⭕"].includes(currentGame.board[position])) return reply("❎ That cell is already taken.");
+
+    currentGame.board[position] = symbol === "X" ? "❌" : "⭕";
+
+    const boardText = getBoard(currentGame.board);
+
+    if (checkWin(currentGame.board, currentGame.board[position])) {
+      await conn.sendMessage(from, {
+        text: `🎉 *Victory!*\n\n${boardText}\n\nWinner: @${m.sender.split("@")[0]}`,
+        mentions: [m.sender]
+      }, { quoted: m });
+      delete games[from];
+      return;
     }
-  }, { quoted: mek });
+
+    if (isFull(currentGame.board)) {
+      await conn.sendMessage(from, {
+        text: `🤝 *Draw!*\n\n${boardText}`
+      }, { quoted: m });
+      delete games[from];
+      return;
+    }
+
+    currentGame.turn = symbol === "X" ? "O" : "X";
+    const nextPlayer = currentGame.players[currentGame.turn];
+    await conn.sendMessage(from, {
+      text: `🎮 *Tic Tac Toe*\n\n${boardText}\n\nIt's @${nextPlayer.split("@")[0]}'s turn (${currentGame.turn === "X" ? "❌" : "⭕"})\nReply with *.ttt [1-9]*`,
+      mentions: [nextPlayer]
+    }, { quoted: m });
+  }
 });
-
-// Move commands: 1 to 9
-for (let i = 1; i <= 9; i++) {
-  cmd({
-    pattern: String(i),
-    desc: `Play move ${i} in Tic Tac Toe`,
-    category: "games",
-    filename: __filename
-  }, async (conn, mek, m, { from }) => {
-    const game = games.get(from);
-    if (!game) return;
-
-    const index = Number(m.body) - 1;
-    const currentPlayer = game.players[game.turn % 2];
-
-    if (m.sender !== currentPlayer) return;
-
-    if (!["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"].includes(game.board[index])) {
-      return conn.sendMessage(from, {
-        text: "❌ That position is already taken!",
-      }, { quoted: mek });
-    }
-
-    game.board[index] = game.turn % 2 === 0 ? "❌" : "⭕️";
-    game.turn++;
-
-    const winner = checkWinner(game.board);
-    if (winner) {
-      await conn.sendMessage(from, {
-        text: `🎉 *Tic Tac Toe Game Over!*\n\nWinner: @${currentPlayer.split('@')[0]}\n\n${renderBoard(game.board)}\n\n*Powered by Megalodon-MD*`,
-        contextInfo: { mentionedJid: [currentPlayer] }
-      }, { quoted: mek });
-      games.delete(from);
-    } else if (game.turn >= 9) {
-      await conn.sendMessage(from, {
-        text: `🤝 *Draw!*\n\n${renderBoard(game.board)}\n\nNo winner this time.`,
-      }, { quoted: mek });
-      games.delete(from);
-    } else {
-      const next = game.players[game.turn % 2];
-      await conn.sendMessage(from, {
-        text: renderBoard(game.board, ...game.players) + `\n\nTurn: @${next.split('@')[0]}`,
-        contextInfo: { mentionedJid: [next] }
-      }, { quoted: mek });
-    }
-  });
-}
-
-// Helpers
-function renderBoard(board, p1 = "Player 1", p2 = "Player 2") {
-  return `🎮 *Tic Tac Toe*\n@${p1.split('@')[0]} ❌ vs @${p2.split('@')[0]} ⭕️\n\n${board.slice(0, 3).join(' ')}\n${board.slice(3, 6).join(' ')}\n${board.slice(6, 9).join(' ')}\n`;
-}
-
-function checkWinner(b) {
-  const winCombos = [
-    [0,1,2], [3,4,5], [6,7,8], // rows
-    [0,3,6], [1,4,7], [2,5,8], // columns
-    [0,4,8], [2,4,6]           // diagonals
-  ];
-  for (let [a,b_,c] of winCombos) {
-    if (b[a] === b[b_] && b[b_] === b[c]) return true;
-  }
-  return false;
-}
-
 
 
 cmd({
