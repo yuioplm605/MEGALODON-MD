@@ -55,6 +55,7 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
 // 6. Clear All Chats
 cmd({
     pattern: "clearchats",
+    alias: ["clear"],
     desc: "Clear all chats from the bot.",
     category: "owner",
     react: "🧹",
@@ -93,7 +94,7 @@ async (conn, mek, m, { from, isOwner, reply }) => {
 
 cmd({
 pattern: "delete",
-react: "❌",
+react: "🗑",
 alias: ["del"],
 desc: "delete message",
 category: "group",
