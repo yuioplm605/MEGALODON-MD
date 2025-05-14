@@ -1,3 +1,7 @@
+const { cmd } = require('../command');
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+
 cmd({
     pattern: "removemembers",
     alias: ["kickall", "endgc", "endgroup"],
