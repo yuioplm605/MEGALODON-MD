@@ -7,7 +7,7 @@ const axios = require('axios')
 cmd({
     pattern: "menu",
     alias: ["allmenu", "megalodon"],
-    use: '.menu2',
+    use: '.menu1',
     desc: "Show all bot commands",
     category: "menu",
     react: "❄️",
@@ -45,7 +45,7 @@ async (conn, mek, m, {
 ┃❃│ Prefix : *[${config.PREFIX}]*
 ┃❃│ User :  @${m.sender.split("@")[0]} 
 ┃❃│ Time :  *${time}*
-┃❃│ Mode : *[${config.MODE}]*
+┃❃│ Mode : *${config.MODE}*
 ┃❃│ Date :   *${date}*
 ┃❃│ Version : *1.0.0 Bᴇᴛᴀ*
 ┃❃│ Plugin : *${pluginCount}*
