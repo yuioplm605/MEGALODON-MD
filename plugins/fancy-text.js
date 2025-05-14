@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { cmd } = require("../command");
 
-const API_URL = "https://www.dark-yasiya-api.site/other/font";
+const API_URL = "https://api.giftedtech.web.id/api/tools/fancy?apikey=gifted&text=Dyby+Tech";
 
 // .fancy → Affiche directement les styles disponibles
 cmd({
