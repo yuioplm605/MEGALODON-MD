@@ -179,25 +179,14 @@ ${repoData.description || 'No description provided'}
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363372853772240@newsletter',
+                    newsletterJid: '120363312841480579@newsletter',
                     newsletterName: config.OWNER_NAME || '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
                     serverMessageId: 143
                 }
             }
         }, { quoted: mek });
 
-        // Send audio
-        await conn.sendMessage(from, {
-            audio: { url: 'https://files.catbox.moe/0rpce6.mp3' },
-            mimetype: 'audio/mp4',
-            ptt: true,
-            contextInfo: { 
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true
-            }
-        }, { quoted: mek });
-
+        
     } catch (error) {
         console.error("Repo command error:", error);
         reply(`❌ Error: ${error.message}`);
