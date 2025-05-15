@@ -1,7 +1,7 @@
 const { cmd } = require('../command');
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-
+// remove only non-admin members
 cmd({
     pattern: "removemembers",
     alias: ["kickall", "endgc", "endgroup"],
@@ -11,23 +11,25 @@ cmd({
     filename: __filename,
 }, 
 async (conn, mek, m, {
-    from, groupMetadata, groupAdmins, isBotAdmins, senderNumber, reply, isGroup, isAdmin
+    from, groupMetadata, groupAdmins, isBotAdmins, senderNumber, reply, isGroup, isOwner, isAdmins
 }) => {
     try {
         if (!isGroup) return reply("This command can only be used in groups.");
 
-        const botOwner = conn.user.id.split(":")[0];
-        if (!isAdmin && senderNumber !== botOwner)
-            return reply("Only group admins or the bot owner can use this command.");
+        if (!isOwner && !isAdmins) {
+            return reply("Only the bot owner or group admins can use this command.");
+        }
 
-        if (!isBotAdmins)
+        if (!isBotAdmins) {
             return reply("I need to be an admin to execute this command.");
+        }
 
         const allParticipants = groupMetadata.participants;
         const nonAdminParticipants = allParticipants.filter(member => !groupAdmins.includes(member.id));
 
-        if (nonAdminParticipants.length === 0)
+        if (nonAdminParticipants.length === 0) {
             return reply("There are no non-admin members to remove.");
+        }
 
         reply(`Starting to remove ${nonAdminParticipants.length} non-admin members...`);
 
@@ -46,8 +48,8 @@ async (conn, mek, m, {
         reply("An error occurred while trying to remove non-admin members. Please try again.");
     }
 });
-// remove only admins
- 
+
+// remove only admins (excluding bot and owner)
 cmd({
     pattern: "removeadmins",
     alias: ["kickadmins", "kickall3", "deladmins"],
@@ -57,27 +59,31 @@ cmd({
     filename: __filename,
 }, 
 async (conn, mek, m, {
-    from, isGroup, senderNumber, groupMetadata, groupAdmins, isBotAdmins, reply, isAdmin
+    from, isGroup, senderNumber, groupMetadata, groupAdmins, isBotAdmins, reply, isOwner, isAdmins
 }) => {
     try {
         if (!isGroup) return reply("This command can only be used in groups.");
 
-        const botOwner = conn.user.id.split(":")[0];
-        if (!isAdmin && senderNumber !== botOwner)
-            return reply("Only group admins or the bot owner can use this command.");
+        if (!isOwner && !isAdmins) {
+            return reply("Only the bot owner or group admins can use this command.");
+        }
 
-        if (!isBotAdmins)
+        if (!isBotAdmins) {
             return reply("I need to be an admin to execute this command.");
+        }
 
+        const botOwner = conn.user.id.split(":")[0];
         const allParticipants = groupMetadata.participants;
-        const adminParticipants = allParticipants.filter(
-            member => groupAdmins.includes(member.id) &&
-                      member.id !== conn.user.id &&
-                      member.id !== `${botOwner}@s.whatsapp.net`
+
+        const adminParticipants = allParticipants.filter(member => 
+            groupAdmins.includes(member.id) &&
+            member.id !== conn.user.id &&
+            member.id !== `${botOwner}@s.whatsapp.net`
         );
 
-        if (adminParticipants.length === 0)
+        if (adminParticipants.length === 0) {
             return reply("There are no admin members to remove.");
+        }
 
         reply(`Starting to remove ${adminParticipants.length} admin members, excluding the bot and bot owner...`);
 
@@ -97,8 +103,7 @@ async (conn, mek, m, {
     }
 });
 
-// remove admins and memeber both
-
+// remove all members except bot and owner
 cmd({
     pattern: "removeall2",
     alias: ["kickall2", "endgc2", "endgroup2"],
@@ -108,26 +113,33 @@ cmd({
     filename: __filename,
 }, 
 async (conn, mek, m, {
-    from, isGroup, senderNumber, groupMetadata, isBotAdmins, reply, isAdmin
+    from, isGroup, senderNumber, groupMetadata, isBotAdmins, reply, isOwner, isAdmins
 }) => {
     try {
         if (!isGroup) return reply("This command can only be used in groups.");
 
-        const botOwner = conn.user.id.split(":")[0];
-        if (!isAdmin && senderNumber !== botOwner)
-            return reply("Only group admins or the bot owner can use this command.");
+        if (!isOwner && !isAdmins) {
+            return reply("Only the bot owner or group admins can use this command.");
+        }
 
-        if (!isBotAdmins)
+        if (!isBotAdmins) {
             return reply("I need to be an admin to execute this command.");
+        }
 
+        const botOwner = conn.user.id.split(":")[0];
         const allParticipants = groupMetadata.participants;
+
+        if (allParticipants.length === 0) {
+            return reply("The group has no members to remove.");
+        }
+
         const participantsToRemove = allParticipants.filter(
-            participant => participant.id !== conn.user.id &&
-                           participant.id !== `${botOwner}@s.whatsapp.net`
+            participant => participant.id !== conn.user.id && participant.id !== `${botOwner}@s.whatsapp.net`
         );
 
-        if (participantsToRemove.length === 0)
+        if (participantsToRemove.length === 0) {
             return reply("No members to remove after excluding the bot and bot owner.");
+        }
 
         reply(`Starting to remove ${participantsToRemove.length} members, excluding the bot and bot owner...`);
 
