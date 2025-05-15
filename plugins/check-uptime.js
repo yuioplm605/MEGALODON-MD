@@ -119,8 +119,8 @@ async (conn, mek, m, { from, reply }) => {
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363372853772240@newsletter',
-                    newsletterName: config.OWNER_NAME || '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
+                    newsletterJid: '120363312841480579@newsletter',
+                    newsletterName: config.OWNER_NAME || '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍 𝐌𝐃',
                     serverMessageId: 143
                 }
             }
