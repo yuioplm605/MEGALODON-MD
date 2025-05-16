@@ -5,7 +5,7 @@ const os = require("os");
 const axios = require('axios');
 
 cmd({
-    pattern: "menu3",
+    pattern: "menu2",
     desc: "menu the bot",
     category: "menu2",
     react: "⚡",
@@ -13,7 +13,7 @@ cmd({
 },
 async (conn, mek, m, { from, sender, pushname, reply }) => {
     try {
-        const dec = `╭━━━〔 *${config.BOT_NAME} Main Menu* 〕━━━╮
+        const dec = `╭━━━〔 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 〕━━━╮
 ┃ ✨ *Owner:* ${config.OWNER_NAME}
 ┃ ⚙️ *Mode:* ${config.MODE}
 ┃ 📡 *Platform:* Heroku
@@ -40,7 +40,7 @@ async (conn, mek, m, { from, sender, pushname, reply }) => {
 ┃ 🖌️ Logo
 ┃ 📦 Repo
 ╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
 `;
 
         await conn.sendMessage(
@@ -62,22 +62,7 @@ async (conn, mek, m, { from, sender, pushname, reply }) => {
             { quoted: mek }
         );
 
-        // Send cool voice note with context
-        await conn.sendMessage(from, {
-            audio: { url: 'https://github.com/JawadYT36/KHAN-DATA/raw/refs/heads/main/autovoice/menunew.m4a' },
-            mimetype: 'audio/mp4',
-            ptt: true,
-            contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363372853772240@newsletter',
-                    newsletterName: '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
-                    serverMessageId: 143
-                }
-            }
-        }, { quoted: mek });
+        
 
     } catch (e) {
         console.error(e);
@@ -95,41 +80,42 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Logo List* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• neonlight
-┃◈┃• blackpink
-┃◈┃• dragonball
-┃◈┃• 3dcomic
-┃◈┃• america
-┃◈┃• naruto
-┃◈┃• sadgirl
-┃◈┃• clouds
-┃◈┃• futuristic
-┃◈┃• 3dpaper
-┃◈┃• eraser
-┃◈┃• sunset
-┃◈┃• leaf
-┃◈┃• galaxy
-┃◈┃• sans
-┃◈┃• boom
-┃◈┃• hacker
-┃◈┃• devilwings
-┃◈┃• nigeria
-┃◈┃• bulb
-┃◈┃• angelwings
-┃◈┃• zodiac
-┃◈┃• luxury
-┃◈┃• paint
-┃◈┃• frozen
-┃◈┃• castle
-┃◈┃• tatoo
-┃◈┃• valorant
-┃◈┃• bear
-┃◈┃• typography
-┃◈┃• birthday
-┃◈└───────────┈⊷
-╰──────────────┈⊷`;
+        let dec = `╭┈──────────────────
+│  🎨 𝐋𝐎𝐆𝐎 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ɴᴇᴏɴʟɪɢʜᴛ
+│  ◦  ʙʟᴀᴄᴋᴘɪɴᴋ
+│  ◦  ᴅʀᴀɢᴏɴʙᴀʟʟ
+│  ◦  𝟹ᴅᴄᴏᴍɪᴄ
+│  ◦  ᴀᴍᴇʀɪᴄᴀ
+│  ◦  ɴᴀʀᴜᴛᴏ
+│  ◦  sᴀᴅɢɪʀʟ
+│  ◦  ᴄʟᴏᴜᴅs
+│  ◦  ғᴜᴛᴜʀɪsᴛɪᴄ
+│  ◦  𝟹ᴅᴘᴀᴘᴇʀ
+│  ◦  ᴇʀᴀsᴇʀ
+│  ◦  sᴜɴsᴇᴛ
+│  ◦  ʟᴇᴀғ
+│  ◦  ɢᴀʟᴀxʏ
+│  ◦  sᴀɴs
+│  ◦  ʙᴏᴏᴍ
+│  ◦  ʜᴀᴄᴋᴇʀ
+│  ◦  ᴅᴇᴠɪʟᴡɪɴɢs
+│  ◦  ɴɪɢᴇʀɪᴀ
+│  ◦  ʙᴜʟʙ
+│  ◦  ᴀɴɢᴇʟᴡɪɴɢs
+│  ◦  ᴢᴏᴅɪᴀᴄ
+│  ◦  ʟᴜxᴜʀʏ
+│  ◦  ᴘᴀɪɴᴛ
+│  ◦  ғʀᴏᴢᴇɴ
+│  ◦  ᴄᴀsᴛʟᴇ
+│  ◦  ᴛᴀᴛᴏᴏ
+│  ◦  ᴠᴀʟᴏʀᴀɴᴛ
+│  ◦  ʙᴇᴀʀ
+│  ◦  ᴛʏᴘᴏɢʀᴀᴘʜʏ
+│  ◦  ʙɪʀᴛʜᴅᴀʏ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -165,37 +151,37 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, reply }) => {
     try {
-        let dec = `╭━━〔 *Reactions Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• bully @tag
-┃◈┃• cuddle @tag
-┃◈┃• cry @tag
-┃◈┃• hug @tag
-┃◈┃• awoo @tag
-┃◈┃• kiss @tag
-┃◈┃• lick @tag
-┃◈┃• pat @tag
-┃◈┃• smug @tag
-┃◈┃• bonk @tag
-┃◈┃• yeet @tag
-┃◈┃• blush @tag
-┃◈┃• smile @tag
-┃◈┃• wave @tag
-┃◈┃• highfive @tag
-┃◈┃• handhold @tag
-┃◈┃• nom @tag
-┃◈┃• bite @tag
-┃◈┃• glomp @tag
-┃◈┃• slap @tag
-┃◈┃• kill @tag
-┃◈┃• happy @tag
-┃◈┃• wink @tag
-┃◈┃• poke @tag
-┃◈┃• dance @tag
-┃◈┃• cringe @tag
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  🎭 𝐑𝐄𝐀𝐂𝐓𝐈𝐎𝐍𝐒 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ʙᴜʟʟʏ @ᴛᴀɢ
+│  ◦  ᴄᴜᴅᴅʟᴇ @ᴛᴀɢ
+│  ◦  ᴄʀʏ @ᴛᴀɢ
+│  ◦  ʜᴜɢ @ᴛᴀɢ
+│  ◦  ᴀᴡᴏᴏ @ᴛᴀɢ
+│  ◦  ᴋɪss @ᴛᴀɢ
+│  ◦  ʟɪᴄᴋ @ᴛᴀɢ
+│  ◦  ᴘᴀᴛ @ᴛᴀɢ
+│  ◦  sᴍᴜɢ @ᴛᴀɢ
+│  ◦  ʙᴏɴᴋ @ᴛᴀɢ
+│  ◦  ʏᴇᴇᴛ @ᴛᴀɢ
+│  ◦  ʙʟᴜsʜ @ᴛᴀɢ
+│  ◦  sᴍɪʟᴇ @ᴛᴀɢ
+│  ◦  ᴡᴀᴠᴇ @ᴛᴀɢ
+│  ◦  ʜɪɢʜғɪᴠᴇ @ᴛᴀɢ
+│  ◦  ʜᴀɴᴅʜᴏʟᴅ @ᴛᴀɢ
+│  ◦  ɴᴏᴍ @ᴛᴀɢ
+│  ◦  ʙɪᴛᴇ @ᴛᴀɢ
+│  ◦  ɢʟᴏᴍᴘ @ᴛᴀɢ
+│  ◦  sʟᴀᴘ @ᴛᴀɢ
+│  ◦  ᴋɪʟʟ @ᴛᴀɢ
+│  ◦  ʜᴀᴘᴘʏ @ᴛᴀɢ
+│  ◦  ᴡɪɴᴋ @ᴛᴀɢ
+│  ◦  ᴘᴏᴋᴇ @ᴛᴀɢ
+│  ◦  ᴅᴀɴᴄᴇ @ᴛᴀɢ
+│  ◦  ᴄʀɪɴɢᴇ @ᴛᴀɢ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -233,52 +219,36 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Download Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• facebook
-┃◈┃• mediafire
-┃◈┃• tiktok
-┃◈┃• twitter
-┃◈┃• Insta
-┃◈┃• apk
-┃◈┃• img
-┃◈┃• tt2
-┃◈┃• pins
-┃◈┃• apk2
-┃◈┃• fb2
-┃◈┃• pinterest 
-┃◈┃• spotify
-┃◈┃• play
-┃◈┃• play2
-┃◈┃• play3
-┃◈┃• play4
-┃◈┃• play5
-┃◈┃• play6
-┃◈┃• play7
-┃◈┃• play8
-┃◈┃• play9
-┃◈┃• play10
-┃◈┃• audio
-┃◈┃• video
-┃◈┃• video2
-┃◈┃• video3
-┃◈┃• video4
-┃◈┃• video5
-┃◈┃• video6
-┃◈┃• video7
-┃◈┃• video8
-┃◈┃• video9
-┃◈┃• video10
-┃◈┃• ytmp3
-┃◈┃• ytmp4
-┃◈┃• song
-┃◈┃• darama
-┃◈┃• gdrive
-┃◈┃• ssweb
-┃◈┃• tiks
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ғᴀᴄᴇʙᴏᴏᴋ
+│  ◦  ᴍᴇᴅɪᴀғɪʀᴇ
+│  ◦  ᴛɪᴋᴛᴏᴋ
+│  ◦  ᴛᴡɪᴛᴛᴇʀ
+│  ◦  ɪɴsᴛᴀ
+│  ◦  ᴀᴘᴋ
+│  ◦  ɪᴍɢ
+│  ◦  ᴛᴛ𝟸
+│  ◦  ᴘɪɴs
+│  ◦  ᴀᴘᴋ𝟸
+│  ◦  ғʙ𝟸
+│  ◦  ᴘɪɴᴛᴇʀᴇsᴛ
+│  ◦  sᴘᴏᴛɪғʏ
+│  ◦  ᴘʟᴀʏ
+│  ◦  ᴘʟᴀʏ𝟸
+│  ◦  ᴀᴜᴅɪᴏ
+│  ◦  ᴠɪᴅᴇᴏ
+│  ◦  ᴠɪᴅᴇᴏ𝟸
+│  ◦  ʏᴛᴍᴘ𝟹
+│  ◦  ʏᴛᴍᴘ𝟺
+│  ◦  sᴏɴɢ
+│  ◦  ᴅᴀʀᴀᴍᴀ
+│  ◦  ɢᴅʀɪᴠᴇ
+│  ◦  ssᴡᴇʙ
+│  ◦  ᴛɪᴋs
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -317,46 +287,45 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try
        {
-        let dec = `╭━━〔 *Group Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• grouplink
-┃◈┃• kickall
-┃◈┃• kickall2
-┃◈┃• kickall3
-┃◈┃• add
-┃◈┃• remove
-┃◈┃• kick
-┃◈┃• promote 
-┃◈┃• demote
-┃◈┃• dismiss 
-┃◈┃• revoke
-┃◈┃• setgoodbye
-┃◈┃• setwelcome
-┃◈┃• delete 
-┃◈┃• getpic
-┃◈┃• ginfo
-┃◈┃• delete 
-┃◈┃• disappear on
-┃◈┃• disappear off
-┃◈┃• disappear 7D,24H
-┃◈┃• allreq
-┃◈┃• updategname
-┃◈┃• updategdesc
-┃◈┃• joinrequests
-┃◈┃• senddm
-┃◈┃• nikal
-┃◈┃• mute
-┃◈┃• unmute
-┃◈┃• lockgc
-┃◈┃• unlockgc
-┃◈┃• invite
-┃◈┃• tag
-┃◈┃• hidetag
-┃◈┃• tagall
-┃◈┃• tagadmins
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  👥 𝐆𝐑𝐎𝐔𝐏 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦   ɢʀᴏᴜᴘʟɪɴᴋ
+│  ◦   ᴋɪᴄᴋᴀʟʟ
+│  ◦   ᴋɪᴄᴋᴀʟʟ𝟸
+│  ◦   ᴋɪᴄᴋᴀʟʟ𝟹
+│  ◦   ᴀᴅᴅ
+│  ◦   ʀᴇᴍᴏᴠᴇ
+│  ◦   ᴋɪᴄᴋ
+│  ◦   ᴘʀᴏᴍᴏᴛᴇ
+│  ◦   ᴅᴇᴍᴏᴛᴇ
+│  ◦   ᴅɪsᴍɪss
+│  ◦   ʀᴇᴠᴏᴋᴇ
+│  ◦   sᴇᴛɢᴏᴏᴅʙʏᴇ
+│  ◦   sᴇᴛᴡᴇʟᴄᴏᴍᴇ
+│  ◦   ᴅᴇʟᴇᴛᴇ
+│  ◦   ɢᴇᴛᴘɪᴄ
+│  ◦   ɢɪɴғᴏ
+│  ◦   ᴅɪsᴀᴘᴘᴇᴀʀ ᴏɴ
+│  ◦   ᴅɪsᴀᴘᴘᴇᴀʀ ᴏғғ
+│  ◦   ᴅɪsᴀᴘᴘᴇᴀʀ 𝟽ᴅ,𝟸𝟺ʜ
+│  ◦   ᴀʟʟʀᴇǫ
+│  ◦   ᴜᴘᴅᴀᴛᴇɢɴᴀᴍᴇ
+│  ◦   ᴜᴘᴅᴀᴛᴇɢᴅᴇsᴄ
+│  ◦   ᴊᴏɪɴʀᴇǫᴜᴇsᴛs
+│  ◦   sᴇɴᴅᴅᴍ
+│  ◦   ɴɪᴋᴀʟ
+│  ◦   ᴍᴜᴛᴇ
+│  ◦   ᴜɴᴍᴜᴛᴇ
+│  ◦   ʟᴏᴄᴋɢᴄ
+│  ◦   ᴜɴʟᴏᴄᴋɢᴄ
+│  ◦   ɪɴᴠɪᴛᴇ
+│  ◦   ᴛᴀɢ
+│  ◦   ʜɪᴅᴇᴛᴀɢ
+│  ◦   ᴛᴀɢᴀʟʟ
+│  ◦   ᴛᴀɢᴀᴅᴍɪɴs
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -395,35 +364,35 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
 
-        let dec = `╭━━〔 *Fun Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• shapar
-┃◈┃• rate
-┃◈┃• insult
-┃◈┃• hack
-┃◈┃• ship
-┃◈┃• character
-┃◈┃• pickup 
-┃◈┃• joke
-┃◈┃• hrt
-┃◈┃• hpy
-┃◈┃• syd
-┃◈┃• anger
-┃◈┃• shy
-┃◈┃• kiss
-┃◈┃• mon
-┃◈┃• cunfuzed
-┃◈┃• setpp
-┃◈┃• hand
-┃◈┃• nikal
-┃◈┃• hold
-┃◈┃• hug
-┃◈┃• nikal
-┃◈┃• hifi
-┃◈┃• poke
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  🎮 𝐅𝐔𝐍 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  sʜᴀᴘᴀʀ
+│  ◦  ʀᴀᴛᴇ
+│  ◦  ɪɴsᴜʟᴛ
+│  ◦  ʜᴀᴄᴋ
+│  ◦  sʜɪᴘ
+│  ◦  ᴄʜᴀʀᴀᴄᴛᴇʀ
+│  ◦  ᴘɪᴄᴋᴜᴘ
+│  ◦  ᴊᴏᴋᴇ
+│  ◦  ʜʀᴛ
+│  ◦  ʜᴘʏ
+│  ◦  sʏᴅ
+│  ◦  ᴀɴɢᴇʀ
+│  ◦  sʜʏ
+│  ◦  ᴋɪss
+│  ◦  ᴍᴏɴ
+│  ◦  ᴄᴜɴғᴜᴢᴇᴅ
+│  ◦  sᴇᴛᴘᴘ
+│  ◦  ʜᴀɴᴅ
+│  ◦  ɴɪᴋᴀʟ
+│  ◦  ʜᴏʟᴅ
+│  ◦  ʜᴜɢ
+│  ◦  ɴɪᴋᴀʟ
+│  ◦  ʜɪғɪ
+│  ◦  ᴘᴏᴋᴇ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -461,40 +430,40 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Other Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• timenow
-┃◈┃• date
-┃◈┃• count
-┃◈┃• calculate
-┃◈┃• countx
-┃◈┃• flip
-┃◈┃• coinflip
-┃◈┃• rcolor
-┃◈┃• roll
-┃◈┃• fact
-┃◈┃• cpp
-┃◈┃• rw
-┃◈┃• pair
-┃◈┃• pair2
-┃◈┃• pair3
-┃◈┃• fancy
-┃◈┃• logo <text>
-┃◈┃• define
-┃◈┃• news
-┃◈┃• movie
-┃◈┃• weather
-┃◈┃• srepo
-┃◈┃• insult
-┃◈┃• save
-┃◈┃• wikipedia
-┃◈┃• gpass
-┃◈┃• githubstalk
-┃◈┃• yts
-┃◈┃• ytv
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  📦 𝐎𝐓𝐇𝐄𝐑 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ᴛɪᴍᴇɴᴏᴡ
+│  ◦  ᴅᴀᴛᴇ
+│  ◦  ᴄᴏᴜɴᴛ
+│  ◦  ᴄᴀʟᴄᴜʟᴀᴛᴇ
+│  ◦  ᴄᴏᴜɴᴛx
+│  ◦  ғʟɪᴘ
+│  ◦  ᴄᴏɪɴғʟɪᴘ
+│  ◦  ʀᴄᴏʟᴏʀ
+│  ◦  ʀᴏʟʟ
+│  ◦  ғᴀᴄᴛ
+│  ◦  ᴄᴘᴘ
+│  ◦  ʀᴡ
+│  ◦  ᴘᴀɪʀ
+│  ◦  ᴘᴀɪʀ𝟸
+│  ◦  ᴘᴀɪʀ𝟹
+│  ◦  ғᴀɴᴄʏ
+│  ◦  ʟᴏɢᴏ <ᴛᴇxᴛ>
+│  ◦  ᴅᴇғɪɴᴇ
+│  ◦  ɴᴇᴡs
+│  ◦  ᴍᴏᴠɪᴇ
+│  ◦  ᴡᴇᴀᴛʜᴇʀ
+│  ◦  sʀᴇᴘᴏ
+│  ◦  ɪɴsᴜʟᴛ
+│  ◦  sᴀᴠᴇ
+│  ◦  ᴡɪᴋɪᴘᴇᴅɪᴀ
+│  ◦  ɢᴘᴀss
+│  ◦  ɢɪᴛʜᴜʙsᴛᴀʟᴋ
+│  ◦  ʏᴛs
+│  ◦  ʏᴛᴠᴇ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -532,21 +501,24 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Main Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• ping
-┃◈┃• live 
-┃◈┃• alive
-┃◈┃• runtime
-┃◈┃• uptime 
-┃◈┃• repo
-┃◈┃• owner
-┃◈┃• menu
-┃◈┃• menu2
-┃◈┃• restart
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  🛠️ 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ɴᴇᴡsʟᴇᴛᴛᴇʀ
+│  ◦  ᴘɪɴɢ
+│  ◦  ᴘɪɴɢ𝟸
+│  ◦  sᴘᴇᴇᴅ
+│  ◦  ʟɪᴠᴇ
+│  ◦  ᴀʟɪᴠᴇ
+│  ◦  ʀᴜɴᴛɪᴍᴇ
+│  ◦  ᴜᴘᴛɪᴍᴇ
+│  ◦  ʀᴇᴘᴏ
+│  ◦  ᴏᴡɴᴇʀ
+│  ◦  ᴍᴇɴᴜ
+│  ◦  ᴍᴇɴᴜ𝟸
+│  ◦  ʀᴇsᴛᴀʀᴛ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -584,28 +556,28 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Owner Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• owner
-┃◈┃• menu
-┃◈┃• menu2
-┃◈┃• listcmd
-┃◈┃• allmenu
-┃◈┃• repo
-┃◈┃• block
-┃◈┃• unblock
-┃◈┃• fullpp
-┃◈┃• setpp
-┃◈┃• restart
-┃◈┃• shutdown
-┃◈┃• updatecmd
-┃◈┃• alive
-┃◈┃• ping 
-┃◈┃• gjid
-┃◈┃• jid
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  👑 𝐎𝐖𝐍𝐄𝐑 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ᴏᴡɴᴇʀ
+│  ◦  ᴍᴇɴᴜ
+│  ◦  ᴍᴇɴᴜ𝟸
+│  ◦  ᴠᴠ
+│  ◦  ᴀʟʟᴍᴇɴᴜ
+│  ◦  ʀᴇᴘᴏ
+│  ◦  ʙʟᴏᴄᴋ
+│  ◦  ᴜɴʙʟᴏᴄᴋ
+│  ◦  ғᴜʟʟᴘᴘ
+│  ◦  sᴇᴛᴘᴘ
+│  ◦  ʀᴇsᴛᴀʀᴛ
+│  ◦  sʜᴜᴛᴅᴏᴡɴ
+│  ◦  ᴜᴘᴅᴀᴛᴇᴄᴍᴅ
+│  ◦  ᴀʟɪᴠᴇ
+│  ◦  ᴘɪɴɢ
+│  ◦  ɢᴊɪᴅ
+│  ◦  ᴊɪᴅ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -643,30 +615,30 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Convert Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• sticker
-┃◈┃• sticker2
-┃◈┃• emojimix
-┃◈┃• fancy
-┃◈┃• take
-┃◈┃• tomp3
-┃◈┃• tts
-┃◈┃• trt
-┃◈┃• base64
-┃◈┃• unbase64
-┃◈┃• binary
-┃◈┃• dbinary
-┃◈┃• tinyurl
-┃◈┃• urldecode
-┃◈┃• urlencode
-┃◈┃• url
-┃◈┃• repeat 
-┃◈┃• ask
-┃◈┃• readmore
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  ♻️ 𝐂𝐎𝐍𝐕𝐄𝐑𝐓 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  sᴛɪᴄᴋᴇʀ
+│  ◦  sᴛɪᴄᴋᴇʀ𝟸
+│  ◦  ᴇᴍᴏᴊɪᴍɪx
+│  ◦  ғᴀɴᴄʏ
+│  ◦  ᴛᴀᴋᴇ
+│  ◦  ᴛᴏᴍᴘ𝟹
+│  ◦  ᴛᴛs
+│  ◦  ᴛʀᴛ
+│  ◦  ʙᴀsᴇ𝟼𝟺
+│  ◦  ᴜɴʙᴀsᴇ𝟼𝟺
+│  ◦  ʙɪɴᴀʀʏ
+│  ◦  ᴅʙɪɴᴀʀʏ
+│  ◦  ᴛɪɴʏᴜʀʟ
+│  ◦  ᴜʀʟᴅᴇᴄᴏᴅᴇ
+│  ◦  ᴜʀʟᴇɴᴄᴏᴅᴇ
+│  ◦  ᴜʀʟ
+│  ◦  ʀᴇᴘᴇᴀᴛ
+│  ◦  ᴀsᴋ
+│  ◦  ʀᴇᴀᴅᴍᴏʀᴇ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -705,37 +677,37 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-          let dec = `╭━━〔 *Anime Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• fack
-┃◈┃• dog
-┃◈┃• awoo
-┃◈┃• garl
-┃◈┃• waifu
-┃◈┃• neko
-┃◈┃• megnumin
-┃◈┃• neko
-┃◈┃• maid
-┃◈┃• loli
-┃◈┃• animegirl
-┃◈┃• animegirl
-┃◈┃• animegirl1
-┃◈┃• animegirl2
-┃◈┃• animegirl3
-┃◈┃• animegirl4
-┃◈┃• animegirl5
-┃◈┃• anime1
-┃◈┃• anime1
-┃◈┃• anime2
-┃◈┃• anime3
-┃◈┃• anime4
-┃◈┃• anime5
-┃◈┃• animenews
-┃◈┃• foxgirl
-┃◈┃• naruto
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+          let dec = `╭┈──────────────────
+│  🎎 𝐀𝐌𝐈𝐍𝐄 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ғᴀᴄᴋ
+│  ◦  ᴛʀᴜᴛʜ
+│  ◦  ᴅᴀʀᴇ
+│  ◦  ᴅᴏɢ
+│  ◦  ᴀᴡᴏᴏ
+│  ◦  ɢᴀʀʟ
+│  ◦  ᴡᴀɪғᴜ
+│  ◦  ɴᴇᴋᴏ
+│  ◦  ᴍᴇɢɴᴜᴍɪɴ
+│  ◦  ɴᴇᴋᴏ
+│  ◦  ᴍᴀɪᴅ
+│  ◦  ʟᴏʟɪ
+│  ◦  ᴀɴɪᴍᴇɢɪʀʟ
+│  ◦  ᴀɴɪᴍᴇɢɪʀʟ𝟷
+│  ◦  ᴀɴɪᴍᴇɢɪʀʟ𝟸
+│  ◦  ᴀɴɪᴍᴇɢɪʀʟ𝟹
+│  ◦  ᴀɴɪᴍᴇɢɪʀʟ𝟺
+│  ◦  ᴀɴɪᴍᴇɢɪʀʟ𝟻
+│  ◦  ᴀɴɪᴍᴇ𝟷
+│  ◦  ᴀɴɪᴍᴇ𝟸
+│  ◦  ᴀɴɪᴍᴇ𝟹
+│  ◦  ᴀɴɪᴍᴇ𝟺
+│  ◦  ᴀɴɪᴍᴇ𝟻
+│  ◦  ᴀɴɪᴍᴇɴᴇᴡs
+│  ◦  ғᴏxɢɪʀʟ
+│  ◦  ɴᴀʀᴜᴛᴏ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
@@ -774,27 +746,25 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━〔 *Ai Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• ai
-┃◈┃• gpt3
-┃◈┃• gpt2
-┃◈┃• gptmini
-┃◈┃• gpt
-┃◈┃• meta
-┃◈┃• blackbox
-┃◈┃• luma
-┃◈┃• dj 
-┃◈┃• khan
-┃◈┃• jawad
-┃◈┃• gpt4
-┃◈┃• bing
-┃◈┃• imagine 
-┃◈┃• imagine2
-┃◈┃• copilot
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+        let dec = `╭┈──────────────────
+│  🤖 𝐀𝐈 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ᴀɪ
+│  ◦  ɢᴘᴛ𝟹
+│  ◦  ɢᴘᴛ𝟸
+│  ◦  ɢᴘᴛᴍɪɴɪ
+│  ◦  ɢᴘᴛ
+│  ◦  ᴍᴇᴛᴀ
+│  ◦  ʙʟᴀᴄᴋʙᴏx
+│  ◦  ʟᴜᴍᴀ
+│  ◦  ᴅᴊ
+│  ◦  ɢᴘᴛ𝟺
+│  ◦  ʙɪɴɢ
+│  ◦  ɪᴍᴀɢɪɴᴇ
+│  ◦  ɪᴍᴀɢɪɴᴇ𝟸
+│  ◦  ᴄᴏᴘɪʟᴏᴛ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(
             from,
