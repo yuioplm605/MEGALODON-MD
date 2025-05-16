@@ -1,59 +1,38 @@
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "newsletter",
-    desc: "Displays the @newsletter ID of the current channel",
+    pattern: "newsletter ?(.*)",
+    desc: "Displays the @newsletter ID from a WhatsApp channel link",
     category: "tools",
     react: "📰",
     filename: __filename
-},
-async (conn, mek, m) => {
-    const newsletterJid = m.chat;
+}, async (conn, mek, m, { match }) => {
+    let input = match || '';
+    let newsletterJid = m.chat;
 
-    // Journaliser l'utilisation de la commande
-    console.log(`[NEWSLETTER] Command used in: ${newsletterJid}`);
+    // Cas 1 : Lien de canal fourni
+    const channelLinkRegex = /https?:\/\/whatsapp\.com\/channel\/([a-zA-Z0-9]+)/;
+    const matchLink = input.match(channelLinkRegex);
 
+    if (matchLink) {
+        const channelCode = matchLink[1];
+        // Affiche juste le code, car pas de méthode directe pour JID
+        return conn.sendMessage(newsletterJid, {
+            text: `Channel link detected:\n\n*${matchLink[0]}*\n\nChannel code:\n*${channelCode}*\n\nNote: I can't get the full JID unless I'm inside that channel.`
+        }, { quoted: mek });
+    }
+
+    // Cas 2 : Commande exécutée dans un canal
     if (!newsletterJid.endsWith("@newsletter")) {
         return conn.sendMessage(newsletterJid, {
-            text: "This command must be used inside a WhatsApp channel (@newsletter)."
+            text: "Please provide a WhatsApp Channel link or run this command inside a WhatsApp channel."
         }, { quoted: mek });
     }
 
-    // Optionnel : Vérifie si le JID semble valide (commence par "120")
-    if (!newsletterJid.startsWith("120")) {
-        return conn.sendMessage(newsletterJid, {
-            text: "This does not appear to be a valid WhatsApp channel ID."
-        }, { quoted: mek });
-    }
+    // Suite normale
+    const now = new Date().toLocaleString("en-US", { timeZone: "UTC", hour12: true });
 
-    // Date et heure actuelle
-    const now = new Date().toLocaleString();
-
-    // Affiche l'ID du canal + date
     await conn.sendMessage(newsletterJid, {
-        text: `Channel ID:\n\n*${newsletterJid}*\n\n🕒 *Executed on:* ${now}`
+        text: `Channel JID:\n\n*${newsletterJid}*\n\n🕵️ Executed on: ${now}`
     }, { quoted: mek });
-
-    // Simule un message transféré d’un autre canal
-    const fakeNewsletterJid = '120363372853772240@newsletter';
-    const fakeNewsletterName = '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡';
-    const serverMessageId = 101;
-    const message = `Forwarded from another newsletter:\n\n*${newsletterJid}*`;
-
-    await conn.sendMessage(
-        newsletterJid,
-        {
-            text: message,
-            contextInfo: {
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: fakeNewsletterJid,
-                    newsletterName: fakeNewsletterName,
-                    serverMessageId: serverMessageId
-                }
-            }
-        },
-        { quoted: mek }
-    );
 });
