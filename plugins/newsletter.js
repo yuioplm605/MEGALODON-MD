@@ -7,29 +7,28 @@ cmd({
     category: "tools",
     react: "📰",
     filename: __filename
-}, async (conn, mek, m, { match }) => {
-    let input = match?.trim() || '';
+}, async (conn, mek, m, { args }) => {
+    const input = args.join(" ").trim(); // ← corrige la récupération de l'argument
     const currentJid = m.chat;
 
     const channelLinkRegex = /https?:\/\/whatsapp\.com\/channel\/([a-zA-Z0-9]+)/;
     const linkMatch = input.match(channelLinkRegex);
 
-    // Si un lien de canal est fourni
+    // Cas 1 : Lien détecté
     if (linkMatch) {
         const channelCode = linkMatch[1];
         return conn.sendMessage(currentJid, {
-            text: `🔗 *Channel link detected!*\n\n*Link:* ${linkMatch[0]}\n*Channel Code:* \`${channelCode}\`\n\n⚠️ Cannot get full JID unless inside the channel.`
+            text: `🔗 *Channel link detected!*\n\n*Link:* ${linkMatch[0]}\n*Channel Code:* \`${channelCode}\`\n\n⚠️ Can't resolve full JID unless I'm inside that channel.`
         }, { quoted: mek });
     }
 
-    // Si utilisé dans un canal WhatsApp
+    // Cas 2 : Utilisé dans un canal WhatsApp
     if (currentJid.endsWith("@newsletter")) {
         const now = new Date().toLocaleString("en-US", { timeZone: "UTC", hour12: true });
         await conn.sendMessage(currentJid, {
             text: `🆔 *Channel JID:*\n\n*${currentJid}*\n\n🕒 *Executed on:* ${now}`
         }, { quoted: mek });
 
-        // Message simulé transféré
         const fakeNewsletterJid = '120363372853772240@newsletter';
         const fakeNewsletterName = '𝑵𝒆𝒘𝒔𝒍𝒆𝒕𝒕𝒆𝒓 𝑿';
         const serverMessageId = 101;
@@ -53,7 +52,7 @@ cmd({
         return;
     }
 
-    // Ni lien ni canal
+    // Cas 3 : Ni lien ni canal
     return conn.sendMessage(currentJid, {
         text: "❌ Please provide a WhatsApp *channel link* or use this command *inside a WhatsApp Channel*."
     }, { quoted: mek });
