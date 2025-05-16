@@ -1,3 +1,6 @@
+//PLUGIN CREATED BY DYBY TECH🤍
+
+
 const { cmd } = require('../command');
 
 cmd({
@@ -29,7 +32,7 @@ cmd({
             text: `🆔 *Channel JID:*\n\n*${currentJid}*\n\n🕒 *Executed on:* ${now}`
         }, { quoted: mek });
 
-        const fakeNewsletterJid = '120363372853772240@newsletter';
+        const fakeNewsletterJid = '120363312841480579@newsletter';
         const fakeNewsletterName = '𝑵𝒆𝒘𝒔𝒍𝒆𝒕𝒕𝒆𝒓 𝑿';
         const serverMessageId = 101;
 
@@ -57,3 +60,6 @@ cmd({
         text: "❌ Please provide a WhatsApp *channel link* or use this command *inside a WhatsApp Channel*."
     }, { quoted: mek });
 });
+
+
+//PLUGIN CREATED BY DYBY TECH
