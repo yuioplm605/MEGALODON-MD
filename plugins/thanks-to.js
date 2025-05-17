@@ -6,7 +6,7 @@ cmd({
     alias: ["thanksto", "dev"],
     desc: "thanks to dev for helping",
     category: "main",
-    react: "👤",
+    react: "👨‍💻",
     filename: __filename
 },
 async (conn, mek, m, { from }) => {
@@ -22,8 +22,8 @@ async (conn, mek, m, { from }) => {
 │───────────────────────
 │🙋‍♂️ HELLO @${m.sender.split("@")[0]}
 │
-╰──────────────────────❏
-`;
+╰─────────────────────❏
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(from, {
             image: { url: 'https://files.catbox.moe/e65j50.jpeg' },
@@ -33,8 +33,8 @@ async (conn, mek, m, { from }) => {
                 forwardingScore: 1000,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363372853772240@newsletter', // remplace avec ton vrai newsletterJid si besoin
-                    newsletterName: '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
+                    newsletterJid: '120363401051937059@newsletter', // remplace avec ton vrai newsletterJid si besoin
+                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
                     serverMessageId: 143
                 }
             }
