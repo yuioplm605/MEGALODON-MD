@@ -1,4 +1,4 @@
-// coded by jawadtech x
+// coded by DybyTech 
 
 const path = require("path");
 const { fetchGif, fetchImage, gifToSticker } = require('../lib/sticker-utils');
