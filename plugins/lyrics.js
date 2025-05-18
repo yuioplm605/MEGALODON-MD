@@ -1,78 +1,136 @@
-const { cmd } = require('../command');
 const axios = require('axios');
-const cheerio = require('cheerio');
+const { cmd } = require('../command');
 
-// Your Genius API Key
-const GENIUS_API_KEY = 'XOxelFDJbxYpjeS154VLIHx0bcEzrCzF1ZVUHN7fqOohg0_2zVuoiE9kyLzqXWip';
+/*
+cmd({
+    pattern: "lyrics",
+    alias: ["lyric"],
+    desc: "Get the lyrics of a song by artist and title.",
+    react: "🎵",
+    category: "utility",
+    use: ".lyrics <artist> <song title>",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply }) => {
+    try {
+        if (args.length < 2) {
+            return reply("❌ Please provide the artist and song title.\nExample: `.lyrics Ed Sheeran - Shape of You`");
+        }
+
+        // Parsing input using delimiter
+        let artist, title;
+        if (args.includes('-')) {
+            const delimiterIndex = args.indexOf('-');
+            artist = args.slice(0, delimiterIndex).join(' ').trim();
+            title = args.slice(delimiterIndex + 1).join(' ').trim();
+        } else if (args[0].startsWith('"') && args[args.length - 1].endsWith('"')) {
+            artist = args.slice(0, -1).join(' ').replace(/"/g, '').trim();
+            title = args.slice(-1).join(' ');
+        } else {
+            artist = args[0];
+            title = args.slice(1).join(' ');
+        }
+
+        if (!artist || !title) {
+            return reply("❌ Please specify both the artist and the song title.\nExample: `.lyrics \"Joe Dwé Filé\" Shape of You`");
+        }
+
+        // Notify the user that the lyrics are being fetched
+        reply(`🎵 Searching for lyrics of "${title}" BY ${artist}...`);
+
+        // Fetch lyrics using an API
+        const response = await axios.get(`https://api.lyrics.ovh/v1/${artist}/${title}`);
+        const lyrics = response.data.lyrics;
+
+        if (!lyrics) {
+            return reply(`❌ Sorry, no lyrics found for "${title}" by ${artist}.`);
+        }
+
+        // Send the lyrics back to the chat
+        reply(`> 🎶LYRICS RESULT🎶\n\nTitle🎧 *${title}*\nArtist🗣️ *${artist}*\n\n${lyrics}`);
+    } catch (error) {
+        console.error("Error fetching lyrics:", error.message);
+
+        if (error.response && error.response.status === 404) {
+            reply("❌ Sorry, no lyrics found for the specified artist and song title.");
+        } else {
+            reply("❌ An error occurred while fetching the lyrics. Please try again later.");
+        }
+    }
+});
+*/
 
 cmd({
     pattern: "lyrics",
-    alias: ["lyric", "paroles"],
-    desc: "Get song lyrics using Genius",
-    category: "music",
-    react: "🎤",
-    filename: __filename
-},
-async (conn, mek, m, { from, q, reply, react }) => {
+    alias: ["lyric"],
+    desc: "Get the lyrics of a song by artist and title.",
+    react: "🎵",
+    category: "utility",
+    use: ".lyrics <artist> <song title>",
+    filename: __filename,
+}, async (conn, mek, m, { args, reply, buttonsMessage }) => {
     try {
-        if (!q) return reply("Usage: `.lyrics artist - song` or `.lyrics song`\nExample: `.lyrics Adele - Hello` or `.lyrics Hello`");
+        if (args.length < 2) {
+            return reply("❌ Please provide the artist and song title.\nExample: `.lyrics Ed Sheeran - Shape of You`");
+        }
 
-        await react("⏳");
+        // Parsing input using delimiter
+        let artist, title;
+        if (args.includes('-')) {
+            const delimiterIndex = args.indexOf('-');
+            artist = args.slice(0, delimiterIndex).join(' ').trim();
+            title = args.slice(delimiterIndex + 1).join(' ').trim();
+        } else if (args[0].startsWith('"') && args[args.length - 1].endsWith('"')) {
+            artist = args.slice(0, -1).join(' ').replace(/"/g, '').trim();
+            title = args.slice(-1).join(' ');
+        } else {
+            artist = args[0];
+            title = args.slice(1).join(' ');
+        }
 
-        // Search song on Genius
-        const searchUrl = `https://api.genius.com/search?q=${encodeURIComponent(q)}`;
-        const searchRes = await axios.get(searchUrl, {
-            headers: {
-                Authorization: `Bearer ${GENIUS_API_KEY}`
+        if (!artist || !title) {
+            return reply("❌ Please specify both the artist and the song title.\nExample: `.lyrics \"Joe Dwé Filé\" Shape of You`");
+        }
+
+        // Notify the user that the lyrics are being fetched
+        reply(`🎵 Searching for lyrics of "${title}" by ${artist}...`);
+
+        // Fetch lyrics using an API
+        const response = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`);
+        const lyrics = response.data.lyrics;
+
+        if (!lyrics) {
+            return reply(`❌ Sorry, no lyrics found for "${title}" by ${artist}.`);
+        }
+
+        // Create buttons
+        const buttons = [
+            { buttonId: 'copy_lyrics', buttonText: { displayText: 'Copy' }, type: 1 }
+        ];
+
+        // Send message with lyrics and buttons
+        const buttonMessage = {
+            text: `> 🎶 LYRICS RESULT🎶\n\nTitle🎧 *${title}*\nArtist🗣️ *${artist}*\n\n${lyrics}`,
+            footer: 'Lyrics provided by lyrics.ovh',
+            buttons: buttons,
+            headerType: 1
+        };
+
+        await conn.sendMessage(from, buttonMessage, { quoted: mek });
+
+        // Handle button response
+        conn.on('button_response', async (buttonResponse) => {
+            if (buttonResponse.buttonId === 'copy_lyrics') {
+                await conn.sendMessage(from, { text: '📋 Lyrics copied to clipboard!' }, { quoted: mek });
             }
         });
 
-        const hits = searchRes.data.response.hits;
-        if (!hits || hits.length === 0) {
-            await react("❌");
-            return reply(`No results found for *${q}*.`);
+    } catch (error) {
+        console.error("Error fetching lyrics:", error.message);
+
+        if (error.response && error.response.status === 404) {
+            reply("❌ Sorry, no lyrics found for the specified artist and song title.");
+        } else {
+            reply("❌ An error occurred while fetching the lyrics. Please try again later.");
         }
-
-        const songData = hits[0].result;
-        const songTitle = songData.title;
-        const artistName = songData.primary_artist.name;
-        const songUrl = songData.url;
-        const thumbnail = songData.song_art_image_thumbnail_url;
-
-        // Scrape lyrics from Genius page
-        const html = await axios.get(songUrl);
-        const $ = cheerio.load(html.data);
-
-        let lyrics = "";
-        $('div[data-lyrics-container="true"]').each((_, el) => {
-            lyrics += $(el).text().trim() + "\n";
-        });
-        lyrics = lyrics.trim();
-
-        if (!lyrics) {
-            // fallback to old selector
-            lyrics = $('.lyrics').text().trim();
-        }
-
-        if (!lyrics) {
-            await react("❌");
-            return reply(`Lyrics not found for *${q}*.`);
-        }
-
-        const caption = `🎵 *${songTitle}* by *${artistName}*\n\n` +
-                        `${lyrics.length > 4000 ? lyrics.slice(0, 4000) + "\n\n[Truncated lyrics]" : lyrics}\n\n` +
-                        `🔗 *Genius Link:* ${songUrl}`;
-
-        await conn.sendMessage(from, {
-            image: { url: thumbnail },
-            caption,
-            contextInfo: { mentionedJid: [m?.sender || ''] }
-        }, { quoted: mek });
-
-        await react("✅");
-    } catch (e) {
-        console.error("Error in lyrics plugin:", e);
-        await react("❌");
-        reply("An error occurred while fetching the lyrics.");
     }
 });
