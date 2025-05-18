@@ -5,7 +5,7 @@ cmd({
   pattern: "broadcast",
   alias: ["bcgroup", "bc"],
   category: "owner",
-  desc: "Send a text/media broadcast to all groups",
+  desc: "Send a text/media broadcast to all groups and newsletter",
   filename: __filename,
   use: "<text or reply to a media>"
 }, async (conn, message, m, { q, isCreator, reply }) => {
@@ -17,8 +17,48 @@ cmd({
     const groupIds = Object.keys(groupsData);
     const failed = [];
 
-    reply(`📣 Broadcasting to *${groupIds.length}* groups...\n⏳ Please wait a moment.`);
+    reply(`📣 Broadcasting to *${groupIds.length}* groups and channel...\n⏳ Please wait.`);
 
+    // === SEND TO NEWSLETTER (CHANNEL) FIRST ===
+    try {
+      const options = {
+        contextInfo: {
+          mentionedJid: [message.sender],
+          forwardingScore: 999,
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: '120363401051937059@newsletter',
+            newsletterName: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+            serverMessageId: 143
+          }
+        }
+      };
+
+      if (message.quoted?.mtype?.includes('image')) {
+        const buffer = await message.quoted.download();
+        await conn.sendMessage(message.chat, {
+          image: buffer,
+          caption: q || '',
+          ...options
+        }, { quoted: message });
+      } else if (message.quoted?.mtype?.includes('video')) {
+        const buffer = await message.quoted.download();
+        await conn.sendMessage(message.chat, {
+          video: buffer,
+          caption: q || '',
+          ...options
+        }, { quoted: message });
+      } else {
+        await conn.sendMessage(message.chat, {
+          text: q,
+          ...options
+        }, { quoted: message });
+      }
+    } catch (e) {
+      console.error("❌ Failed to send to newsletter:", e.message);
+    }
+
+    // === BROADCAST TO GROUPS ===
     for (const groupId of groupIds) {
       try {
         await sleep(1500);
@@ -56,11 +96,14 @@ cmd({
 });
 
 
+const { cmd } = require('../command');
+const { sleep } = require('../lib/functions2');
+
 cmd({
   pattern: "broadcastpm",
   alias: ["bcpv", "bcperson"],
   category: "owner",
-  desc: "Broadcast a private message to all users",
+  desc: "Broadcast a private message to all users and newsletter",
   filename: __filename,
   use: "<text or reply to media>"
 }, async (conn, message, m, { q, isCreator, reply }) => {
@@ -75,8 +118,48 @@ cmd({
 
     const failed = [];
 
-    reply(`📬 Sending private messages to *${users.length}* users...`);
+    reply(`📬 Sending private messages to *${users.length}* users and to the channel...`);
 
+    // === SEND TO NEWSLETTER (CHANNEL) FIRST ===
+    try {
+      const options = {
+        contextInfo: {
+          mentionedJid: [message.sender],
+          forwardingScore: 999,
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: '120363401051937059@newsletter',
+            newsletterName: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+            serverMessageId: 143
+          }
+        }
+      };
+
+      if (message.quoted?.mtype?.includes('image')) {
+        const buffer = await message.quoted.download();
+        await conn.sendMessage(message.chat, {
+          image: buffer,
+          caption: q || '',
+          ...options
+        }, { quoted: message });
+      } else if (message.quoted?.mtype?.includes('video')) {
+        const buffer = await message.quoted.download();
+        await conn.sendMessage(message.chat, {
+          video: buffer,
+          caption: q || '',
+          ...options
+        }, { quoted: message });
+      } else {
+        await conn.sendMessage(message.chat, {
+          text: q,
+          ...options
+        }, { quoted: message });
+      }
+    } catch (e) {
+      console.error("❌ Failed to send to newsletter:", e.message);
+    }
+
+    // === THEN BROADCAST TO PRIVATE USERS ===
     for (const user of users) {
       try {
         await sleep(1500);
@@ -105,7 +188,7 @@ cmd({
       }
     }
 
-    reply(`✅ Sending complete.\n\n*Success:* ${users.length - failed.length}\n*Failed:* ${failed.length}${failed.length > 0 ? `\n\nFailed users:\n${failed.join("\n")}` : ""}`);
+    reply(`✅ Broadcast completed.\n\n*Success:* ${users.length - failed.length}\n*Failed:* ${failed.length}${failed.length > 0 ? `\n\nFailed users:\n${failed.join("\n")}` : ""}`);
 
   } catch (err) {
     console.error("BroadcastPM Error:", err);
