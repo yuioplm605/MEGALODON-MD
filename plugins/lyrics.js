@@ -1,8 +1,10 @@
 const axios = require("axios");
 const fs = require("fs-extra");
 const path = require("path");
+const cheerio = require("cheerio");
 const { cmd } = require("../command");
 
+const GENIUS_API_KEY = "XOxelFDJbxYpjeS154VLIHx0bcEzrCzF1ZVUHN7fqOohg0_2zVuoiE9kyLzqXWip";
 const CACHE_PATH = path.join(__dirname, "..", "data", "lyrics_cache.json");
 fs.ensureFileSync(CACHE_PATH);
 let cache = fs.readJsonSync(CACHE_PATH, { throws: false }) || {};
@@ -18,47 +20,48 @@ function generateID() {
 cmd({
   pattern: "lyrics",
   alias: ["lyric"],
-  desc: "Get the lyrics of a song by artist and title.",
+  desc: "Trouve les paroles avec Genius",
   react: "🎵",
   category: "utility",
-  use: ".lyrics <artist> - <song title>",
+  use: ".lyrics <titre chanson>",
   filename: __filename,
 }, async (conn, m, msg, { args, reply }) => {
+  const query = args.join(" ");
+  if (!query) return reply("❌ Donne un titre de chanson.\nEx: `.lyrics Shape of You`");
+
   try {
-    if (!args.includes("-")) {
-      return reply("❌ Format invalide.\nUtilise: `.lyrics artiste - titre de chanson`");
-    }
+    reply("🔍 Recherche en cours sur Genius...");
 
-    const delimiter = args.indexOf("-");
-    const artist = args.slice(0, delimiter).join(" ").trim();
-    const title = args.slice(delimiter + 1).join(" ").trim();
+    const search = await axios.get(`https://api.genius.com/search?q=${encodeURIComponent(query)}`, {
+      headers: { Authorization: `Bearer ${GENIUS_API_KEY}` }
+    });
 
-    if (!artist || !title) {
-      return reply("❌ Veuillez spécifier à la fois l'artiste et le titre.");
-    }
+    const hit = search.data.response.hits[0];
+    if (!hit) return reply("❌ Aucune chanson trouvée.");
 
-    reply(`🔍 Recherche des paroles de *${title}* par *${artist}*...`);
+    const { full_title, url } = hit.result;
 
-    const res = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`);
-    const lyrics = res.data?.lyrics;
+    const page = await axios.get(url);
+    const $ = cheerio.load(page.data);
+    const lyrics = $(".lyrics").text().trim() || $('[data-lyrics-container="true"]').text().trim();
 
-    if (!lyrics) return reply("❌ Aucune parole trouvée.");
+    if (!lyrics) return reply("❌ Paroles introuvables.");
 
     const id = generateID();
-    cache[id] = { artist, title, lyrics };
+    cache[id] = { title: full_title, lyrics };
     saveCache();
 
     await conn.sendMessage(msg.from, {
-      text: `🎶 *Paroles trouvées !*\n\n*Titre:* ${title}\n*Artiste:* ${artist}\n\n${lyrics}`,
-      footer: `ID: ${id} | Tap .lyricsid ${id} pour revoir`,
+      text: `🎶 *${full_title}*\n\n${lyrics}`,
+      footer: `ID: ${id} | .lyricsid ${id} pour revoir`,
       buttons: [
         { buttonId: `.lyricsid ${id}`, buttonText: { displayText: "Copier les paroles" }, type: 1 }
       ],
       headerType: 1
     }, { quoted: m });
 
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error(err);
     reply("❌ Erreur lors de la récupération des paroles.");
   }
 });
