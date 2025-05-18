@@ -5,19 +5,19 @@ cmd({
   pattern: "broadcast",
   alias: ["bcgroup", "bc"],
   category: "owner",
-  desc: "Diffuser un message texte/média dans tous les groupes",
+  desc: "Send a text/media broadcast to all groups",
   filename: __filename,
-  use: "<texte ou répondre à un média>"
+  use: "<text or reply to a media>"
 }, async (conn, message, m, { q, isCreator, reply }) => {
   try {
-    if (!isCreator) return reply("❌ Seul le *propriétaire du bot* peut utiliser cette commande.");
-    if (!q && !message.quoted) return reply("❌ Fournis un texte ou réponds à une image/vidéo !");
+    if (!isCreator) return reply("❌ Only the *bot owner* can use this command.");
+    if (!q && !message.quoted) return reply("❌ Provide a text or reply to an image/video!");
 
     const groupsData = await conn.groupFetchAllParticipating();
     const groupIds = Object.keys(groupsData);
     const failed = [];
 
-    reply(`📣 Diffusion en cours vers *${groupIds.length}* groupes...\n⏳ Patiente un instant.`);
+    reply(`📣 Broadcasting to *${groupIds.length}* groups...\n⏳ Please wait a moment.`);
 
     for (const groupId of groupIds) {
       try {
@@ -43,14 +43,14 @@ cmd({
 
       } catch (err) {
         failed.push(groupId);
-        console.error(`❌ Erreur avec ${groupId}:`, err.message);
+        console.error(`❌ Error with ${groupId}:`, err.message);
       }
     }
 
-    reply(`✅ Diffusion terminée.\n\n*Succès:* ${groupIds.length - failed.length}\n*Échecs:* ${failed.length}${failed.length > 0 ? `\n\nGroupes échoués:\n${failed.join("\n")}` : ""}`);
+    reply(`✅ Broadcast finished.\n\n*Success:* ${groupIds.length - failed.length}\n*Failed:* ${failed.length}${failed.length > 0 ? `\n\nFailed groups:\n${failed.join("\n")}` : ""}`);
 
   } catch (err) {
-    console.error("Erreur Broadcast:", err);
-    await m.error(`❌ Erreur: ${err.message}`, err);
+    console.error("Broadcast Error:", err);
+    await m.error(`❌ Error: ${err.message}`, err);
   }
 });
