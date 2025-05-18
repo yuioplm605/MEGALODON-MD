@@ -1,6 +1,7 @@
 const { cmd } = require('../command');
 const { sleep } = require('../lib/functions2');
 
+// === BROADCAST TO GROUPS ===
 cmd({
   pattern: "broadcast",
   alias: ["bcgroup", "bc"],
@@ -19,7 +20,7 @@ cmd({
 
     reply(`📣 Broadcasting to *${groupIds.length}* groups and channel...\n⏳ Please wait.`);
 
-    // SEND TO NEWSLETTER (CHANNEL)
+    // === SEND TO NEWSLETTER (CHANNEL) FIRST ===
     try {
       const options = {
         contextInfo: {
@@ -58,7 +59,6 @@ cmd({
       console.error("❌ Failed to send to newsletter:", e.message);
     }
 
-    // BROADCAST TO GROUPS
     for (const groupId of groupIds) {
       try {
         await sleep(1500);
@@ -95,6 +95,7 @@ cmd({
   }
 });
 
+// === BROADCAST TO PRIVATE USERS ===
 cmd({
   pattern: "broadcastpm",
   alias: ["bcpv", "bcperson"],
@@ -116,7 +117,7 @@ cmd({
 
     reply(`📬 Sending private messages to *${users.length}* users and to the channel...`);
 
-    // SEND TO NEWSLETTER (CHANNEL)
+    // === SEND TO NEWSLETTER (CHANNEL) FIRST ===
     try {
       const options = {
         contextInfo: {
@@ -155,7 +156,6 @@ cmd({
       console.error("❌ Failed to send to newsletter:", e.message);
     }
 
-    // BROADCAST TO PRIVATE USERS
     for (const user of users) {
       try {
         await sleep(1500);
