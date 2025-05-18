@@ -1,41 +1,56 @@
-const { cmd, commands } = require('../command');
-const config = require('../config');
-const prefix = config.PREFIX;
-const fs = require('fs');
-const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions2');
-const { writeFileSync } = require('fs');
-const path = require('path');
+const { cmd } = require('../command');
+const { sleep } = require('../lib/functions2');
 
 cmd({
   pattern: "broadcast",
-  category: "group",
-  desc: "Bot makes a broadcast in all groups",
+  alias: ["bcgroup", "bc"],
+  category: "owner",
+  desc: "Diffuser un message texte/média dans tous les groupes",
   filename: __filename,
-  use: "<text for broadcast.>"
-}, async (conn, mek, m, { q, isGroup, isAdmins, reply }) => {
+  use: "<texte ou répondre à un média>"
+}, async (conn, message, m, { q, isCreator, reply }) => {
   try {
-    if (!isGroup) return reply("❌ This command can only be used in groups!");
-    if (!isAdmins) return reply("❌ You need to be an admin to broadcast in this group!");
+    if (!isCreator) return reply("❌ Seul le *propriétaire du bot* peut utiliser cette commande.");
+    if (!q && !message.quoted) return reply("❌ Fournis un texte ou réponds à une image/vidéo !");
 
-    if (!q) return reply("❌ Provide text to broadcast in all groups!");
+    const groupsData = await conn.groupFetchAllParticipating();
+    const groupIds = Object.keys(groupsData);
+    const failed = [];
 
-    let allGroups = await conn.groupFetchAllParticipating();
-    let groupIds = Object.keys(allGroups); // Extract group IDs
+    reply(`📣 Diffusion en cours vers *${groupIds.length}* groupes...\n⏳ Patiente un instant.`);
 
-    reply(`📢 Sending Broadcast To ${groupIds.length} Groups...\n⏳ Estimated Time: ${groupIds.length * 1.5} seconds`);
-
-    for (let groupId of groupIds) {
+    for (const groupId of groupIds) {
       try {
-        await sleep(1500); // Avoid rate limits
-        await conn.sendMessage(groupId, { text: q }); // Sends only the provided text
+        await sleep(1500);
+
+        if (message.quoted && message.quoted.mtype?.includes("image")) {
+          const buffer = await message.quoted.download();
+          await conn.sendMessage(groupId, {
+            image: buffer,
+            caption: q || '',
+          });
+        } else if (message.quoted && message.quoted.mtype?.includes("video")) {
+          const buffer = await message.quoted.download();
+          await conn.sendMessage(groupId, {
+            video: buffer,
+            caption: q || '',
+          });
+        } else {
+          await conn.sendMessage(groupId, {
+            text: `*📢 Broadcast:*\n\n${q}`
+          });
+        }
+
       } catch (err) {
-        console.log(`❌ Failed to send broadcast to ${groupId}:`, err);
+        failed.push(groupId);
+        console.error(`❌ Erreur avec ${groupId}:`, err.message);
       }
     }
 
-    return reply(`✅ Successfully sent broadcast to ${groupIds.length} groups!`);
-    
+    reply(`✅ Diffusion terminée.\n\n*Succès:* ${groupIds.length - failed.length}\n*Échecs:* ${failed.length}${failed.length > 0 ? `\n\nGroupes échoués:\n${failed.join("\n")}` : ""}`);
+
   } catch (err) {
-    await m.error(`❌ Error: ${err}\n\nCommand: broadcast`, err);
+    console.error("Erreur Broadcast:", err);
+    await m.error(`❌ Erreur: ${err.message}`, err);
   }
 });
