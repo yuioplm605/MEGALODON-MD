@@ -1,98 +1,79 @@
-const { cmd } = require('../command');
-const { getBuffer, fetchJson } = require('../lib/functions');
+const { cmd } = require("../command");
 
 cmd({
-    pattern: "person",
-    react: "👤",
-    alias: ["userinfo", "profile"],
-    desc: "Get complete user profile information",
-    category: "utility",
-    use: '.person [@tag or reply]',
-    filename: __filename
-},
-async (conn, mek, m, { from, sender, isGroup, reply, quoted, participants }) => {
+  pattern: "person",
+  alias: ["userinfo", "profile", "whois", "checkuser"],
+  desc: "Get complete user profile information",
+  category: "utility",
+  filename: __filename
+}, async (client, message, match, { from, sender, quoted, isGroup, participants }) => {
+  try {
+    const userJid = quoted?.sender ||
+                    message.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] ||
+                    sender;
+
+    const [user] = await client.onWhatsApp(userJid).catch(() => []);
+    if (!user?.exists) {
+      return client.sendMessage(from, {
+        text: "❌ User not found on WhatsApp"
+      }, { quoted: message });
+    }
+
+    let ppUrl = 'https://i.ibb.co/KhYC4FY/1221bc0bdd2354b42b293317ff2adbcf-icon.png';
     try {
-        // 1. DETERMINE TARGET USER
-        let userJid = quoted?.sender || 
-                     mek.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || 
-                     sender;
+      ppUrl = await client.profilePictureUrl(userJid, 'image');
+    } catch {}
 
-        // 2. VERIFY USER EXISTS
-        const [user] = await conn.onWhatsApp(userJid).catch(() => []);
-        if (!user?.exists) return reply("❌ User not found on WhatsApp");
+    let userName = userJid.split('@')[0];
+    try {
+      if (isGroup) {
+        const member = participants.find(p => p.id === userJid);
+        if (member?.notify) userName = member.notify;
+      }
 
-        // 3. GET PROFILE PICTURE
-        let ppUrl;
-        try {
-            ppUrl = await conn.profilePictureUrl(userJid, 'image');
-        } catch {
-            ppUrl = 'https://i.ibb.co/KhYC4FY/1221bc0bdd2354b42b293317ff2adbcf-icon.png';
+      const name = await client.getName(userJid).catch(() => null);
+      if (name) userName = name;
+    } catch {}
+
+    let bio = {};
+    try {
+      const statusData = await client.fetchStatus(userJid).catch(() => null);
+      if (statusData?.status) {
+        bio = {
+          text: statusData.status,
+          type: "Personal",
+          updated: statusData.setAt ? new Date(statusData.setAt * 1000) : null
+        };
+      } else {
+        const business = await client.getBusinessProfile(userJid).catch(() => null);
+        if (business?.description) {
+          bio = {
+            text: business.description,
+            type: "Business",
+            updated: null
+          };
         }
+      }
+    } catch {}
 
-        // 4. GET NAME (MULTI-SOURCE FALLBACK)
-        let userName = userJid.split('@')[0];
-        try {
-            // Try group participant info first
-            if (isGroup) {
-                const member = participants.find(p => p.id === userJid);
-                if (member?.notify) userName = member.notify;
-            }
-            
-            // Try contact DB
-            if (userName === userJid.split('@')[0] && conn.contactDB) {
-                const contact = await conn.contactDB.get(userJid).catch(() => null);
-                if (contact?.name) userName = contact.name;
-            }
-            
-            // Try presence as final fallback
-            if (userName === userJid.split('@')[0]) {
-                const presence = await conn.presenceSubscribe(userJid).catch(() => null);
-                if (presence?.pushname) userName = presence.pushname;
-            }
-        } catch (e) {
-            console.log("Name fetch error:", e);
-        }
+    const groupRole = isGroup
+      ? (participants.find(p => p.id === userJid)?.admin ? "👑 Admin" : "👥 Member")
+      : "";
 
-        // 5. GET BIO/ABOUT
-        let bio = {};
-        try {
-            // Try personal status
-            const statusData = await conn.fetchStatus(userJid).catch(() => null);
-            if (statusData?.status) {
-                bio = {
-                    text: statusData.status,
-                    type: "Personal",
-                    updated: statusData.setAt ? new Date(statusData.setAt * 1000) : null
-                };
-            } else {
-                // Try business profile
-                const businessProfile = await conn.getBusinessProfile(userJid).catch(() => null);
-                if (businessProfile?.description) {
-                    bio = {
-                        text: businessProfile.description,
-                        type: "Business",
-                        updated: null
-                    };
-                }
-            }
-        } catch (e) {
-            console.log("Bio fetch error:", e);
-        }
+    const formattedBio = bio.text
+      ? `${bio.text}\n└─ 📌 ${bio.type} Bio${bio.updated ? ` | 🕒 ${bio.updated.toLocaleString()}` : ''}`
+      : "No bio available";
 
-        // 6. GET GROUP ROLE
-        let groupRole = "";
-        if (isGroup) {
-            const participant = participants.find(p => p.id === userJid);
-            groupRole = participant?.admin ? "👑 Admin" : "👥 Member";
-        }
+    let lastSeen = "";
+    try {
+      const presence = await client.presenceSubscribe(userJid).catch(() => null);
+      if (presence?.lastSeen) {
+        lastSeen = `⏱️ *Last Seen:* ${new Date(presence.lastSeen).toLocaleString()}`;
+      }
+    } catch {}
 
-        // 7. FORMAT OUTPUT
-        const formattedBio = bio.text ? 
-            `${bio.text}\n└─ 📌 ${bio.type} Bio${bio.updated ? ` | 🕒 ${bio.updated.toLocaleString()}` : ''}` : 
-            "No bio available";
-
-        const userInfo = `
-*GC MEMBER INFORMATION 🧊*
+    const text = `
+*USER PROFILE INFO 🧊*
 
 📛 *Name:* ${userName}
 🔢 *Number:* ${userJid.replace(/@.+/, '')}
@@ -103,19 +84,21 @@ ${formattedBio}
 
 *⚙️ Account Info:*
 ✅ Registered: ${user.isUser ? "Yes" : "No"}
-🛡️ Verified: ${user.verifiedName ? "✅ Verified" : "❌ Not verified"}
-${isGroup ? `👥 *Group Role:* ${groupRole}` : ''}
+🛡️ Verified: ${user.verifiedName ? `✅ ${user.verifiedName}` : "❌ Not verified"}
+${lastSeen}
+${groupRole ? `👥 *Group Role:* ${groupRole}` : ''}
 `.trim();
 
-        // 8. SEND RESULT
-        await conn.sendMessage(from, {
-            image: { url: ppUrl },
-            caption: userInfo,
-            mentions: [userJid]
-        }, { quoted: mek });
+    await client.sendMessage(from, {
+      image: { url: ppUrl },
+      caption: text,
+      mentions: [userJid]
+    }, { quoted: message });
 
-    } catch (e) {
-        console.error("Person command error:", e);
-        reply(`❌ Error: ${e.message || "Failed to fetch profile"}`);
-    }
+  } catch (e) {
+    console.error("person error:", e);
+    await client.sendMessage(from, {
+      text: "❌ Failed to fetch profile:\n" + (e.message || e)
+    }, { quoted: message });
+  }
 });
