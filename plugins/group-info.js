@@ -12,15 +12,29 @@ cmd({
     filename: __filename
 },
 async (conn, mek, m, {
-    from, isGroup, isAdmins, isBotAdmins, participants, groupMetadata, reply, isDev
+    from, isGroup, isAdmins, isBotAdmins, participants, groupMetadata, reply, isDev, isOwner
 }) => {
     try {
-        const msr = (await fetchJson('https://raw.githubusercontent.com/JawadTech3/KHAN-DATA/refs/heads/main/MSG/mreply.json')).replyMsg
+        // Messages par défaut
+        let msr = {
+            only_gp: "This command can only be used in groups.",
+            you_adm: "You must be an admin to use this command.",
+            give_adm: "Please make the bot admin first."
+        }
+
+        // Essaye de charger les messages personnalisés
+        try {
+            const res = await fetchJson('https://raw.githubusercontent.com/JawadTech3/KHAN-DATA/refs/heads/main/MSG/mreply.json')
+            if (res?.replyMsg) msr = res.replyMsg
+        } catch (e) {
+            console.log('⚠️ Failed to load remote messages, using default ones.')
+        }
 
         if (!isGroup) return reply(msr.only_gp)
-        if (!isAdmins && !isDev) return reply(msr.you_adm)
+        if (!isAdmins && !isDev && !isOwner) return reply(msr.you_adm)
         if (!isBotAdmins) return reply(msr.give_adm)
 
+        // Récupération de la photo du groupe
         let ppUrl
         try {
             ppUrl = await conn.profilePictureUrl(from, 'image')
