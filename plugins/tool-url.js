@@ -6,61 +6,66 @@ const path = require("path");
 const { cmd, commands } = require("../command");
 
 cmd({
-  'pattern': "tourl",
-  'alias': ["imgtourl", "imgurl", "url", "geturl", "upload"],
-  'react': '🖇',
-  'desc': "Convert media to Catbox URL",
-  'category': "utility",
-  'use': ".tourl [reply to media]",
-  'filename': __filename
+  pattern: "tourl",
+  alias: ["imgtourl", "imgurl", "url", "geturl", "upload"],
+  react: '🖇',
+  desc: "Convert media to Catbox URL",
+  category: "utility",
+  use: ".tourl [reply to media]",
+  filename: __filename
 }, async (client, message, args, { reply }) => {
   try {
-    // Check if quoted message exists and has media
     const quotedMsg = message.quoted ? message.quoted : message;
     const mimeType = (quotedMsg.msg || quotedMsg).mimetype || '';
-    
+
     if (!mimeType) {
       throw "Please reply to an image, video, or audio file";
     }
 
-    // Download the media
+    // Download media
     const mediaBuffer = await quotedMsg.download();
     const tempFilePath = path.join(os.tmpdir(), `catbox_upload_${Date.now()}`);
     fs.writeFileSync(tempFilePath, mediaBuffer);
 
-    // Get file extension based on mime type
+    // Detect file extension
     let extension = '';
     if (mimeType.includes('image/jpeg')) extension = '.jpg';
     else if (mimeType.includes('image/png')) extension = '.png';
-    else if (mimeType.includes('video')) extension = '.mp4';
-    else if (mimeType.includes('audio')) extension = '.mp3';
-    
-    const fileName = `file${extension}`;
+    else if (mimeType.includes('image/webp')) extension = '.webp';
+    else if (mimeType.includes('video/mp4')) extension = '.mp4';
+    else if (mimeType.includes('video/webm')) extension = '.webm';
+    else if (mimeType.includes('audio/mpeg')) extension = '.mp3';
+    else if (mimeType.includes('audio/ogg')) extension = '.ogg';
+    else extension = '.bin'; // fallback to avoid EKEYTYPE
 
-    // Prepare form data for Catbox
+    const fileName = `file${extension}`;
+    console.log("Mime Type:", mimeType);
+    console.log("Extension utilisée:", extension);
+
+    // Prepare form data
     const form = new FormData();
     form.append('fileToUpload', fs.createReadStream(tempFilePath), fileName);
     form.append('reqtype', 'fileupload');
 
     // Upload to Catbox
     const response = await axios.post("https://catbox.moe/user/api.php", form, {
-      headers: form.getHeaders()
+      headers: form.getHeaders(),
+      timeout: 20000
     });
 
-    if (!response.data) {
-      throw "Error uploading to Catbox";
+    if (!response.data || !response.data.includes("https://")) {
+      throw "Catbox API failed to return a valid URL.";
     }
 
     const mediaUrl = response.data;
     fs.unlinkSync(tempFilePath);
 
-    // Determine media type for response
+    // Determine media type
     let mediaType = 'File';
     if (mimeType.includes('image')) mediaType = 'Image';
     else if (mimeType.includes('video')) mediaType = 'Video';
     else if (mimeType.includes('audio')) mediaType = 'Audio';
 
-    // Send response
     await reply(
       `*${mediaType} Uploaded Successfully*\n\n` +
       `*Size:* ${formatBytes(mediaBuffer.length)}\n` +
@@ -69,12 +74,11 @@ cmd({
     );
 
   } catch (error) {
-    console.error(error);
+    console.error("Erreur dans .tourl :", error);
     await reply(`Error: ${error.message || error}`);
   }
 });
 
-// Helper function to format bytes
 function formatBytes(bytes) {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
