@@ -21,7 +21,7 @@ async (conn, mek, m, { from, reply }) => {
         const repoData = await response.json();
 
         // Format 1: Classic Box
-        const style1 = `╭───『 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO 』───⳹
+        const style1 = `╭──『 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO 』──⳹
 │
 │ 📦 *Repository*: ${repoData.name}
 │ 👑 *Owner*: ${repoData.owner.login}
@@ -180,7 +180,7 @@ ${repoData.description || 'No description provided'}
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363401051937059@newsletter',
-                    newsletterName: config.OWNER_NAME || '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
+                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
                     serverMessageId: 143
                 }
             }
