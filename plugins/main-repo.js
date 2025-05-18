@@ -41,8 +41,8 @@ async (conn, mek, m, { from, reply }) => {
   ├─ 🏷️ ${repoData.name}
   ├─ 👤 ${repoData.owner.login}
   ├─ ✨ ${repoData.stargazers_count} Stars
-  ├─ ⑂ ${repoData.forks_count} Forks
-  │
+  ├─ ⑂  ${repoData.forks_count} Forks
+  ├─ 🔗 ${repoData.html_url}
   •——[𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ]——•
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
@@ -61,7 +61,7 @@ async (conn, mek, m, { from, reply }) => {
 
         // Format 4: Code Style
         const style4 = `┌──────────────────────┐
-│  ⚡ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO  ⚡  │
+│  ⚡ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO   │
 ├──────────────────────┤
 │ • Name: ${repoData.name}
 │ • Owner: ${repoData.owner.login}
@@ -89,12 +89,12 @@ async (conn, mek, m, { from, reply }) => {
         const style6 = `╔══════════════════════╗
 ║   𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO    ║
 ╠══════════════════════╣
-║  NAME: ${repoData.name}
-║  OWNER: ${repoData.owner.login}
-║  STARS: ${repoData.stargazers_count}
-║  FORKS: ${repoData.forks_count}
-║  URL: ${repoData.html_url}
-║  DESC: ${repoData.description || 'None'}
+║ NAME: ${repoData.name}
+║ OWNER: ${repoData.owner.login}
+║ STARS: ${repoData.stargazers_count}
+║ FORKS: ${repoData.forks_count}
+║ URL: ${repoData.html_url}
+║ DESC: ${repoData.description || 'None'}
 ╚══════════════════════╝
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
