@@ -2,7 +2,7 @@ const { cmd } = require('../command');
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-// Your Genius API Key (already registered for you)
+// Your Genius API Key
 const GENIUS_API_KEY = 'XOxelFDJbxYpjeS154VLIHx0bcEzrCzF1ZVUHN7fqOohg0_2zVuoiE9kyLzqXWip';
 
 cmd({
@@ -19,7 +19,7 @@ async (conn, mek, m, { from, q, reply, react }) => {
 
         await react("⏳");
 
-        // Search for the song
+        // Search song on Genius
         const searchUrl = `https://api.genius.com/search?q=${encodeURIComponent(q)}`;
         const searchRes = await axios.get(searchUrl, {
             headers: {
@@ -39,7 +39,7 @@ async (conn, mek, m, { from, q, reply, react }) => {
         const songUrl = songData.url;
         const thumbnail = songData.song_art_image_thumbnail_url;
 
-        // Scrape the lyrics from Genius page
+        // Scrape lyrics from Genius page
         const html = await axios.get(songUrl);
         const $ = cheerio.load(html.data);
         const lyrics = $('div[data-lyrics-container="true"]').text().trim();
@@ -56,7 +56,7 @@ async (conn, mek, m, { from, q, reply, react }) => {
         await conn.sendMessage(from, {
             image: { url: thumbnail },
             caption,
-            contextInfo: { mentionedJid: [m.sender] }
+            contextInfo: { mentionedJid: [m?.sender || ''] }
         }, { quoted: mek });
 
         await react("✅");
