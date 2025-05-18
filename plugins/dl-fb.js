@@ -10,32 +10,28 @@ cmd({
   use: "<Facebook URL>",
 }, async (conn, m, store, { from, args, q, reply }) => {
   try {
-    // Check if a URL is provided
     if (!q || !q.startsWith("http")) {
-      return reply("*`Need a valid Facebook URL`*\n\nExample: `.fb https://www.facebook.com/...`");
+      return reply("*`A valid Facebook URL is required`*\n\nExample: `.fb https://www.facebook.com/...`");
     }
 
-    // Add a loading react
     await conn.sendMessage(from, { react: { text: '⏳', key: m.key } });
 
-    // Fetch video URL from the API
     const apiUrl = `https://www.velyn.biz.id/api/downloader/facebookdl?url=${encodeURIComponent(q)}`;
-    const { data } = await axios.get(apiUrl);
+    const res = await axios.get(apiUrl);
 
-    // Check if the API response is valid
-    if (!data.status || !data.data || !data.data.url) {
-      return reply("❌ Failed to fetch the video. Please try another link.");
+    if (!res.data || res.data.status !== true || !res.data.data || !res.data.data.url) {
+      return reply("❌ Failed to fetch the video. Please try a different link.");
     }
 
-    // Send the video to the user
-    const videoUrl = data.data.url;
+    const videoUrl = res.data.data.url;
+
     await conn.sendMessage(from, {
       video: { url: videoUrl },
-      caption: "📥 *Facebook Video Downloaded*\n\n- > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ* ✅",
+      caption: "📥 *Facebook Video Downloaded Successfully*\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ* ✅",
     }, { quoted: m });
 
   } catch (error) {
-    console.error("Error:", error); // Log the error for debugging
-    reply("❌ Error fetching the video. Please try again.");
+    console.error("Facebook download error:", error?.response?.data || error.message);
+    reply("❌ An error occurred while downloading the video. Please check the link or try again later.");
   }
 });
