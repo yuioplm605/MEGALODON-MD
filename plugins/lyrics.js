@@ -42,7 +42,17 @@ async (conn, mek, m, { from, q, reply, react }) => {
         // Scrape lyrics from Genius page
         const html = await axios.get(songUrl);
         const $ = cheerio.load(html.data);
-        const lyrics = $('div[data-lyrics-container="true"]').text().trim();
+
+        let lyrics = "";
+        $('div[data-lyrics-container="true"]').each((_, el) => {
+            lyrics += $(el).text().trim() + "\n";
+        });
+        lyrics = lyrics.trim();
+
+        if (!lyrics) {
+            // fallback to old selector
+            lyrics = $('.lyrics').text().trim();
+        }
 
         if (!lyrics) {
             await react("❌");
