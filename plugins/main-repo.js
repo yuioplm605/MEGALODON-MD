@@ -1,1 +1,194 @@
-const _0x2f08fb=_0x4185;(function(_0xf6109b,_0x2f5c54){const _0x17559c=_0x4185,_0x2f18cc=_0xf6109b();while(!![]){try{const _0xaa6ed=parseInt(_0x17559c(0x16c))/0x1+-parseInt(_0x17559c(0x16b))/0x2*(-parseInt(_0x17559c(0x151))/0x3)+-parseInt(_0x17559c(0x124))/0x4*(parseInt(_0x17559c(0x15f))/0x5)+-parseInt(_0x17559c(0x11e))/0x6*(parseInt(_0x17559c(0x169))/0x7)+parseInt(_0x17559c(0x15d))/0x8+parseInt(_0x17559c(0x13b))/0x9*(parseInt(_0x17559c(0x12f))/0xa)+-parseInt(_0x17559c(0x155))/0xb;if(_0xaa6ed===_0x2f5c54)break;else _0x2f18cc['push'](_0x2f18cc['shift']());}catch(_0x2202be){_0x2f18cc['push'](_0x2f18cc['shift']());}}}(_0x2f4e,0x46a55));const fetch=require(_0x2f08fb(0x153)),config=require(_0x2f08fb(0x145)),{cmd}=require(_0x2f08fb(0x122));function _0x4185(_0x31b07f,_0x32afbc){const _0x2f4eb7=_0x2f4e();return _0x4185=function(_0x418570,_0x19e498){_0x418570=_0x418570-0x116;let _0x5bab5e=_0x2f4eb7[_0x418570];return _0x5bab5e;},_0x4185(_0x31b07f,_0x32afbc);}cmd({'pattern':_0x2f08fb(0x165),'alias':['sc',_0x2f08fb(0x118),_0x2f08fb(0x148)],'desc':'Fetch\x20GitHub\x20𝐑𝐄𝐏𝐎𝐒𝐈𝐓𝐎𝐑𝐘\x20information','react':'📂','category':_0x2f08fb(0x148),'filename':__filename},async(_0x32d6e8,_0x505708,_0x204281,{from:_0x4ba378,reply:_0x248dc8})=>{const _0x1fecb4=_0x2f08fb,_0x1aff9d=_0x1fecb4(0x142);try{const [,_0x143bae,_0x4df4c7]=_0x1aff9d['match'](/github\.com\/([^/]+)\/([^/]+)/),_0x43eb52=await fetch(_0x1fecb4(0x133)+_0x143bae+'/'+_0x4df4c7);if(!_0x43eb52['ok'])throw new Error('GitHub\x20API\x20error:\x20'+_0x43eb52[_0x1fecb4(0x128)]);const _0x267241=await _0x43eb52['json'](),_0x5bea38='╭───『\x20'+config[_0x1fecb4(0x168)]+'\x20𝐑𝐄𝐏𝐎\x20』───⳹\x0a\x0a│\x0a\x0a│\x20📦\x20*𝐑𝐄𝐏𝐎𝐒𝐈𝐓𝐎𝐑𝐘*:\x20'+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x120)+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+_0x1fecb4(0x12b)+_0x267241[_0x1fecb4(0x15c)]+_0x1fecb4(0x116)+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x146)+_0x267241[_0x1fecb4(0x152)]+_0x1fecb4(0x14e)+(_0x267241[_0x1fecb4(0x134)]||_0x1fecb4(0x13f))+_0x1fecb4(0x11a),_0x43d41d='•——[\x20GITHUB\x20INFO\x20]——•\x0a\x0a\x20\x20│\x0a\x0a\x20\x20├─\x20🏷️\x20'+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x13c)+_0x267241['owner'][_0x1fecb4(0x129)]+'\x0a\x0a\x20\x20├─\x20✨\x20'+_0x267241[_0x1fecb4(0x15c)]+_0x1fecb4(0x171)+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x147),_0x58f404='▄▀▄▀▄\x20𝐑𝐄𝐏𝐎𝐒𝐈𝐓𝐎𝐑𝐘\x20INFO\x20▄▀▄▀▄\x0a\x0a\x20\x20♢\x20*Project*:\x20'+_0x267241[_0x1fecb4(0x138)]+'\x0a\x0a\x20\x20♢\x20*Author*:\x20'+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+'\x0a\x0a\x20\x20♢\x20*Stars*:\x20'+_0x267241[_0x1fecb4(0x15c)]+_0x1fecb4(0x14f)+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x149)+new Date(_0x267241['updated_at'])[_0x1fecb4(0x164)]()+_0x1fecb4(0x123)+_0x267241[_0x1fecb4(0x152)]+_0x1fecb4(0x139),_0x1474e0=_0x1fecb4(0x14a)+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x140)+_0x267241[_0x1fecb4(0x16a)]['login']+_0x1fecb4(0x15a)+_0x267241['stargazers_count']+'\x0a\x0a│\x20•\x20Forks:\x20'+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x144)+_0x267241['html_url']+_0x1fecb4(0x11f)+(_0x267241[_0x1fecb4(0x134)]||_0x1fecb4(0x160))+_0x1fecb4(0x14b),_0x18d338=_0x1fecb4(0x166)+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x14d)+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+'\x0a\x0a\x20\x20\x0a\x0a\x20\x20⭐\x20'+_0x267241['stargazers_count']+_0x1fecb4(0x11b)+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x131)+_0x267241[_0x1fecb4(0x152)]+_0x1fecb4(0x137)+(_0x267241[_0x1fecb4(0x134)]||_0x1fecb4(0x13f))+'\x0a\x0a\x20\x20\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*',_0x4ac97a=_0x1fecb4(0x135)+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x14c)+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+_0x1fecb4(0x141)+_0x267241[_0x1fecb4(0x15c)]+_0x1fecb4(0x119)+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x125)+_0x267241[_0x1fecb4(0x152)]+'\x0a\x0a║📃\x20\x20DESC:\x20'+(_0x267241['description']||_0x1fecb4(0x160))+_0x1fecb4(0x158),_0x2896a8=_0x1fecb4(0x12c)+_0x267241['name']+_0x1fecb4(0x13a)+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+_0x1fecb4(0x12e)+_0x267241[_0x1fecb4(0x15c)]+'\x20Stars\x0a\x0a│\x20⑂\x20'+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x121)+_0x267241['html_url']+_0x1fecb4(0x16e)+(_0x267241['description']||_0x1fecb4(0x13f))+_0x1fecb4(0x16d),_0x3b6631=_0x1fecb4(0x13e)+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x16f)+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+_0x1fecb4(0x127)+_0x267241[_0x1fecb4(0x15c)]+_0x1fecb4(0x143)+_0x267241['forks_count']+_0x1fecb4(0x15b)+new Date(_0x267241[_0x1fecb4(0x161)])[_0x1fecb4(0x164)]()+_0x1fecb4(0x163)+_0x267241[_0x1fecb4(0x152)]+'\x0a\x0a'+(_0x267241[_0x1fecb4(0x134)]||'No\x20description\x20available')+_0x1fecb4(0x16d),_0x40d233='╔♫══♫══════════╗\x0a\x0a\x20\x20\x20𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃\x20𝐑𝐄𝐏𝐎\x0a\x0a╚♫══♫══════════╝\x0a\x0a•・゜゜・*\x20✧\x20\x20*・゜゜・•\x0a\x0a\x20✧\x20*Name*:\x20'+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x117)+_0x267241[_0x1fecb4(0x16a)][_0x1fecb4(0x129)]+_0x1fecb4(0x162)+_0x267241[_0x1fecb4(0x15c)]+'\x0a\x0a\x20✧\x20*Forks*:\x20'+_0x267241['forks_count']+_0x1fecb4(0x11c)+_0x267241[_0x1fecb4(0x152)]+'\x0a\x0a'+(_0x267241[_0x1fecb4(0x134)]||'No\x20description')+_0x1fecb4(0x16d),_0x1f6cd3=_0x1fecb4(0x11d)+_0x267241[_0x1fecb4(0x138)]+_0x1fecb4(0x12a)+_0x267241[_0x1fecb4(0x16a)]['login']+_0x1fecb4(0x130)+_0x267241['stargazers_count']+_0x1fecb4(0x167)+_0x267241[_0x1fecb4(0x12d)]+_0x1fecb4(0x154)+new Date(_0x267241[_0x1fecb4(0x161)])[_0x1fecb4(0x164)]()+'\x0a\x0a◈\x20URL:\x20'+_0x267241['html_url']+'\x0a\x0aDescription:\x0a\x0a'+(_0x267241[_0x1fecb4(0x134)]||_0x1fecb4(0x136))+_0x1fecb4(0x16d),_0x90ea39=[_0x5bea38,_0x43d41d,_0x58f404,_0x1474e0,_0x18d338,_0x4ac97a,_0x2896a8,_0x3b6631,_0x40d233,_0x1f6cd3],_0x37fbc6=_0x90ea39[Math[_0x1fecb4(0x159)](Math[_0x1fecb4(0x15e)]()*_0x90ea39[_0x1fecb4(0x150)])];await _0x32d6e8[_0x1fecb4(0x156)](_0x4ba378,{'image':{'url':_0x1fecb4(0x170)},'caption':_0x37fbc6,'contextInfo':{'mentionedJid':[_0x204281['sender']],'forwardingScore':0x3e7,'isForwarded':!![],'forwardedNewsletterMessageInfo':{'newsletterJid':_0x1fecb4(0x126),'newsletterName':config['OWNER_NAME']||_0x1fecb4(0x157),'serverMessageId':0x8f}}},{'quoted':_0x505708});}catch(_0x2259a2){console['error']('𝐑𝐄𝐏𝐎\x20command\x20error:',_0x2259a2),_0x248dc8(_0x1fecb4(0x132)+_0x2259a2[_0x1fecb4(0x13d)]);}});function _0x2f4e(){const _0xcde0df=['┏━━━━━━━━━━━━━━━━━━┓\x0a\x0a┃\x20\x20𝐑𝐄𝐏𝐎𝐒𝐈𝐓𝐎𝐑𝐘\x20𝐑𝐄𝐏𝐎RT\x20\x20┃\x0a\x0a┗━━━━━━━━━━━━━━━━━━┛\x0a\x0a◈\x20Project:\x20','213336iKJLgo','\x0a\x0a│\x20•\x20Desc:\x20','\x0a\x0a│\x20👑\x20*Owner*:\x20','\x20Forks\x0a\x0a│\x0a\x0a│\x20🔗\x20','../command','\x0a\x0a\x20\x20\x0a\x0a\x20\x20🔗\x20','4MBYAAx','\x0a\x0a║🖇\x20URL:\x20','120363401051937059@newsletter','\x0a\x0a⭐\x20','status','login','\x0a\x0a◈\x20Maintainer:\x20','\x0a\x0a│\x20⭐\x20*Stars*:\x20','┌───────────────┐\x0a\x0a│\x20\x20📂\x20\x20𝐑𝐄𝐏𝐎\x20\x20│\x0a\x0a└───────────────┘\x0a\x0a│\x0a\x0a│\x20*Project*:\x20','forks_count','\x0a\x0a│\x0a\x0a│\x20✨\x20','170LMzcxk','\x0a\x0a◈\x20Popularity:\x20★\x20','\x0a\x0a\x20\x20🔗\x20','❌\x20Error:\x20','https://api.github.com/𝐑𝐄𝐏𝐎s/','description','╔══════════════════════╗\x0a\x0a║\x20\x20\x20MEGALODON-MD\x20𝐑𝐄𝐏𝐎\x20\x20\x20\x20║\x0a\x0a╠══════════════════════╣\x0a\x0a║\x20\x20\x20NAME:\x20','No\x20description\x20provided','\x0a\x0a\x20\x20\x0a\x0a\x20\x20📜\x20','name','\x0a\x0a\x20\x20\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*','\x0a\x0a│\x20*Author*:\x20','127071vakSfV','\x0a\x0a\x20\x20├─\x20👤\x20','message','✦\x20𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃\x20𝐑𝐄𝐏𝐎𝐒𝐈𝐓𝐎𝐑𝐘\x20✦\x0a\x0a📌\x20*','No\x20description','\x0a\x0a│\x20•\x20Owner:\x20','\x0a\x0a║⭐️\x20STARS:\x20','https://github.com/DybyTech/MEGALODON-MD','\x20Stars\x20|\x20⑂\x20','\x0a\x0a│\x20•\x20URL:\x20','../config','\x0a\x0a│\x20🔗\x20*URL*:\x20','\x20Forks\x0a\x0a\x20\x20│\x0a\x0a\x20\x20•——[\x20𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃\x20]——•\x0a\x0a\x20\x20>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*','info','\x20⑂\x0a\x0a\x20\x20♢\x20*Updated*:\x20','┌──────────────────────┐\x0a\x0a│\x20\x20⚡\x20𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃\x20𝐑𝐄𝐏𝐎\x20\x20⚡\x20\x20│\x0a\x0a├──────────────────────┤\x0a\x0a│\x20•\x20Name:\x20','\x0a\x0a└──────────────────────┘\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*','\x0a\x0a║👨‍💻\x20OWNER:\x20','*\x0a\x0a\x20\x20👨‍💻\x20\x20','\x0a\x0a│\x0a\x0a│\x20📝\x20*Description*:\x0a\x0a│\x20','\x20✨\x0a\x0a\x20\x20♢\x20*Forks*:\x20','length','273813UxXRKA','html_url','node-fetch','\x0a\x0a◈\x20Last\x20Update:\x20','5470322waVvkC','sendMessage','𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡','\x0a\x0a╚══════════════════════╝\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*','floor','\x0a\x0a│\x20•\x20Stars:\x20','\x20Forks\x0a\x0a🔄\x20Last\x20updated:\x20','stargazers_count','2991152VbPxWH','random','2435455kNUZTW','None','updated_at','\x0a\x0a\x20✧\x20*Stars*:\x20','\x0a\x0a🔗\x20GitHub:\x20','toLocaleDateString','𝐑𝐄𝐏𝐎','▰▰▰▰▰\x20𝐑𝐄𝐏𝐎\x20INFO\x20▰▰▰▰▰\x0a\x0a\x20\x20🏷️\x20\x20*','\x20|\x20⑂\x20','BOT_NAME','7nNYmYi','owner','4RCOTYI','512855gQORuG','\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*','\x0a\x0a│\x0a\x0a┌───────────────┐\x0a\x0a│\x20\x20📝\x20\x20DESC\x20\x20│\x0a\x0a└───────────────┘\x0a\x0a','*\x0a\x0a👤\x20@','https://files.catbox.moe/c811p6.jpg','\x20Stars\x0a\x0a\x20\x20├─\x20⑂\x20','\x0a\x0a│\x20⑂\x20*Forks*:\x20','\x0a\x0a\x20✧\x20*Owner*:\x20','script','\x0a\x0a║🪮\x20\x20FORKS:\x20','\x0a\x0a│\x0a\x0a╰────────────────⳹\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴅʏʙʏ\x20ᴛᴇᴄʜ*','\x20\x20⑂\x20','\x0a\x0a•・゜゜・*\x20✧\x20\x20*・゜゜・•\x0a\x0a🔗\x20'];_0x2f4e=function(){return _0xcde0df;};return _0x2f4e();}
+const fetch = require('node-fetch');
+const config = require('../config');
+const { cmd } = require('../command');
+
+cmd({
+    pattern: "repo",
+    alias: ["sc", "script", "info"],
+    desc: "Fetch GitHub repository information",
+    react: "📂",
+    category: "info",
+    filename: __filename,
+},
+async (conn, mek, m, { from, reply }) => {
+    const githubRepoURL = 'https://github.com/DybyTech/MEGALODON-MD';
+
+    try {
+        const [, username, repoName] = githubRepoURL.match(/github\.com\/([^/]+)\/([^/]+)/);
+        const response = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+        
+        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+        const repoData = await response.json();
+
+        // Format 1: Classic Box
+        const style1 = `╭───『 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO 』───⳹
+│
+│ 📦 *Repository*: ${repoData.name}
+│ 👑 *Owner*: ${repoData.owner.login}
+│ ⭐ *Stars*: ${repoData.stargazers_count}
+│ ⑂ *Forks*: ${repoData.forks_count}
+│ 🔗 *URL*: ${repoData.html_url}
+│
+│ 📝 *Description*:
+│ ${repoData.description || 'No description'}
+│
+╰────────────────⳹
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 2: Minimalist
+        const style2 = `•——[ GITHUB INFO ]——•
+  │
+  ├─ 🏷️ ${repoData.name}
+  ├─ 👤 ${repoData.owner.login}
+  ├─ ✨ ${repoData.stargazers_count} Stars
+  ├─ ⑂ ${repoData.forks_count} Forks
+  │
+  •——[𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ]——•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 3: Fancy Borders
+        const style3 = `▄▀▄▀▄ REPOSITORY INFO ▄▀▄▀▄
+
+  ♢ *Project*: ${repoData.name}
+  ♢ *Author*: ${repoData.owner.login}
+  ♢ *Stars*: ${repoData.stargazers_count} ✨
+  ♢ *Forks*: ${repoData.forks_count} ⑂
+  ♢ *Updated*: ${new Date(repoData.updated_at).toLocaleDateString()}
+  
+  🔗 ${repoData.html_url}
+  
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 4: Code Style
+        const style4 = `┌──────────────────────┐
+│  ⚡ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO  ⚡  │
+├──────────────────────┤
+│ • Name: ${repoData.name}
+│ • Owner: ${repoData.owner.login}
+│ • Stars: ${repoData.stargazers_count}
+│ • Forks: ${repoData.forks_count}
+│ • URL: ${repoData.html_url}
+│ • Desc: ${repoData.description || 'None'}
+└──────────────────────┘
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 5: Modern Blocks
+        const style5 = `▰▰▰▰▰ REPO INFO ▰▰▰▰▰
+
+  🏷️  *${repoData.name}*
+  👨‍💻  ${repoData.owner.login}
+  
+  ⭐ ${repoData.stargazers_count}  ⑂ ${repoData.forks_count}
+  🔗 ${repoData.html_url}
+  
+  📜 ${repoData.description || 'No description'}
+  
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 6: Retro Terminal
+        const style6 = `╔══════════════════════╗
+║   𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO    ║
+╠══════════════════════╣
+║  NAME: ${repoData.name}
+║  OWNER: ${repoData.owner.login}
+║  STARS: ${repoData.stargazers_count}
+║  FORKS: ${repoData.forks_count}
+║  URL: ${repoData.html_url}
+║  DESC: ${repoData.description || 'None'}
+╚══════════════════════╝
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 7: Elegant
+        const style7 = `┌───────────────┐
+│  📂  REPO  │
+└───────────────┘
+│
+│ *Project*: ${repoData.name}
+│ *Author*: ${repoData.owner.login}
+│
+│ ✨ ${repoData.stargazers_count} Stars
+│ ⑂ ${repoData.forks_count} Forks
+│
+│ 🔗 ${repoData.html_url}
+│
+┌───────────────┐
+│  📝  DESC  │
+└───────────────┘
+${repoData.description || 'No description'}
+
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 8: Social Media Style
+        const style8 = `✦ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 Repository ✦
+
+📌 *${repoData.name}*
+👤 @${repoData.owner.login}
+
+⭐ ${repoData.stargazers_count} Stars | ⑂ ${repoData.forks_count} Forks
+🔄 Last updated: ${new Date(repoData.updated_at).toLocaleDateString()}
+
+🔗 GitHub: ${repoData.html_url}
+
+${repoData.description || 'No description available'}
+
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 9: Fancy List
+        const style9 = `╔♫═🎧═♫══════════╗
+   𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO
+╚♫═🎧═♫══════════╝
+
+•・゜゜・* ✧  *・゜゜・•
+ ✧ *Name*: ${repoData.name}
+ ✧ *Owner*: ${repoData.owner.login}
+ ✧ *Stars*: ${repoData.stargazers_count}
+ ✧ *Forks*: ${repoData.forks_count}
+•・゜゜・* ✧  *・゜゜・•
+
+🔗 ${repoData.html_url}
+
+${repoData.description || 'No description'}
+
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        // Format 10: Professional
+        const style10 = `┏━━━━━━━━━━━━━━━━━━┓
+┃  REPOSITORY REPORT  ┃
+┗━━━━━━━━━━━━━━━━━━┛
+
+◈ Project: ${repoData.name}
+◈ Maintainer: ${repoData.owner.login}
+◈ Popularity: ★ ${repoData.stargazers_count} | ⑂ ${repoData.forks_count}
+◈ Last Update: ${new Date(repoData.updated_at).toLocaleDateString()}
+◈ URL: ${repoData.html_url}
+
+Description:
+${repoData.description || 'No description provided'}
+
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
+
+        const styles = [style1, style2, style3, style4, style5, style6, style7, style8, style9, style10];
+        const selectedStyle = styles[Math.floor(Math.random() * styles.length)];
+
+        // Send image with repo info
+        await conn.sendMessage(from, {
+            image: { url: `https://files.catbox.moe/c811p6.jpg` },
+            caption: selectedStyle,
+            contextInfo: { 
+                mentionedJid: [m.sender],
+                forwardingScore: 999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363401051937059@newsletter',
+                    newsletterName: config.OWNER_NAME || '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
+                    serverMessageId: 143
+                }
+            }
+        }, { quoted: mek });
+
+        
+    } catch (error) {
+        console.error("Repo command error:", error);
+        reply(`❌ Error: ${error.message}`);
+    }
+});
