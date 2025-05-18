@@ -30,7 +30,7 @@ async (conn, mek, m, { from }) => {
         // Send the owner contact message with image and audio
         await conn.sendMessage(from, {
             image: { url: 'https://files.catbox.moe/rful77.jpg' }, // Image URL from your request
-            caption: `╭━━〔 *MEGALODON-MD* 〕━━┈⊷
+            caption: `╭━━〔 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 〕━━┈⊷
 ┃◈╭─────────────·๏
 ┃◈┃• *Here is the owner details*
 ┃◈┃• *Name* - ${ownerName}
@@ -44,19 +44,13 @@ async (conn, mek, m, { from }) => {
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363372853772240@newsletter',
-                    newsletterName: '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
+                    newsletterJid: '120363401051937059@newsletter',
+                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
                     serverMessageId: 143
                 }            
             }
         }, { quoted: mek });
-
-        // Send audio as per your request
-        await conn.sendMessage(from, {
-            audio: { url: 'https://files.catbox.moe/0rpce6.mp3' }, // Audio URL
-            mimetype: 'audio/mp4',
-            ptt: true
-        }, { quoted: mek });
+        
 
     } catch (error) {
         console.error(error);
