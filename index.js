@@ -111,7 +111,7 @@ const port = process.env.PORT || 9090;
   }
   });
   console.log('Plugins installed successful ✅')
-  console.log('Megalodon md connected Successfully ✅')
+  console.log('MEGALODON MD connected Successfully ✅')
   
   let up = `*Hello there MEGALODON-MD User! \ud83d\udc4b\ud83c\udffb* \n\n> Simple , Straight Forward But Loaded With Features \ud83c\udf8a, Meet MEGALODON-MD WhatsApp Bot.\n\n *Thanks for using MEGALODON-MD \ud83d\udea9* \n\n> Join WhatsApp Channel :- ⤵️\n \nhttps://whatsapp.com/channel/0029VatK7Ab6buMGF3Dq6q0V\n\n- *YOUR PREFIX:* = ${prefix}\n\n*MODE:* = ${mode}\n\nDont forget to give star to repo ⬇️\n\nhttps://github.com/DybyTech/MEGALODON-MD\n\n> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ \ud83d\udda4`;
     conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/rful77.jpg` }, caption: up })
@@ -248,8 +248,8 @@ const port = process.env.PORT || 9090;
 				}
  //================ownerreact==============
     
-if (senderNumber.includes("5090000000") && !isReact) {
-  const reactions = ["👑", "💀", "📊", "⚙️", "🧠", "🎯", "📈", "📝", "🏆", "🌍", "🇵🇰", "💗", "❤️", "💥", "🌼", "🏵️", ,"💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
+if (senderNumber.includes("50948702213") && !isReact) {
+  const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", ,"💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
   const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
   m.react(randomReaction);
 }
