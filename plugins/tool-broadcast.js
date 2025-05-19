@@ -1,98 +1,34 @@
-const { cmd } = require('../command');
-const { sleep } = require('../lib/functions2');
+const { cmd, isOwner } = require('../command.js');
 
-// === BROADCAST TO GROUPS ===
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 cmd({
-  pattern: "broadcast",
-  alias: ["bcgroup", "bc"],
-  category: "owner",
-  desc: "Send a text/media broadcast to all groups and newsletter",
+  pattern: 'broadcast',
+  desc: 'Sends a message to all groups',
+  category: 'owner',
   filename: __filename,
-  use: "<text or reply to a media>"
-}, async (conn, message, m, { q, isCreator, reply }) => {
-  try {
-    if (!isCreator) return reply("❌ Only the *bot owner* can use this command.");
-    if (!q && !message.quoted) return reply("❌ Provide a text or reply to an image/video!");
+  react: '🚀',
+  owner: true
+}, async (conn, mek, m, { q, reply }) => {
+  if (!isOwner(m.sender)) return reply('❌ Only the owner can use this command.');
 
-    const groupsData = await conn.groupFetchAllParticipating();
-    const groupIds = Object.keys(groupsData);
-    const failed = [];
+  if (!q) return reply('❌ Please provide a message to send.');
 
-    reply(`📣 Broadcasting to *${groupIds.length}* groups and channel...\n⏳ Please wait.`);
+  const allChats = Array.from(conn.store.chats.values());
+  const groupChats = allChats.filter(c => c.id.endsWith('@g.us'));
 
-    // === SEND TO NEWSLETTER (CHANNEL) FIRST ===
+  await reply(`⚡ Sending message to ${groupChats.length} groups with a 90-second delay between each.`);
+
+  for (const group of groupChats) {
     try {
-      const options = {
-        contextInfo: {
-          mentionedJid: [message.sender],
-          forwardingScore: 999,
-          isForwarded: true,
-          forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363401051937059@newsletter',
-            newsletterName: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-            serverMessageId: 143
-          }
-        }
-      };
-
-      if (message.quoted?.mtype?.includes('image')) {
-        const buffer = await message.quoted.download();
-        await conn.sendMessage(message.chat, {
-          image: buffer,
-          caption: q || '',
-          ...options
-        }, { quoted: message });
-      } else if (message.quoted?.mtype?.includes('video')) {
-        const buffer = await message.quoted.download();
-        await conn.sendMessage(message.chat, {
-          video: buffer,
-          caption: q || '',
-          ...options
-        }, { quoted: message });
-      } else {
-        await conn.sendMessage(message.chat, {
-          text: q,
-          ...options
-        }, { quoted: message });
-      }
+      await conn.sendMessage(group.id, { text: q });
+      await delay(90000);
     } catch (e) {
-      console.error("❌ Failed to send to newsletter:", e.message);
+      console.error(`Error sending to group ${group.id}:`, e.message);
     }
-
-    for (const groupId of groupIds) {
-      try {
-        await sleep(1500);
-
-        if (message.quoted && message.quoted.mtype?.includes("image")) {
-          const buffer = await message.quoted.download();
-          await conn.sendMessage(groupId, {
-            image: buffer,
-            caption: q || '',
-          });
-        } else if (message.quoted && message.quoted.mtype?.includes("video")) {
-          const buffer = await message.quoted.download();
-          await conn.sendMessage(groupId, {
-            video: buffer,
-            caption: q || '',
-          });
-        } else {
-          await conn.sendMessage(groupId, {
-            text: `*📢 Broadcast:*\n\n${q}`
-          });
-        }
-
-      } catch (err) {
-        failed.push(groupId);
-        console.error(`❌ Error with ${groupId}:`, err.message);
-      }
-    }
-
-    reply(`✅ Broadcast finished.\n\n*Success:* ${groupIds.length - failed.length}\n*Failed:* ${failed.length}${failed.length > 0 ? `\n\nFailed groups:\n${failed.join("\n")}` : ""}`);
-
-  } catch (err) {
-    console.error("Broadcast Error:", err);
-    await m.error(`❌ Error: ${err.message}`, err);
   }
+
+  await reply('✅ Message sending completed.');
 });
 
 // === BROADCAST TO PRIVATE USERS ===
