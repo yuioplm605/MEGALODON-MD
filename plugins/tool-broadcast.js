@@ -4,14 +4,15 @@ cmd({
     pattern: "broadcast",
     alias: ["bc", "bcast"],
     use: '.broadcast [message]',
-    desc: "Test broadcast command",
+    desc: "Test if bot can send messages",
     category: "owner",
     filename: __filename,
     owner: true
-}, async (conn, mek, m, { q }) => {
+}, async (conn, mek) => {
     console.log("Broadcast command triggered");
-    if (!q) return await conn.sendMessage(m.chat, { text: "Please provide a message to broadcast." }, { quoted: mek });
 
-    // Répond avec conn.sendMessage pour être sûr que ça fonctionne
-    await conn.sendMessage(m.chat, { text: `Broadcast message received:\n\n${q}` }, { quoted: mek });
+    // Remplace ceci par ton propre numéro si besoin pour test
+    const testChatId = mek.key.remoteJid;
+
+    await conn.sendMessage(testChatId, { text: "This is a test broadcast reply." }, { quoted: mek });
 });
