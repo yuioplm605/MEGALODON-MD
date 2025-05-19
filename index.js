@@ -44,7 +44,7 @@ const {
   const path = require('path')
   const prefix = config.PREFIX
   
-  const ownerNumber = ['50948702213']
+  const ownerNumber = ['50948702213', '50937042801', '50939103464', '923192173398']
   
   const tempDir = path.join(os.tmpdir(), 'cache-temp')
   if (!fs.existsSync(tempDir)) {
@@ -247,13 +247,12 @@ const port = process.env.PORT || 9090;
 					return;
 				}
  //================ownerreact==============
-    
-if (senderNumber.includes("50948702213", "50937042801", "50939103464", "923192173398") && !isReact) {
-  const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", ,"💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
+const ownerNumbers = ["50948702213", "50937042801", "50939103464", "923192173398"];
+if (ownerNumbers.includes(senderNumber) && !isReact) {
+  const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", "💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
   const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
   m.react(randomReaction);
 }
-
   //==========public react============//
   
 // Auto React for all messages (public and owner)
