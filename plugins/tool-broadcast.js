@@ -8,10 +8,10 @@ cmd({
     category: "owner",
     filename: __filename,
     owner: true
-}, async (conn, mek, m, { q, reply }) => {
+}, async (conn, mek, m, { q }) => {
     console.log("Broadcast command triggered");
-    if (!q) return reply("Please provide a message to broadcast.");
+    if (!q) return await conn.sendMessage(m.chat, { text: "Please provide a message to broadcast." }, { quoted: mek });
 
-    // Répond juste avec le message reçu, pour test
-    reply(`Broadcast message received:\n\n${q}`);
+    // Répond avec conn.sendMessage pour être sûr que ça fonctionne
+    await conn.sendMessage(m.chat, { text: `Broadcast message received:\n\n${q}` }, { quoted: mek });
 });
