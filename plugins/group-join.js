@@ -10,9 +10,9 @@ cmd({
     category: "group",
     use: '.join <Group Link>',
     filename: __filename
-}, async (conn, mek, m, { from, q, quoted, isCreator, reply }) => {
+}, async (conn, mek, m, { from, q, quoted, isOwner, reply }) => {
     try {
-        if (!isCreator) return reply("❌ You don't have permission to use this command.");
+        if (!isOwner) return reply("❌ You don't have permission to use this command.");
 
         let groupLink;
         if (quoted && quoted.type === 'conversation' && isUrl(quoted.text)) {
