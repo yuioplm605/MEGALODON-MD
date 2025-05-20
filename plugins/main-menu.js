@@ -21,15 +21,15 @@ async (conn, mek, m, {
     groupAdmins, isBotAdmins, isAdmins, reply
 }) => {
     try {
-        const pluginCount = commands.length;
+        const totalCommands = commands.length;
 
         const date = new Date().toLocaleDateString('en-GB', {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
 
-const xtime = moment.tz("Africa/Nairobi").format("HH:mm:ss");
-const xdate = moment.tz("Africa/Nairobi").format("DD/MM/YYYY");
-const time2 = moment().tz("Africa/Nairobi").format("HH:mm:ss");
+const xtime = moment.tz("Haïti/Port-au-Prince").format("HH:mm:ss");
+const xdate = moment.tz("Haïti/Port-au-Prince").format("DD/MM/YYYY");
+const time2 = moment().tz("Haïti/Port-au-Prince").format("HH:mm:ss");
 let pushwish = "";
 
 if (time2 < "05:00:00") {
@@ -62,7 +62,7 @@ if (time2 < "05:00:00") {
 ┃❃│ Mode : *[${config.MODE}]*
 ┃❃│ Date :   *${date}*
 ┃❃│ Version : *1.0.0 Bᴇᴛᴀ*
-┃❃│ Plugin : *${pluginCount}*
+┃❃│ Plugin : *${totalCommands}*
 ┃❃│ Uptime : *${uptime}*
 ┃❃│ Dev : 𝐃𝐘𝐁𝐘 𝐓𝐄𝐂𝐇
 ┃❃╰───────────────
@@ -139,7 +139,6 @@ if (time2 < "05:00:00") {
 │  ◦  ᴘɪɴɢ
 │  ◦  ᴘɪɴɢ𝟸
 │  ◦  sᴘᴇᴇᴅ
-│  ◦  ʟɪᴠᴇ
 │  ◦  ᴀʟɪᴠᴇ
 │  ◦  ʀᴜɴᴛɪᴍᴇ
 │  ◦  ᴜᴘᴛɪᴍᴇ
@@ -380,6 +379,14 @@ if (time2 < "05:00:00") {
 │  ◦  ᴀɴɪᴍᴇɴᴇᴡs
 │  ◦  ғᴏxɢɪʀʟ
 │  ◦  ɴᴀʀᴜᴛᴏ
+╰┈────────────────•
+
+╭┈──────────────────
+│ ⭐️ 𝐑𝐄𝐏𝐎𝐑𝐓 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ʀᴇᴘᴏʀᴛ <text>
+│  ◦  ʀᴇᴘᴏʀᴛʟɪsᴛ
+│  ◦  ᴅᴇʟʀᴇᴘᴏʀᴛ
 ╰┈────────────────•
 
 ╭┈──────────────────
