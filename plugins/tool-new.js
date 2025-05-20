@@ -257,7 +257,7 @@ async (conn, mek, m, { reply }) => {
             minute: "2-digit", 
             second: "2-digit", 
             hour12: true,
-            timeZone: "Asia/Karachi" // Setting Pakistan's time zone explicitly
+            timeZone: "America/Port-au-Prince" // Setting Pakistan's time zone explicitly
         });
         
         // Send the local time as reply
@@ -454,7 +454,7 @@ async (conn, mek, m, { args, reply, senderNumber }) => {
 
 cmd({
     pattern: "calculate",
-    alias: ["calc"],
+    alias: ["calculator"],
     desc: "Evaluate a mathematical expression.",
     category: "utilities",
     filename: __filename
