@@ -1,3 +1,4 @@
+const { cmd } = require("../lib/command");
 const fs = require("fs");
 const path = require("path");
 
