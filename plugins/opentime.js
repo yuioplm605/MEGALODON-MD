@@ -1,6 +1,7 @@
 const config = require('../config');
 const { cmd } = require('../command');
 
+// Parse time duration from arguments
 function parseDuration(value, unit) {
     const multipliers = {
         second: 1000,
@@ -19,29 +20,29 @@ function parseDuration(value, unit) {
 cmd({
     pattern: "opentime",
     react: "🔖",
-    desc: "To open group for a specific time",
+    desc: "Temporarily open group for a specific time",
     category: "group",
-    use: ".opentime 10 minute",
+    use: ".opentime 10 minutes",
     filename: __filename
 }, async (conn, mek, m, { from, args, isGroup, isAdmins, reply }) => {
     try {
-        if (!isGroup) return reply("Cette commande fonctionne uniquement dans les groupes.");
-        if (!isAdmins) return reply("Seuls les administrateurs peuvent utiliser cette commande.");
+        if (!isGroup) return reply("This command only works in groups.");
+        if (!isAdmins) return reply("Only group admins can use this command.");
 
         const timer = parseDuration(args[0], args[1]);
-        if (!timer) return reply("*Choisissez une unité valide :*\nsecond(s), minute(s), hour(s), day(s)\n\n*Exemple :*\n10 minutes");
+        if (!timer) return reply("*Choose a valid unit:*\nseconds, minutes, hours, days\n\n*Example:*\n10 minutes");
 
-        reply(`*Le groupe sera ouvert pendant ${args[0]} ${args[1]}.*`);
+        reply(`*Group will be opened for ${args[0]} ${args[1]}.*`);
         await conn.groupSettingUpdate(from, 'not_announcement');
 
         setTimeout(async () => {
             await conn.groupSettingUpdate(from, 'announcement');
-            await conn.sendMessage(from, { text: `*⏱️ TEMPS ÉCOULÉ*\nLe groupe est maintenant fermé. Seuls les admins peuvent envoyer des messages. 🔐` });
+            await conn.sendMessage(from, { text: `*⏱️ TIME'S UP*\nGroup is now closed. Only admins can send messages. 🔐` });
         }, timer);
 
         await conn.sendMessage(from, { react: { text: `✅`, key: mek.key } });
     } catch (e) {
-        reply("*Erreur lors de l'ouverture temporaire du groupe.*");
+        reply("*An error occurred while opening the group.*");
         console.error(e);
     }
 });
@@ -49,29 +50,29 @@ cmd({
 cmd({
     pattern: "closetime",
     react: "🔖",
-    desc: "To close group for a specific time",
+    desc: "Temporarily close group for a specific time",
     category: "group",
-    use: ".closetime 10 minute",
+    use: ".closetime 10 minutes",
     filename: __filename
 }, async (conn, mek, m, { from, args, isGroup, isAdmins, reply }) => {
     try {
-        if (!isGroup) return reply("Cette commande fonctionne uniquement dans les groupes.");
-        if (!isAdmins) return reply("Seuls les administrateurs peuvent utiliser cette commande.");
+        if (!isGroup) return reply("This command only works in groups.");
+        if (!isAdmins) return reply("Only group admins can use this command.");
 
         const timer = parseDuration(args[0], args[1]);
-        if (!timer) return reply("*Choisissez une unité valide :*\nsecond(s), minute(s), hour(s), day(s)\n\n*Exemple :*\n10 minutes");
+        if (!timer) return reply("*Choose a valid unit:*\nseconds, minutes, hours, days\n\n*Example:*\n10 minutes");
 
-        reply(`*Le groupe sera fermé pendant ${args[0]} ${args[1]}.*`);
+        reply(`*Group will be closed for ${args[0]} ${args[1]}.*`);
         await conn.groupSettingUpdate(from, 'announcement');
 
         setTimeout(async () => {
             await conn.groupSettingUpdate(from, 'not_announcement');
-            await conn.sendMessage(from, { text: `*⏱️ TEMPS ÉCOULÉ*\nLe groupe est maintenant ouvert. Tous les membres peuvent envoyer des messages. 🔓` });
+            await conn.sendMessage(from, { text: `*⏱️ TIME'S UP*\nGroup is now open. All members can send messages. 🔓` });
         }, timer);
 
         await conn.sendMessage(from, { react: { text: `✅`, key: mek.key } });
     } catch (e) {
-        reply("*Erreur lors de la fermeture temporaire du groupe.*");
+        reply("*An error occurred while closing the group.*");
         console.error(e);
     }
 });
