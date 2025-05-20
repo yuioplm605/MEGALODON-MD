@@ -10,6 +10,7 @@ cmd({
     alias: ["ask", "bug", "request"],
     desc: "Report a bug or request a feature",
     category: "utility",
+    react: [👨‍💻],
     filename: __filename
 }, async (conn, m, msg, { args, reply }) => {
     try {
