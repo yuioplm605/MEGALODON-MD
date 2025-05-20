@@ -55,3 +55,31 @@ cmd({
         reply("❌ Failed to send your report.");
     }
 });
+
+//reportlist
+
+cmd({
+    pattern: "reportlist",
+    desc: "Show all bug reports/requests",
+    category: "utility",
+    filename: __filename
+}, async (conn, m, _m, { reply }) => {
+    try {
+        const filePath = "./data/reports.json";
+
+        if (!fs.existsSync(filePath)) return reply("No reports found.");
+        const data = JSON.parse(fs.readFileSync(filePath));
+
+        if (!data.length) return reply("Report list is empty.");
+
+        let text = "*📋 Report List:*\n\n";
+        data.forEach((item, i) => {
+            text += `*${i + 1}. From:* @${item.user}\n*Message:* ${item.message}\n*Date:* ${new Date(item.timestamp).toLocaleString()}\n\n`;
+        });
+
+        await conn.sendMessage(m.chat, { text, mentions: data.map(x => x.user + "@s.whatsapp.net") }, { quoted: m });
+    } catch (err) {
+        console.error(err);
+        reply("❌ Error reading the report list.");
+    }
+});
