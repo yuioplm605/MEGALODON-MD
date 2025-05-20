@@ -369,6 +369,8 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 │  ◦   ʜɪᴅᴇᴛᴀɢ
 │  ◦   ᴛᴀɢᴀʟʟ
 │  ◦   ᴛᴀɢᴀᴅᴍɪɴs
+│  ◦   ᴄʟᴏsᴇᴛɪᴍᴇ
+│  ◦   ᴏᴘᴇɴᴛɪᴍᴇ
 ╰┈────────────────•
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
