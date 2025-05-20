@@ -13,16 +13,17 @@ cmd({
 },
 async (conn, mek, m, { from, sender, pushname, reply }) => {
     try {
-        const dec = `╭━━━〔 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 〕━━╮
+        const dec = `╭━〔 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 〕━╮
 ┃ ✨ *Owner:* ${config.OWNER_NAME}
 ┃ ⚙️ *Mode:* ${config.MODE}
 ┃ 📡 *Platform:* Heroku
 ┃ 🧠 *Type:* NodeJs (Multi Device)
 ┃ ⌨️ *Prefix:* ${config.PREFIX}
 ┃ 🧾 *Version:* 1.0.0 Beta
-╰━━━━━━━━━━━━━━━━━━━━━╯
+╰━━━━━━━━━━━━━━━━━━━━╯
 
-╭━━〔 🧩 *Command Categories* 〕━━╮
+╭━━〔 🧩 *Command Categories* 〕━╮
+┃ ⭐️ Repormenu
 ┃ 📖 Quranmenu
 ┃ 🕋 Prayertime
 ┃ 🤖 Aimenu
@@ -39,7 +40,7 @@ async (conn, mek, m, { from, sender, pushname, reply }) => {
 ┃ 🧩 Othermenu
 ┃ 🖌️ Logo
 ┃ 📦 Repo
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
+╰━━━━━━━━━━━━━━━━━━━━━━╯
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
 `;
 
@@ -180,6 +181,50 @@ async (conn, mek, m, { from, quoted, reply }) => {
 │  ◦  ᴘᴏᴋᴇ @ᴛᴀɢ
 │  ◦  ᴅᴀɴᴄᴇ @ᴛᴀɢ
 │  ◦  ᴄʀɪɴɢᴇ @ᴛᴀɢ
+╰┈────────────────•
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+
+        await conn.sendMessage(
+            from,
+            {
+                image: { url: `https://files.catbox.moe/rful77.jpg` },
+                caption: dec,
+                contextInfo: {
+                    mentionedJid: [m.sender],
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363372853772240@newsletter',
+                        newsletterName: '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
+                        serverMessageId: 144
+                    }
+                }
+            },
+            { quoted: mek }
+        );
+
+    } catch (e) {
+        console.log(e);
+        reply(`${e}`);
+    }
+});
+
+
+cmd({
+    pattern: "reportmenu",
+    desc: "Shows the report commands",
+    category: "menu",
+    react: "⭐️",
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, reply }) => {
+    try {
+        let dec = `╭┈──────────────────
+│ ⭐️ 𝐑𝐄𝐏𝐎𝐑𝐓 𝐌𝐄𝐍𝐔
+╭┈──────────────────
+│  ◦  ʀᴇᴘᴏʀᴛ <text>
+│  ◦  ʀᴇᴘᴏʀᴛʟɪsᴛ
+│  ◦  ᴅᴇʟʀᴇᴘᴏʀᴛ
 ╰┈────────────────•
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
