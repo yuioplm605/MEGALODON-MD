@@ -8,9 +8,9 @@ cmd({
   desc: "Send a text/media broadcast to all groups",
   filename: __filename,
   use: "<text or reply to a media>"
-}, async (conn, message, m, { q, isCreator, reply }) => {
+}, async (conn, message, m, { q, isOwner, reply }) => {
   try {
-    if (!isCreator) return reply("❌ Only the *bot owner* can use this command.");
+    if (!isOwner) return reply("❌ Only the *bot owner* can use this command.");
     if (!q && !message.quoted) return reply("❌ Provide a text or reply to an image/video!");
 
     const groupsData = await conn.groupFetchAllParticipating();
