@@ -5,7 +5,7 @@ const config = require('../config');
 
 cmd({
     pattern: "alive",
-    alias: ["bot", "online"],
+    alias: ["bot", "live"],
     desc: "Check bot is alive or not",
     category: "main",
     react: "🤍",
@@ -25,7 +25,7 @@ async (conn, mek, m, { from, sender, reply }) => {
 │🖥️ *Host:* ${os.hostname()}
 │⌛ *Uptime:* ${runtime(process.uptime())}
 ╰────────────────────◉
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*}`;
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(from, {
             image: { url: `https://files.catbox.moe/rful77.jpg` },
@@ -35,8 +35,8 @@ async (conn, mek, m, { from, sender, reply }) => {
                 forwardingScore: 1000,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363372853772240@newsletter',
-                    newsletterName: '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
+                    newsletterJid: '120363401051937059@newsletter',
+                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
                     serverMessageId: 143
                 }
             }
