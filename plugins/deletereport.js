@@ -6,7 +6,7 @@ cmd({
     alias: ["delreport", "delreport"],
     desc: "Delete a specific report by its index",
     category: "owner",
-    react: [🗑]
+    react: ["🗑"],
     filename: __filename,
     use: "<report number>"
 }, async (conn, m, msg, { args, reply }) => {
