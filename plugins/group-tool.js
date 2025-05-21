@@ -159,9 +159,7 @@ async (conn, mek, m, {
     }
 });
 
-// kickall
-
-const { cmd } = require("../command");
+// kickall private 
 
 cmd({
   pattern: "purger",
