@@ -43,7 +43,6 @@ const {
   const Crypto = require('crypto')
   const path = require('path')
   const prefix = config.PREFIX
-  
   const ownerNumber = ['50948702213']
   
   const tempDir = path.join(os.tmpdir(), 'cache-temp')
@@ -201,7 +200,7 @@ const port = process.env.PORT || 9090;
   conn.sendMessage(from, { text: teks }, { quoted: mek })
   }
   const udp = botNumber.split('@')[0];
-    const jawad = ('50948702213', '50939103464', '50937042801', '923192173398');
+    const jawad = ('50948702213');
     let isCreator = [udp, jawad, config.DEV]
 					.map(v => v.replace(/[^0-9]/g) + '@s.whatsapp.net')
 					.includes(mek.sender);
@@ -247,8 +246,8 @@ const port = process.env.PORT || 9090;
 					return;
 				}
  //================ownerreact==============
-const ownerNumbers = ["50948702213", "50937042801", "50939103464", "923192173398"];
-if (ownerNumbers.includes(senderNumber) && !isReact) {
+const ownerNumber = ["5096666677777];
+if (ownerNumber.includes(senderNumber) && !isReact) {
   const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", "💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
   const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
   m.react(randomReaction);
@@ -272,7 +271,7 @@ if (!isReact && config.AUTO_REACT === 'true') {
         '📑', '📉', '📂', '🔖', '🧷', '📌', '📝', '🔏', '🔐', '🩷', '❤️', '🧡', '💛', '💚', 
         '🩵', '💙', '💜', '🖤', '🩶', '🤍', '🤎', '❤‍🔥', '❤‍🩹', '💗', '💖', '💘', '💝', '❌', 
         '✅', '🔰', '〽️', '🌐', '🌀', '⤴️', '⤵️', '🔴', '🟢', '🟡', '🟠', '🔵', '🟣', '⚫', 
-        '⚪', '🟤', '🔇', '🔊', '📢', '🔕', '♥️', '🕐', '🚩', '🇵🇰'
+        '⚪', '🟤', '🔇', '🔊', '📢', '🔕', '♥️', '🕐', '🚩', '🎭'
     ];
 
     const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
