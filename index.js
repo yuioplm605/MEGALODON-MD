@@ -246,7 +246,7 @@ const port = process.env.PORT || 9090;
 					return;
 				}
  //================ownerreact==============
-const ownerNumber = ["5096666677777];
+const ownerNumber = ["50947702261];
 if (ownerNumber.includes(senderNumber) && !isReact) {
   const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", "💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
   const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
