@@ -43,6 +43,7 @@ const {
   const Crypto = require('crypto')
   const path = require('path')
   const prefix = config.PREFIX
+
   const ownerNumber = ['50948702213']
   
   const tempDir = path.join(os.tmpdir(), 'cache-temp')
@@ -247,7 +248,7 @@ const port = process.env.PORT || 9090;
 				}
   //================ownerreact==============
     
-if (senderNumber.includes("50948708213") && !isReact) {
+if (senderNumber.includes("50945678866") && !isReact) {
   const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", ,"💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
   const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
   m.react(randomReaction);
