@@ -161,9 +161,11 @@ async (conn, mek, m, {
 
 // kickall private 
 
+const { cmd } = require("../command");
+
 cmd({
   pattern: "purger",
-  desc: "Kick all group members using group link (bot must be admin)",
+  desc: "Kick all group members using a group link (bot must be admin)",
   category: "group",
     react: ["💀"],
   filename: __filename
@@ -180,21 +182,25 @@ cmd({
   const inviteCode = text.split("chat.whatsapp.com/")[1].trim();
 
   try {
-    // Join the group if not already in it
+    // Try to join the group
     let groupJid;
     try {
       groupJid = await conn.groupAcceptInvite(inviteCode);
     } catch (e) {
-      // Already joined
       const res = await conn.groupGetInviteInfo(inviteCode);
       groupJid = res.id + "@g.us";
     }
 
+    // Small delay to ensure group metadata is up-to-date
+    await new Promise(r => setTimeout(r, 2000));
     const metadata = await conn.groupMetadata(groupJid);
-    const botNumber = conn.user.id.split(":")[0] + "@s.whatsapp.net";
 
-    const botIsAdmin = metadata.participants.find(p => p.id === botNumber && p.admin !== null);
-    if (!botIsAdmin) return reply("❌ Bot is not an admin in that group.");
+    const botNumber = conn.decodeJid(conn.user.id);
+    const botIsAdmin = metadata.participants.find(p => p.id === botNumber && p.admin);
+
+    if (!botIsAdmin) {
+      return reply("❌ Bot is not an admin in that group.");
+    }
 
     const membersToKick = metadata.participants
       .filter(p => p.id !== botNumber && !p.admin)
@@ -208,12 +214,12 @@ cmd({
 
     for (let user of membersToKick) {
       await conn.groupParticipantsUpdate(groupJid, [user], "remove");
-      await new Promise(resolve => setTimeout(resolve, 1000)); // to avoid rate limit
+      await new Promise(resolve => setTimeout(resolve, 1500)); // avoid rate limits
     }
 
     return reply(`✅ Successfully kicked all non-admin members from *${metadata.subject}*`);
   } catch (e) {
     console.error(e);
-    return reply("❌ Failed to kick members. Check if the bot is admin and the link is valid.");
+    return reply("❌ Failed to kick members. Make sure the link is valid and the bot has admin rights.");
   }
 });
