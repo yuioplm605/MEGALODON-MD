@@ -34,8 +34,6 @@ cmd({
 
 // send by DybyTech 
 
-const { cmd } = require('../command');
-
 const PASSWORD = "20000";
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
