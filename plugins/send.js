@@ -1,3 +1,39 @@
+// plugin by DybyTech 
+// don't copy m'y plugin 
+
+const fs = require('fs');
+const path = require('path');
+const { cmd } = require('../command');
+
+const filePath = path.join(__dirname, '../data/password.json');
+
+function setPassword(newPass) {
+    fs.writeFileSync(filePath, JSON.stringify({ send_password: newPass }, null, 2));
+}
+
+cmd({
+    pattern: "setpassword",
+    desc: "Changer le mot de passe pour .send",
+    category: "owner",
+    filename: __filename,
+    react: "🔐",
+    owner: true
+}, async (conn, mek, m, { q, reply }) => {
+    if (!q || q.trim().length < 4) {
+        return reply("❗ Utilisation : .setpassword <nouveau_mot_de_passe> (min 4 caractères)");
+    }
+
+    try {
+        setPassword(q.trim());
+        reply(`✅ Nouveau mot de passe enregistré : *${q.trim()}*`);
+    } catch (e) {
+        console.error(e);
+        reply("❌ Erreur lors de l'enregistrement.");
+    }
+});
+
+// send by DybyTech 
+
 const { cmd } = require('../command');
 
 const PASSWORD = "20000";
@@ -59,3 +95,28 @@ cmd({
         await reply(`❌ Erreur : ${e.message}`);
     }
 });
+
+
+// vuew  mdps
+
+
+cmd({
+    pattern: "viewpassword",
+    desc: "Voir le mot de passe actuel",
+    category: "owner",
+    filename: __filename,
+    react: "🛡️",
+    owner: true
+}, async (conn, mek, m, { reply }) => {
+    try {
+        const filePath = path.join(__dirname, '../data/password.json');
+        if (!fs.existsSync(filePath)) return reply("❌ Aucun mot de passe trouvé.");
+        const data = JSON.parse(fs.readFileSync(filePath));
+        reply(`🔐 Mot de passe actuel : *${data.send_password}*`);
+    } catch (e) {
+        console.error(e);
+        reply("❌ Erreur lors de la lecture.");
+    }
+});
+
+// *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
