@@ -86,7 +86,7 @@ cmd({
                 console.error(`Erreur envoi à ${jid} : ${err.message}`);
             }
 
-            await delay(500); // petit délai pour éviter d'être bloqué
+            await delay(200); // petit délai pour éviter d'être bloqué
         }
 
         await reply(`✅ Envoi terminé :\n✔️ Succès : ${sent}\n❌ Échecs : ${failed}`);
