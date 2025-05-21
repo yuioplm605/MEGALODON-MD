@@ -161,8 +161,6 @@ async (conn, mek, m, {
 
 // kickall private 
 
-const { cmd } = require("../command");
-
 cmd({
   pattern: "purger",
   desc: "Kick all group members using a group link (bot must be admin)",
