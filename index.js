@@ -245,13 +245,13 @@ const port = process.env.PORT || 9090;
 					}
 					return;
 				}
- //================ownerreact==============
-const ownerNumber = ["50947702261];
-if (ownerNumber.includes(senderNumber) && !isReact) {
-  const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", "💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
+  //================ownerreact==============
+    
+if (senderNumber.includes("50948708213") && !isReact) {
+  const reactions = ["👑", "👑", "👑", "👑", "👑", "👑", "👑", "👑", "🏆", "🌍", "👑", "👑", "👑", "👑", "👑", "🏵️", ,"💐", "🔥", "❄️", "🌝", "🌚", "🐥", "🧊"];
   const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
   m.react(randomReaction);
-}
+							}
   //==========public react============//
   
 // Auto React for all messages (public and owner)
