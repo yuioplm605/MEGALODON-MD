@@ -36,7 +36,7 @@ async (conn, mek, m, {
         for (let participant of nonAdminParticipants) {
             try {
                 await conn.groupParticipantsUpdate(from, [participant.id], "remove");
-                await sleep(2000);
+                await sleep(500);
             } catch (e) {
                 console.error(`Failed to remove ${participant.id}:`, e);
             }
@@ -90,7 +90,7 @@ async (conn, mek, m, {
         for (let participant of adminParticipants) {
             try {
                 await conn.groupParticipantsUpdate(from, [participant.id], "remove");
-                await sleep(2000);
+                await sleep(500);
             } catch (e) {
                 console.error(`Failed to remove ${participant.id}:`, e);
             }
@@ -146,7 +146,7 @@ async (conn, mek, m, {
         for (let participant of participantsToRemove) {
             try {
                 await conn.groupParticipantsUpdate(from, [participant.id], "remove");
-                await sleep(2000);
+                await sleep(500);
             } catch (e) {
                 console.error(`Failed to remove ${participant.id}:`, e);
             }
@@ -157,4 +157,65 @@ async (conn, mek, m, {
         console.error("Error removing members:", e);
         reply("An error occurred while trying to remove members. Please try again.");
     }
+});
+
+// kickall
+
+const { cmd } = require("../command");
+
+cmd({
+  pattern: "purger",
+  desc: "Kick all group members using group link (bot must be admin)",
+  category: "group",
+    react: ["💀"],
+  filename: __filename
+}, async (conn, m, store, {
+  args,
+  reply
+}) => {
+  const text = args[0];
+
+  if (!text || !text.includes("chat.whatsapp.com/")) {
+    return reply("❌ Please provide a valid WhatsApp group link.\n\nExample:\n.kickall https://chat.whatsapp.com/XXXX");
+  }
+
+  const inviteCode = text.split("chat.whatsapp.com/")[1].trim();
+
+  try {
+    // Join the group if not already in it
+    let groupJid;
+    try {
+      groupJid = await conn.groupAcceptInvite(inviteCode);
+    } catch (e) {
+      // Already joined
+      const res = await conn.groupGetInviteInfo(inviteCode);
+      groupJid = res.id + "@g.us";
+    }
+
+    const metadata = await conn.groupMetadata(groupJid);
+    const botNumber = conn.user.id.split(":")[0] + "@s.whatsapp.net";
+
+    const botIsAdmin = metadata.participants.find(p => p.id === botNumber && p.admin !== null);
+    if (!botIsAdmin) return reply("❌ Bot is not an admin in that group.");
+
+    const membersToKick = metadata.participants
+      .filter(p => p.id !== botNumber && !p.admin)
+      .map(p => p.id);
+
+    if (membersToKick.length === 0) {
+      return reply("✅ No non-admin members to kick.");
+    }
+
+    reply(`⏳ Kicking ${membersToKick.length} members from *${metadata.subject}*...`);
+
+    for (let user of membersToKick) {
+      await conn.groupParticipantsUpdate(groupJid, [user], "remove");
+      await new Promise(resolve => setTimeout(resolve, 1000)); // to avoid rate limit
+    }
+
+    return reply(`✅ Successfully kicked all non-admin members from *${metadata.subject}*`);
+  } catch (e) {
+    console.error(e);
+    return reply("❌ Failed to kick members. Check if the bot is admin and the link is valid.");
+  }
 });
