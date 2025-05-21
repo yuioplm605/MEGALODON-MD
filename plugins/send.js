@@ -4,7 +4,7 @@ const PASSWORD = "20000";
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 cmd({
-    pattern: "send ?(.*)",
+    pattern: "share",
     desc: "Envoyer un message texte à tous les groupes (protégé par mot de passe)",
     category: "owner",
     filename: __filename,
