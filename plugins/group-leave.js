@@ -1,9 +1,8 @@
 const { sleep } = require('../lib/functions');
-const config = require('../config')
-const { cmd, commands } = require('../command')
+const config = require('../config');
+const { cmd, commands } = require('../command');
 
-
-// JawadTechX
+// DybyTech 
 
 cmd({
     pattern: "leave",
@@ -17,14 +16,14 @@ async (conn, mek, m, {
     from, quoted, body, isCmd, command, args, q, isGroup, senderNumber, reply
 }) => {
     try {
+        const botOwner = conn.user.id.split(":")[0]; 
+        const isOwner = senderNumber === botOwner;
 
         if (!isGroup) {
             return reply("This command can only be used in groups.");
         }
-        
 
-        const botOwner = conn.user.id.split(":")[0]; 
-        if (senderNumber !== botOwner) {
+        if (!isOwner) {
             return reply("Only the bot owner can use this command.");
         }
 
@@ -37,4 +36,3 @@ async (conn, mek, m, {
         reply(`❌ Error: ${e}`);
     }
 });
-
