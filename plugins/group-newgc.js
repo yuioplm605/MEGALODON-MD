@@ -1,46 +1,56 @@
 //---------------------------------------------------------------------------
-//           MEGALODON-MD  
-//---------------------------------------------------------------------------
-//  ⚠️ DO NOT MODIFY THIS FILE ⚠️  
-//---------------------------------------------------------------------------
-const { cmd, commands } = require('../command');
+ //           MEGALODON-MD 
+ //---------------------------------------------------------------------------
+ //  ⚠️ DO NOT MODIFY THIS FILE ⚠️
+ //---------------------------------------------------------------------------
+const { cmd } = require('../command');
 const config = require('../config');
 const prefix = config.PREFIX;
-const fs = require('fs');
-const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions2');
-const { writeFileSync } = require('fs');
-const path = require('path');
+const { isUrl } = require('../lib/functions2');
 
 cmd({
   pattern: "newgc",
   category: "group",
   desc: "Create a new group and add participants.",
   filename: __filename,
-}, async (conn, mek, m, { from, isGroup, body, sender, groupMetadata, participants, reply }) => {
+  use: `${prefix}newgc group_name;number1,number2,...`,
+  owner: true, // <- restriction au propriétaire
+}, async (conn, mek, m, { from, isGroup, body, sender, isOwner, reply }) => {
   try {
+    if (!isOwner) return reply("❌ *Only the bot owner can use this command.*");
+
     if (!body) {
-      return reply(`Usage: !newgc group_name;number1,number2,...`);
+      return reply(`Usage: ${prefix}newgc group_name;number1,number2,...`);
     }
 
     const [groupName, numbersString] = body.split(";");
-    
+
     if (!groupName || !numbersString) {
-      return reply(`Usage: !newgc group_name;number1,number2,...`);
+      return reply(`Usage: ${prefix}newgc group_name;number1,number2,...`);
     }
 
-    const participantNumbers = numbersString.split(",").map(number => `${number.trim()}@s.whatsapp.net`);
+    const participantNumbers = numbersString
+      .split(",")
+      .map(n => n.trim())
+      .filter(n => /^\d{7,15}$/.test(n))
+      .map(n => `${n}@s.whatsapp.net`);
+
+    if (participantNumbers.length === 0) {
+      return reply("Please provide at least one valid phone number.");
+    }
 
     const group = await conn.groupCreate(groupName, participantNumbers);
-    console.log('created group with id: ' + group.id); // Use group.id here
+    const inviteCode = await conn.groupInviteCode(group.id);
 
-    const inviteLink = await conn.groupInviteCode(group.id); // Use group.id to get the invite link
+    await conn.sendMessage(group.id, {
+      text: `*Welcome to ${groupName}!* 🎉\n\nThis group was created by @${sender.split("@")[0]}`,
+      mentions: [sender]
+    });
 
-    await conn.sendMessage(group.id, { text: 'hello there' });
+    reply(`✅ Group *${groupName}* created successfully!\n\nInvite link: https://chat.whatsapp.com/${inviteCode}`);
 
-    reply(`Group created successfully with invite link: https://chat.whatsapp.com/${inviteLink}\nWelcome message sent.`);
   } catch (e) {
-    return reply(`*An error occurred while processing your request.*\n\n_Error:_ ${e.message}`);
+    console.error(e);
+    return reply(`❌ *An error occurred while creating the group.*\n\nError: ${e.message}`);
   }
 });
-
-
