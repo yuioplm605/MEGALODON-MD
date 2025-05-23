@@ -1,6 +1,5 @@
 // plugin by DybyTech
 // do not copy my plugin
-const config = require("../config");
 const fs = require('fs');
 const path = require('path');
 const { cmd } = require('../command');
@@ -8,7 +7,6 @@ const { cmd } = require('../command');
 // List of allowed owner JIDs
 const owners = ['50948702213@s.whatsapp.net']; // Replace with your own number (include @s.whatsapp.net)
 const isOwner = (sender) => owners.includes(sender);
-const isSudo = config.SUDO_LIST.includes(senderNumber);
 
 const filePath = path.join(__dirname, '../data/password.json');
 
@@ -25,9 +23,9 @@ cmd({
     react: "🔐",
     owner: true
 }, async (conn, mek, m, { q, reply }) => {
-    if (!isOwner && !isSudo) {
+    if (!isOwner) {
       return await client.sendMessage(from, {
-        text: "*📛 This is an owner/sudo-only command.*"
+        text: "*📛 This is an owner command.*"
       }, { quoted: message });
     }
     if (!q || q.trim().length < 4) {
@@ -54,7 +52,7 @@ cmd({
     react: "📢",
     owner: true
 }, async (conn, mek, m, { q, reply }) => {
-    if (!isOwner && !isSudo) {
+    if (!isOwner) {
       return await client.sendMessage(from, {
         text: "*📛 This is an owner/sudo-only command.*"
       }, { quoted: message });
@@ -125,9 +123,9 @@ cmd({
     react: "🛡️",
     owner: true
 }, async (conn, mek, m, { reply }) => {
-    if (!isOwner && !isSudo) {
+    if (!isOwner) {
       return await client.sendMessage(from, {
-        text: "*📛 This is an owner/sudo-only command.*"
+        text: "*📛 This is an owner command.*"
       }, { quoted: message });
     }
     try {
