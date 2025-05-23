@@ -5,13 +5,12 @@ cmd({
   pattern: "vv",
   alias: ["viewonce", 'vv2'],
   react: '🐳',
-  desc: "Owner/Sudo Only - retrieve quoted message back to user",
+  desc: "Owner retrieve quoted message back to user",
   category: "owner",
   filename: __filename
 }, async (client, message, match, { from, senderNumber, isOwner }) => {
   try {
-    const isSudo = config.SUDO_LIST.includes(senderNumber);
-    if (!isOwner && !isSudo) {
+    if (!isOwner) {
       return await client.sendMessage(from, {
         text: "*📛 This is an owner/sudo-only command.*"
       }, { quoted: message });
