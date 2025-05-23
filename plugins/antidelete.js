@@ -1,3 +1,4 @@
+const config = require("../config");
 const { cmd } = require('../command');
 const { getAnti, setAnti, initializeAntiDeleteSettings } = require('../data/antidel');
 
@@ -11,7 +12,12 @@ cmd({
     filename: __filename
 },
 async (conn, mek, m, { reply, q, isOwner }) => {
-    if (!isOwner) return reply('Cette commande est réservée au propriétaire du bot.');
+    const isSudo = config.SUDO_LIST.includes(senderNumber);
+    if (!isOwner && !isSudo) {
+      return await client.sendMessage(from, {
+        text: "*📛 This is an owner/sudo-only command.*"
+      }, { quoted: message });
+    }
     try {
         const command = q?.toLowerCase();
 
@@ -52,11 +58,11 @@ async (conn, mek, m, { reply, q, isOwner }) => {
             default:
                 return reply(`-- *Guide des commandes AntiDelete* --
 • \`\`.antidelete on\`\` – Active AntiDelete globalement
-• \`\`.antidelete off gc\`\` – Désactive pour groupes
-• \`\`.antidelete off dm\`\` – Désactive pour DM
-• \`\`.antidelete set gc\`\` – Active/Désactive pour groupes
-• \`\`.antidelete set dm\`\` – Active/Désactive pour DM
-• \`\`.antidelete set all\`\` – Active pour tous les chats
+• \`\`.antidelete off gc\`\` – Desactivate for group
+• \`\`.antidelete off dm\`\` – Desactivat for DM
+• \`\`.antidelete set gc\`\` – Activate/Desactivate for groups
+• \`\`.antidelete set dm\`\` – Activate/Desactivate for DM
+• \`\`.antidelete set all\`\` – Activate for all chats
 • \`\`.antidelete status\`\` – Vérifie le statut actuel`);
         }
     } catch (e) {
