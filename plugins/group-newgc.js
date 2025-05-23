@@ -21,7 +21,8 @@ cmd({
     const [groupName, groupDesc] = body.split("|");
     if (!groupName) return reply("❌ Group name is required.");
 
-    const group = await conn.groupCreate(groupName, [`${sender}`]);
+    const formattedSender = sender.endsWith('@s.whatsapp.net') ? sender : `${sender.split('@')[0]}@s.whatsapp.net`;
+    const group = await conn.groupCreate(groupName, [formattedSender]);
     const inviteCode = await conn.groupInviteCode(group.id);
 
     if (groupDesc) {
@@ -36,13 +37,13 @@ cmd({
     // Set group profile picture
     await conn.updateProfilePicture(group.id, { jpegThumbnail: imageBuffer });
 
-    // Welcome message in group
+    // Send welcome message in the group
     await conn.sendMessage(group.id, {
       text: `👋 *Welcome to ${groupName}!* This group was created by @${sender.split("@")[0]}`,
       mentions: [sender]
     });
 
-    // Stylish private confirmation message
+    // Send confirmation privately
     return reply(`╭━━━〔 *✅ GROUP CREATED SUCCESSFULLY* 〕━━⬣
 ┃📛 *Group name:* ${groupName}
 ┃📝 *Description:*
