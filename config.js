@@ -1,5 +1,4 @@
-//Powered by DybyTech
-
+// Powered by DybyTech
 
 const fs = require('fs');
 if (fs.existsSync('config.env')) require('dotenv').config({ path: './config.env' });
@@ -7,9 +6,13 @@ if (fs.existsSync('config.env')) require('dotenv').config({ path: './config.env'
 function convertToBool(text, fault = 'true') {
     return text === fault ? true : false;
 }
+
 module.exports = {
 SESSION_ID: process.env.SESSION_ID || "MEGALODON~MD~",
 // add your Session Id 
+SUDO_LIST: process.env.SUDO_LIST ? process.env.SUDO_LIST.split(',').map(n => n.trim()) : ["50934960331"],
+// example: 50911111111,50922222222
+
 AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "true",
 // make true or false status auto seen
 AUTO_STATUS_REPLY: process.env.AUTO_STATUS_REPLY || "false",
@@ -31,55 +34,55 @@ MENU_IMAGE_URL: process.env.MENU_IMAGE_URL || "https://files.catbox.moe/rful77.j
 PREFIX: process.env.PREFIX || ".",
 // add your prifix for bot   
 BOT_NAME: process.env.BOT_NAME || "MEGALODON-MD",
-// add bot namw here for menu
+// add bot name here for menu
 STICKER_NAME: process.env.STICKER_NAME || "MEGALODON-MD",
 // type sticker pack name 
 CUSTOM_REACT: process.env.CUSTOM_REACT || "false",
-// make this true for custum emoji react    
+// make this true for custom emoji react    
 CUSTOM_REACT_EMOJIS: process.env.CUSTOM_REACT_EMOJIS || "💝,💖,💗,❤️‍🩹,❤️,🧡,💛,💚,💙,💜,🤎,🖤,🤍",
-// chose custom react emojis by yourself 
+// choose custom react emojis by yourself 
 DELETE_LINKS: process.env.DELETE_LINKS || "false",
-// automatic delete links witho remove member 
+// automatic delete links without removing member 
 OWNER_NUMBER: process.env.OWNER_NUMBER || "50948702213",
 // add your bot owner number
 OWNER_NAME: process.env.OWNER_NAME || "ᴅʏʙʏ ᴛᴇᴄʜ",
 // add bot owner name
 DESCRIPTION: process.env.DESCRIPTION || "*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*",
-// add bot owner name    
+// bot description    
 ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/rful77.jpg",
-// add img for alive msg
+// image for alive msg
 LIVE_MSG: process.env.LIVE_MSG || "> Zinda Hun Yar *MEGALODON-MD*⚡",
-// add alive msg here 
+// alive msg content
 READ_MESSAGE: process.env.READ_MESSAGE || "false",
 // Turn true or false for automatic read msgs
 AUTO_REACT: process.env.AUTO_REACT || "false",
-// make this true or false for auto react on all msgs
+// auto react on all msgs
 ANTI_BAD: process.env.ANTI_BAD || "false",
-// false or true for anti bad words  
+// anti bad words  
 MODE: process.env.MODE || "public",
-// make bot public-private-inbox-group 
+// public/private/inbox/group 
 ANTI_LINK_KICK: process.env.ANTI_LINK_KICK || "false",
-// make anti link true,false for groups 
+// kick user if share link 
 AUTO_VOICE: process.env.AUTO_VOICE || "false",
-// make true for send automatic voices
+// auto voice messages
 AUTO_STICKER: process.env.AUTO_STICKER || "false",
-// make true for automatic stickers 
+// auto stickers 
 AUTO_REPLY: process.env.AUTO_REPLY || "false",
-// make true or false automatic text reply 
+// automatic text reply 
 ALWAYS_ONLINE: process.env.ALWAYS_ONLINE || "false",
-// maks true for always online 
+// always online 
 PUBLIC_MODE: process.env.PUBLIC_MODE || "true",
-// make false if want private mod
+// false if want private mode
 AUTO_TYPING: process.env.AUTO_TYPING || "false",
-// true for automatic show typing   
+// show typing status   
 READ_CMD: process.env.READ_CMD || "false",
-// true if want mark commands as read 
+// mark commands as read 
 DEV: process.env.DEV || "50934960331",
-//replace with your whatsapp number        
+// your whatsapp number        
 ANTI_VV: process.env.ANTI_VV || "true",
-// true for anti once view 
+// anti view once 
 ANTI_DEL_PATH: process.env.ANTI_DEL_PATH || "log", 
-// change it to 'same' if you want to resend deleted message in same chat 
+// path to save deleted messages
 AUTO_RECORDING: process.env.AUTO_RECORDING || "false"
-// make it true for auto recoding 
+// auto recording status 
 };
