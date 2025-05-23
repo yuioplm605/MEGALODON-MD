@@ -8,7 +8,7 @@ const {cmd , commands} = require('../command')
 cmd({
   on: "body"
 },    
-async (conn, mek, m, { from, body, isOwner }) => {       
+async (conn, mek, m, { from, body, isOwner, isSudo }) => {       
  if (config.AUTO_RECORDING === 'true') {
                 await conn.sendPresenceUpdate('recording', from);
             }
