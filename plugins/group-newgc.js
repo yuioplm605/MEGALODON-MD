@@ -1,6 +1,3 @@
-//---------------------------------------------------------------------------
- //        MEGALODON-MD - newgc Plugin (image from URL - English)
- //---------------------------------------------------------------------------
 const { cmd } = require('../command');
 const config = require('../config');
 const prefix = config.PREFIX;
@@ -9,53 +6,54 @@ const axios = require('axios');
 cmd({
   pattern: "newgc",
   category: "group",
-  desc: "Create a WhatsApp group with profile picture and no initial members.",
+  desc: "Create a group with specified members and profile picture.",
   filename: __filename,
-  use: `${prefix}newgc GroupName|Description`,
+  use: `${prefix}newgc GroupName + 229XXXXXXXX,229YYYYYYYY`,
   owner: true,
 }, async (conn, mek, m, { body, sender, isOwner, reply }) => {
   try {
     if (!isOwner) return reply("❌ Only the bot owner can use this command.");
-    if (!body.includes("|")) return reply(`Usage: ${prefix}newgc GroupName|Description`);
+    if (!body.includes("+")) return reply(`Usage: ${prefix}newgc GroupName + number1,number2`);
 
-    const [groupName, groupDesc] = body.split("|");
-    if (!groupName) return reply("❌ Group name is required.");
+    const [groupNameRaw, numbersRaw] = body.split("+");
+    const groupName = groupNameRaw.trim();
+    const numberList = numbersRaw.split(",").map(n => n.trim());
 
-    const formattedSender = sender.endsWith('@s.whatsapp.net') ? sender : `${sender.split('@')[0]}@s.whatsapp.net`;
-    const group = await conn.groupCreate(groupName, [formattedSender]);
+    if (!groupName || numberList.length === 0) return reply("❌ Provide a group name and at least one number.");
+
+    // Convert numbers to WhatsApp IDs
+    const participants = numberList.map(n => (n.includes('@s.whatsapp.net') ? n : `${n}@s.whatsapp.net`));
+
+    // Create group
+    const group = await conn.groupCreate(groupName, participants);
     const inviteCode = await conn.groupInviteCode(group.id);
 
-    if (groupDesc) {
-      await conn.groupUpdateDescription(group.id, groupDesc);
-    }
+    // Description (optional)
+    await conn.groupUpdateDescription(group.id, `Group created by @${sender.split('@')[0]}`);
 
-    // Fetch image from URL
+    // Profile picture
     const imageUrl = 'https://files.catbox.moe/rl8ii3.jpg';
     const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-    const imageBuffer = response.data;
+    await conn.updateProfilePicture(group.id, { jpegThumbnail: response.data });
 
-    // Set group profile picture
-    await conn.updateProfilePicture(group.id, { jpegThumbnail: imageBuffer });
-
-    // Send welcome message in the group
+    // Welcome in group
     await conn.sendMessage(group.id, {
-      text: `👋 *Welcome to ${groupName}!* This group was created by @${sender.split("@")[0]}`,
+      text: `👋 *Welcome to ${groupName}!* Group created by @${sender.split('@')[0]}`,
       mentions: [sender]
     });
 
-    // Send confirmation privately
+    // Confirmation
     return reply(`╭━━━〔 *✅ GROUP CREATED SUCCESSFULLY* 〕━━⬣
 ┃📛 *Group name:* ${groupName}
-┃📝 *Description:*
-┃${groupDesc || "No description provided"}
+┃👥 *Members added:* ${numberList.length}
 ┃
 ┃📎 *Invitation link:*
 ┃https://chat.whatsapp.com/${inviteCode}
 ╰━━━━━━━━━━━━━━━━━━━━⬣
 
-✨ Your group is now ready!
-👤 You’ve been added as the founder.
-🚀 Start inviting people to join!`);
+✨ The group is now ready!
+👤 You are the founder.
+🚀 Invite more people with the link above.`);
 
   } catch (e) {
     console.error(e);
