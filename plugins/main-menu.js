@@ -38,10 +38,11 @@ async (conn, mek, m, { from, reply }) => {
         else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
         else pushwish = `Good Night 🌌`;
 
-        // En-tête du menu
-        let menuText = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
+        // En-tête du menu en monospace
+        let menuText = `\`\`\`
+╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
-┃❃│ Prefix : *[${config.PREFIX}]*
+┃❃│ Prefix : [${config.PREFIX}]
 ┃❃│ User :  *${m.pushName}*!
 ┃❃│ Mode : *[${config.MODE}]*
 ┃❃│ Date :   *${date}*
@@ -67,14 +68,16 @@ ${String.fromCharCode(8206).repeat(4001)}
 
         const keys = Object.keys(category).sort();
         for (let k of keys) {
-            menuText += `\n\n╭━─〔 *${k.toUpperCase()}* 〕──`;
+            menuText += `\n\n┌ ❏ 〤 *${k.toUpperCase()} MENU* 〤`;
             const cmds = category[k].filter(c => c.pattern).sort((a, b) => a.pattern.localeCompare(b.pattern));
             cmds.forEach((cmd) => {
                 const usage = cmd.pattern.split('|')[0];
-                menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
+                menuText += `\n├❍ \`${config.PREFIX} ${usage}\``;
             });
-            menuText += `\n╰──────────────❒`;
+            menuText += `\n┗━━━━━━━━━━━━━━❍`;
         }
+
+        menuText += `\n\`\`\``; // fermeture bloc monospace
 
         // Image avec thumbnail uniquement
         const imageUrl = 'https://files.catbox.moe/rful77.jpg';
@@ -86,8 +89,8 @@ ${String.fromCharCode(8206).repeat(4001)}
             contextInfo: {
                 mentionedJid: [m.sender],
                 externalAdReply: {
-                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ",
-                    body: "*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*",
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                     thumbnail: thumb,
                     mediaType: 1,
                     renderLargerThumbnail: true,
