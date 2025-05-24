@@ -6,16 +6,15 @@ initializeAntiDeleteSettings();
 
 cmd({
     pattern: "antidelete",
-    alias: ['antidel', 'ad'],
+    alias: ['antidel', 'antid'],
     desc: "Configure le système AntiDelete",
     category: "misc",
     filename: __filename
 },
 async (conn, mek, m, { reply, q, isOwner }) => {
-    const isSudo = config.SUDO_LIST.includes(senderNumber);
-    if (!isOwner && !isSudo) {
+    if (!isOwner) {
       return await client.sendMessage(from, {
-        text: "*📛 This is an owner/sudo-only command.*"
+        text: "*📛 This is an owner command.*"
       }, { quoted: message });
     }
     try {
