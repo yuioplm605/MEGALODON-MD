@@ -17,13 +17,12 @@ cmd({
     react: "❄️",
     filename: __filename
 },
-async (conn, mek, m, {
-    from, reply
-}) => {
+async (conn, mek, m, { from, reply }) => {
     try {
         const totalCommands = commands.length;
         const date = moment().tz("America/Port-au-Prince").format("dddd, DD MMMM YYYY");
         const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
+
         const uptime = () => {
             let sec = process.uptime();
             let h = Math.floor(sec / 3600);
@@ -39,6 +38,7 @@ async (conn, mek, m, {
         else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
         else pushwish = `Good Night 🌌`;
 
+        // En-tête du menu
         let menuText = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
 ┃❃│ Prefix : *[${config.PREFIX}]*
@@ -57,7 +57,7 @@ async (conn, mek, m, {
 ${String.fromCharCode(8206).repeat(4001)}
 `;
 
-        // Regroupement des commandes par catégorie
+        // Regroupement par catégorie
         let category = {};
         for (let cmd of commands) {
             if (!cmd.category) continue;
@@ -67,8 +67,8 @@ ${String.fromCharCode(8206).repeat(4001)}
 
         const keys = Object.keys(category).sort();
         for (let k of keys) {
-            menuText += `\n\n╭━─[ *${k.toUpperCase()}* ]──`;
-            const cmds = category[k].sort((a, b) => a.pattern.localeCompare(b.pattern));
+            menuText += `\n\n╭━─〔 *${k.toUpperCase()}* 〕──`;
+            const cmds = category[k].filter(c => c.pattern).sort((a, b) => a.pattern.localeCompare(b.pattern));
             cmds.forEach((cmd) => {
                 const usage = cmd.pattern.split('|')[0];
                 menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
@@ -76,19 +76,22 @@ ${String.fromCharCode(8206).repeat(4001)}
             menuText += `\n╰──────────────❒`;
         }
 
-        const thumb = await getBuffer('https://files.catbox.moe/rful77.jpg');
+        // Image avec thumbnail uniquement
+        const imageUrl = 'https://files.catbox.moe/rful77.jpg';
+        const thumb = await getBuffer(imageUrl);
 
         await conn.sendMessage(from, {
-            text: menuText,
+            image: { url: imageUrl },
+            caption: menuText,
             contextInfo: {
                 mentionedJid: [m.sender],
                 externalAdReply: {
                     title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ",
                     body: "*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*",
-                    mediaType: 1,
                     thumbnail: thumb,
+                    mediaType: 1,
                     renderLargerThumbnail: true,
-                    sourceUrl: 'https://github.com/DybyTech/MEGALODON-MD'
+                    sourceUrl: 'https://github.com/Dybytech/MEGALODON-MD'
                 }
             }
         }, { quoted: mek });
