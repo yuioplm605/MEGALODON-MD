@@ -1,64 +1,43 @@
-const config = require('../config')
-const moment = require('moment');
+const config = require('../config');
+const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
-const os = require("os")
-const { runtime } = require('../lib/functions')
-const axios = require('axios')
 
 cmd({
-    pattern: "menu",
-    alias: ["allmenu", "❄️"],
-    use: '.menu',
-    desc: "Show all bot commands",
-    category: "menu",
-    react: "❄️",
-    filename: __filename
-},
-async (conn, mek, m, {
-    from, quoted, body, isCmd, command, args, q, isGroup,
-    sender, senderNumber, botNumber2, botNumber, pushname,
-    isMe, isOwner, groupMetadata, groupName, participants,
-    groupAdmins, isBotAdmins, isAdmins, reply
-}) => {
-    try {
-        const totalCommands = commands.length;
+  pattern: 'menu',
+  alias: ['allmenu', '❄️'],
+  use: '.menu',
+  desc: 'Show all bot commands',
+  category: 'menu',
+  react: '❄️',
+  filename: __filename
+}, async (conn, mek, m, { from, reply }) => {
+  try {
+    // Date, heure, uptime
+    const date = moment().tz('America/Port-au-Prince').format('dddd, DD MMMM YYYY');
+    const time = moment().tz('America/Port-au-Prince').format('HH:mm:ss');
 
-        const date = new Date().toLocaleDateString('en-GB', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-        });
+    const uptimeSeconds = process.uptime();
+    const h = Math.floor(uptimeSeconds / 3600);
+    const m_ = Math.floor((uptimeSeconds % 3600) / 60);
+    const s = Math.floor(uptimeSeconds % 60);
+    const uptime = `${h}h ${m_}m ${s}s`;
 
-const xtime = moment.tz("America/Port-au-Prince").format("HH:mm:ss");
-const xdate = moment.tz("America/Port-au-Prince").format("DD/MM/YYYY");
-const time2 = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
-let pushwish = "";
+    // Nombre total commandes
+    const totalCommands = commands.length;
 
-if (time2 < "05:00:00") {
-  pushwish = `Good Morning 🌄`;
-} else if (time2 < "11:00:00") {
-  pushwish = `Good Morning 🌄`;
-} else if (time2 < "15:00:00") {
-  pushwish = `Good Afternoon 🌅`;
-} else if (time2 < "18:00:00") {
-  pushwish = `Good Evening 🌃`;
-} else if (time2 < "19:00:00") {
-  pushwish = `Good Evening 🌃`;
-} else {
-  pushwish = `Good Night 🌌`;
-}
+    // Message de salutation selon l’heure
+    const currentTime = moment().tz('America/Port-au-Prince').format('HH:mm:ss');
+    let pushwish = '';
+    if (currentTime < '05:00:00' || currentTime >= '19:00:00') pushwish = 'Good Night 🌌';
+    else if (currentTime < '11:00:00') pushwish = 'Good Morning 🌄';
+    else if (currentTime < '15:00:00') pushwish = 'Good Afternoon 🌅';
+    else if (currentTime < '19:00:00') pushwish = 'Good Evening 🌃';
 
-        function formatUptime(seconds) {
-            const h = Math.floor(seconds / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            const s = Math.floor(seconds % 60);
-            return `${h}h ${m}m ${s}s`;
-        }
-
-        const uptime = formatUptime(process.uptime());
-
-        let dec = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
+    // Header du menu
+    let header = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
 ┃❃│ Prefix : *[${config.PREFIX}]*
-┃❃│ User :  *${m.pushName}*!
+┃❃│ User :  *${m.pushName || 'Utilisateur'}*!
 ┃❃│ Mode : *[${config.MODE}]*
 ┃❃│ Date :   *${date}*
 ┃❃│ Version : *1.0.0 Bᴇᴛᴀ*
@@ -68,352 +47,50 @@ if (time2 < "05:00:00") {
 ┃❃╰───────────────
 ╰═════════════════⊷
 
-> ${pushwish} *@${m.sender.split("@")[0]}*
-╭┈──────────────────
-│  📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ғᴀᴄᴇʙᴏᴏᴋ
-│  ◦  ᴍᴇᴅɪᴀғɪʀᴇ
-│  ◦  ᴛɪᴋᴛᴏᴋ
-│  ◦  ᴛᴡɪᴛᴛᴇʀ
-│  ◦  ɪɴsᴛᴀ
-│  ◦  ᴀᴘᴋ
-│  ◦  ɪᴍɢ
-│  ◦  ᴛᴛ𝟸
-│  ◦  ᴘɪɴs
-│  ◦  ᴀᴘᴋ𝟸
-│  ◦  ғʙ𝟸
-│  ◦  ᴘɪɴᴛᴇʀᴇsᴛ
-│  ◦  sᴘᴏᴛɪғʏ
-│  ◦  ᴘʟᴀʏ
-│  ◦  ᴘʟᴀʏ𝟸
-│  ◦  ᴀᴜᴅɪᴏ
-│  ◦  ᴠɪᴅᴇᴏ
-│  ◦  ᴠɪᴅᴇᴏ𝟸
-│  ◦  ʏᴛᴍᴘ𝟹
-│  ◦  ʏᴛᴍᴘ𝟺
-│  ◦  sᴏɴɢ
-│  ◦  ᴅᴀʀᴀᴍᴀ
-│  ◦  ɢᴅʀɪᴠᴇ
-│  ◦  ssᴡᴇʙ
-│  ◦  ᴛɪᴋs
-╰┈────────────────•
+> ${pushwish} *@${m.sender.split("@")[0]}*\n\n`;
 
-╭┈──────────────────
-│  📦 𝐎𝐓𝐇𝐄𝐑 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦ ᴛɪᴍᴇɴᴏᴡ
-│  ◦ ᴅᴀᴛᴇ
-│  ◦ ᴄᴏᴜɴᴛ
-│  ◦ ᴄᴀʟᴄᴜʟᴀᴛᴇ
-│  ◦ ᴄᴏᴜɴᴛx
-│  ◦ ғʟɪᴘ
-│  ◦ ᴄᴏɪɴғʟɪᴘ
-│  ◦ ʀᴄᴏʟᴏʀ
-│  ◦ ʀᴏʟʟ
-│  ◦ ғᴀᴄᴛ
-│  ◦ ᴄᴘᴘ
-│  ◦ ʀᴡ
-│  ◦ ᴘᴀɪʀ
-│  ◦ ᴘᴀɪʀ𝟸
-│  ◦ ᴘᴀɪʀ𝟹
-│  ◦ ғᴀɴᴄʏ
-│  ◦ ʟᴏɢᴏ <ᴛᴇxᴛ>
-│  ◦ ᴅᴇғɪɴᴇ
-│  ◦ ɴᴇᴡs
-│  ◦ ᴍᴏᴠɪᴇ
-│  ◦ ᴡᴇᴀᴛʜᴇʀ
-│  ◦ sʀᴇᴘᴏ
-│  ◦ ɪɴsᴜʟᴛ
-│  ◦ sᴀᴠᴇ
-│  ◦ ᴡɪᴋɪᴘᴇᴅɪᴀ
-│  ◦ ɢᴘᴀss
-│  ◦ ɢɪᴛʜᴜʙsᴛᴀʟᴋ
-│  ◦ ʏᴛs
-│  ◦ ʏᴛᴠ
-╰┈────────────────•
-
-╭┈──────────────────
-│  🛠️ 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ᴘɪɴɢ
-│  ◦  ᴘɪɴɢ𝟸
-│  ◦  sᴘᴇᴇᴅ
-│  ◦  ʟɪᴠᴇ
-│  ◦  ᴀʟɪᴠᴇ
-│  ◦  ʀᴜɴᴛɪᴍᴇ
-│  ◦  ᴜᴘᴛɪᴍᴇ
-│  ◦  ʀᴇᴘᴏ
-│  ◦  ᴏᴡɴᴇʀ
-│  ◦  ᴍᴇɴᴜ
-│  ◦  ᴍᴇɴᴜ𝟸
-│  ◦  ʀᴇsᴛᴀʀᴛ
-╰┈────────────────•
-
-╭┈──────────────────
-│  ♻️ 𝐂𝐎𝐍𝐕𝐄𝐑𝐓 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  sᴛɪᴄᴋᴇʀ
-│  ◦  sᴛɪᴄᴋᴇʀ𝟸
-│  ◦  ᴇᴍᴏᴊɪᴍɪx
-│  ◦  ғᴀɴᴄʏ
-│  ◦  ᴛᴀᴋᴇ
-│  ◦  ᴛᴏᴍᴘ𝟹
-│  ◦  ᴛᴛs
-│  ◦  ᴛʀᴛ
-│  ◦  ʙᴀsᴇ𝟼𝟺
-│  ◦  ᴜɴʙᴀsᴇ𝟼𝟺
-│  ◦  ʙɪɴᴀʀʏ
-│  ◦  ᴅʙɪɴᴀʀʏ
-│  ◦  ᴛɪɴʏᴜʀʟ
-│  ◦  ᴜʀʟᴅᴇᴄᴏᴅᴇ
-│  ◦  ᴜʀʟᴇɴᴄᴏᴅᴇ
-│  ◦  ᴜʀʟ
-│  ◦  ʀᴇᴘᴇᴀᴛ
-│  ◦  ᴀsᴋ
-│  ◦  ʀᴇᴀᴅᴍᴏʀᴇ
-╰┈────────────────•
-
-╭┈──────────────────
-│  🎮 𝐅𝐔𝐍 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  sʜᴀᴘᴀʀ
-│  ◦  ʀᴀᴛᴇ
-│  ◦  ɪɴsᴜʟᴛ
-│  ◦  ʜᴀᴄᴋ
-│  ◦  sʜɪᴘ
-│  ◦  ᴄʜᴀʀᴀᴄᴛᴇʀ
-│  ◦  ᴘɪᴄᴋᴜᴘ
-│  ◦  ᴊᴏᴋᴇ
-│  ◦  ʜʀᴛ
-│  ◦  ʜᴘʏ
-│  ◦  sʏᴅ
-│  ◦  ᴀɴɢᴇʀ
-│  ◦  sʜʏ
-│  ◦  ᴋɪss
-│  ◦  ᴍᴏɴ
-│  ◦  ᴄᴜɴғᴜᴢᴇᴅ
-│  ◦  sᴇᴛᴘᴘ
-│  ◦  ʜᴀɴᴅ
-│  ◦  ɴɪᴋᴀʟ
-│  ◦  ʜᴏʟᴅ
-│  ◦  ʜᴜɢ
-│  ◦  ɴɪᴋᴀʟ
-│  ◦  ʜɪғɪ
-│  ◦  ᴘᴏᴋᴇ
-╰┈────────────────•
-
-╭┈──────────────────
-│  👥 𝐆𝐑𝐎𝐔𝐏 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦   ɢʀᴏᴜᴘʟɪɴᴋ
-│  ◦   ᴋɪᴄᴋᴀʟʟ
-│  ◦   ᴋɪᴄᴋᴀʟʟ𝟸
-│  ◦   ᴋɪᴄᴋᴀʟʟ𝟹
-│  ◦   ᴀᴅᴅ
-│  ◦   ʀᴇᴍᴏᴠᴇ
-│  ◦   ᴋɪᴄᴋ
-│  ◦   ᴘʀᴏᴍᴏᴛᴇ
-│  ◦   ᴅᴇᴍᴏᴛᴇ
-│  ◦   ᴅɪsᴍɪss
-│  ◦   ʀᴇᴠᴏᴋᴇ
-│  ◦   sᴇᴛɢᴏᴏᴅʙʏᴇ
-│  ◦   sᴇᴛᴡᴇʟᴄᴏᴍᴇ
-│  ◦   ᴅᴇʟᴇᴛᴇ
-│  ◦   ɢᴇᴛᴘɪᴄ
-│  ◦   ɢɪɴғᴏ
-│  ◦   ᴅɪsᴀᴘᴘᴇᴀʀ ᴏɴ
-│  ◦   ᴅɪsᴀᴘᴘᴇᴀʀ ᴏғғ
-│  ◦   ᴅɪsᴀᴘᴘᴇᴀʀ 𝟽ᴅ,𝟸𝟺ʜ
-│  ◦   ᴀʟʟʀᴇǫ
-│  ◦   ᴜᴘᴅᴀᴛᴇɢɴᴀᴍᴇ
-│  ◦   ᴜᴘᴅᴀᴛᴇɢᴅᴇsᴄ
-│  ◦   ᴊᴏɪɴʀᴇǫᴜᴇsᴛs
-│  ◦   sᴇɴᴅᴅᴍ
-│  ◦   ɴɪᴋᴀʟ
-│  ◦   ᴍᴜᴛᴇ
-│  ◦   ᴜɴᴍᴜᴛᴇ
-│  ◦   ʟᴏᴄᴋɢᴄ
-│  ◦   ᴜɴʟᴏᴄᴋɢᴄ
-│  ◦   ɪɴᴠɪᴛᴇ
-│  ◦   ᴛᴀɢ
-│  ◦   ʜɪᴅᴇᴛᴀɢ
-│  ◦   ᴛᴀɢᴀʟʟ
-│  ◦   ᴛᴀɢᴀᴅᴍɪɴs
-│  ◦   ᴄʟᴏsᴇᴛɪᴍᴇ
-│  ◦   ᴏᴘᴇɴᴛɪᴍᴇ
-╰┈────────────────•
-
-╭┈──────────────────
-│  👑 𝐎𝐖𝐍𝐄𝐑 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ᴏᴡɴᴇʀ
-│  ◦  ᴍᴇɴᴜ
-│  ◦  ᴍᴇɴᴜ𝟸
-│  ◦  ᴠᴠ
-│  ◦  ʟɪsᴛᴄᴍᴅ
-│  ◦  ᴀʟʟᴍᴇɴᴜ
-│  ◦  ʀᴇᴘᴏ
-│  ◦  ʙʟᴏᴄᴋ
-│  ◦  ᴜɴʙʟᴏᴄᴋ
-│  ◦  ғᴜʟʟᴘᴘ
-│  ◦  sᴇᴛᴘᴘ
-│  ◦  ʀᴇsᴛᴀʀᴛ
-│  ◦  sʜᴜᴛᴅᴏᴡɴ
-│  ◦  ᴜᴘᴅᴀᴛᴇᴄᴍᴅ
-│  ◦  ᴀʟɪᴠᴇ
-│  ◦  ᴘɪɴɢ
-│  ◦  ɢᴊɪᴅ
-│  ◦  ᴊɪᴅ
-╰┈────────────────•
-
-╭┈──────────────────
-│  🎭 𝐑𝐄𝐀𝐂𝐓𝐈𝐎𝐍𝐒 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ʙᴜʟʟʏ @ᴛᴀɢ
-│  ◦  ᴄᴜᴅᴅʟᴇ @ᴛᴀɢ
-│  ◦  ᴄʀʏ @ᴛᴀɢ
-│  ◦  ʜᴜɢ @ᴛᴀɢ
-│  ◦  ᴀᴡᴏᴏ @ᴛᴀɢ
-│  ◦  ᴋɪss @ᴛᴀɢ
-│  ◦  ʟɪᴄᴋ @ᴛᴀɢ
-│  ◦  ᴘᴀᴛ @ᴛᴀɢ
-│  ◦  sᴍᴜɢ @ᴛᴀɢ
-│  ◦  ʙᴏɴᴋ @ᴛᴀɢ
-│  ◦  ʏᴇᴇᴛ @ᴛᴀɢ
-│  ◦  ʙʟᴜsʜ @ᴛᴀɢ
-│  ◦  sᴍɪʟᴇ @ᴛᴀɢ
-│  ◦  ᴡᴀᴠᴇ @ᴛᴀɢ
-│  ◦  ʜɪɢʜғɪᴠᴇ @ᴛᴀɢ
-│  ◦  ʜᴀɴᴅʜᴏʟᴅ @ᴛᴀɢ
-│  ◦  ɴᴏᴍ @ᴛᴀɢ
-│  ◦  ʙɪᴛᴇ @ᴛᴀɢ
-│  ◦  ɢʟᴏᴍᴘ @ᴛᴀɢ
-│  ◦  sʟᴀᴘ @ᴛᴀɢ
-│  ◦  ᴋɪʟʟ @ᴛᴀɢ
-│  ◦  ʜᴀᴘᴘʏ @ᴛᴀɢ
-│  ◦  ᴡɪɴᴋ @ᴛᴀɢ
-│  ◦  ᴘᴏᴋᴇ @ᴛᴀɢ
-│  ◦  ᴅᴀɴᴄᴇ @ᴛᴀɢ
-│  ◦  ᴄʀɪɴɢᴇ @ᴛᴀɢ
-╰┈────────────────•
-
-╭┈──────────────────
-│ ⭐️ 𝐑𝐄𝐏𝐎𝐑𝐓 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ʀᴇᴘᴏʀᴛ <text>
-│  ◦  ʀᴇᴘᴏʀᴛʟɪsᴛ
-│  ◦  ᴅᴇʟʀᴇᴘᴏʀᴛ
-╰┈────────────────•
-
-╭┈──────────────────
-│  🎨 𝐋𝐎𝐆𝐎 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ɴᴇᴏɴʟɪɢʜᴛ
-│  ◦  ʙʟᴀᴄᴋᴘɪɴᴋ
-│  ◦  ᴅʀᴀɢᴏɴʙᴀʟʟ
-│  ◦  𝟹ᴅᴄᴏᴍɪᴄ
-│  ◦  ᴀᴍᴇʀɪᴄᴀ
-│  ◦  ɴᴀʀᴜᴛᴏ
-│  ◦  sᴀᴅɢɪʀʟ
-│  ◦  ᴄʟᴏᴜᴅs
-│  ◦  ғᴜᴛᴜʀɪsᴛɪᴄ
-│  ◦  𝟹ᴅᴘᴀᴘᴇʀ
-│  ◦  ᴇʀᴀsᴇʀ
-│  ◦  sᴜɴsᴇᴛ
-│  ◦  ʟᴇᴀғ
-│  ◦  ɢᴀʟᴀxʏ
-│  ◦  sᴀɴs
-│  ◦  ʙᴏᴏᴍ
-│  ◦  ʜᴀᴄᴋᴇʀ
-│  ◦  ᴅᴇᴠɪʟᴡɪɴɢs
-│  ◦  ɴɪɢᴇʀɪᴀ
-│  ◦  ʙᴜʟʙ
-│  ◦  ᴀɴɢᴇʟᴡɪɴɢs
-│  ◦  ᴢᴏᴅɪᴀᴄ
-│  ◦  ʟᴜxᴜʀʏ
-│  ◦  ᴘᴀɪɴᴛ
-│  ◦  ғʀᴏᴢᴇɴ
-│  ◦  ᴄᴀsᴛʟᴇ
-│  ◦  ᴛᴀᴛᴏᴏ
-│  ◦  ᴠᴀʟᴏʀᴀɴᴛ
-│  ◦  ʙᴇᴀʀ
-│  ◦  ᴛʏᴘᴏɢʀᴀᴘʜʏ
-│  ◦  ʙɪʀᴛʜᴅᴀʏ
-╰┈────────────────•
-
-╭┈──────────────────
-│  🤖 𝐀𝐈 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ᴀɪ
-│  ◦  ɢᴘᴛ𝟹
-│  ◦  ɢᴘᴛ𝟸
-│  ◦  ɢᴘᴛᴍɪɴɪ
-│  ◦  ɢᴘᴛ
-│  ◦  ᴍᴇᴛᴀ
-│  ◦  ʙʟᴀᴄᴋʙᴏx
-│  ◦  ʟᴜᴍᴀ
-│  ◦  ᴅᴊ
-│  ◦  ɢᴘᴛ𝟺
-│  ◦  ʙɪɴɢ
-│  ◦  ɪᴍᴀɢɪɴᴇ
-│  ◦  ɪᴍᴀɢɪɴᴇ𝟸
-│  ◦  ᴄᴏᴘɪʟᴏᴛ
-╰┈────────────────•
-
-╭┈──────────────────
-│  📦 𝐎𝐓𝐇𝐄𝐑 𝐌𝐄𝐍𝐔
-╭┈──────────────────
-│  ◦  ᴛɪᴍᴇɴᴏᴡ
-│  ◦  ᴅᴀᴛᴇ
-│  ◦  ᴄᴏᴜɴᴛ
-│  ◦  ᴄᴀʟᴄᴜʟᴀᴛᴇ
-│  ◦  ᴄᴏᴜɴᴛx
-│  ◦  ғʟɪᴘ
-│  ◦  ᴄᴏɪɴғʟɪᴘ
-│  ◦  ʀᴄᴏʟᴏʀ
-│  ◦  ʀᴏʟʟ
-│  ◦  ғᴀᴄᴛ
-│  ◦  ᴄᴘᴘ
-│  ◦  ʀᴡ
-│  ◦  ᴘᴀɪʀ
-│  ◦  ᴘᴀɪʀ𝟸
-│  ◦  ᴘᴀɪʀ𝟹
-│  ◦  ғᴀɴᴄʏ
-│  ◦  ʟᴏɢᴏ <ᴛᴇxᴛ>
-│  ◦  ᴅᴇғɪɴᴇ
-│  ◦  ɴᴇᴡs
-│  ◦  ᴍᴏᴠɪᴇ
-│  ◦  ᴡᴇᴀᴛʜᴇʀ
-│  ◦  sʀᴇᴘᴏ
-│  ◦  ɪɴsᴜʟᴛ
-│  ◦  sᴀᴠᴇ
-│  ◦  ᴡɪᴋɪᴘᴇᴅɪᴀ
-│  ◦  ɢᴘᴀss
-│  ◦  ɢɪᴛʜᴜʙsᴛᴀʟᴋ
-│  ◦  ʏᴛs
-│  ◦  ʏᴛᴠᴇ
-╰┈────────────────•
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
-
-                await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://files.catbox.moe/rful77.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-        
-    } catch (e) {
-        console.log(e);
-        reply(`❌ Error: ${e}`);
+    // Regrouper commandes par catégorie
+    let category = {};
+    for (let cmd of commands) {
+      if (!cmd.category) continue;
+      if (!category[cmd.category]) category[cmd.category] = [];
+      category[cmd.category].push(cmd);
     }
+
+    // Trier les catégories alphabétiquement
+    const keys = Object.keys(category).sort();
+
+    // Construire le texte du menu
+    let menuText = header + String.fromCharCode(8206).repeat(4001);
+    for (let k of keys) {
+      menuText += `\n\n╭━──〔 *${k.toUpperCase()}* 〕──`;
+      const cmds = category[k].sort((a, b) => a.pattern.localeCompare(b.pattern));
+      cmds.forEach(cmd => {
+        const usage = cmd.pattern.split('|')[0];
+        menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
+      });
+      menuText += `\n╰──────────────❒`;
+    }
+
+    // URL d’une image sympa pour le menu (à changer si tu veux)
+    const menuImageUrl = 'https://files.catbox.moe/rful77.jpg';
+
+    // Envoi du menu avec image + caption
+    await conn.sendMessage(
+      from,
+      {
+        image: { url: menuImageUrl },
+        caption: menuText,
+        contextInfo: {
+          mentionedJid: [m.sender],
+          forwardingScore: 999,
+          isForwarded: true,
+        },
+      },
+      { quoted: mek }
+    );
+  } catch (e) {
+    console.error(e);
+    reply(`❌ Error: ${e.message}`);
+  }
 });
