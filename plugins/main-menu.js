@@ -427,25 +427,7 @@ if (time2 < "05:00:00") {
 ╰┈────────────────•
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://files.catbox.moe/rful77.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363401051937059@newsletter',
-                        newsletterName: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
+                
         
     } catch (e) {
         console.log(e);
