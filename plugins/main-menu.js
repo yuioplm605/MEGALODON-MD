@@ -11,7 +11,10 @@ cmd({
     category: "menu",
     react: "❄️",
     filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
+}, 
+async (conn, mek, m, {
+    from, reply
+}) => {
     try {
         const totalCommands = commands.length;
         const date = moment().tz("America/Port-au-Prince").format("dddd, DD MMMM YYYY");
@@ -24,19 +27,21 @@ cmd({
             return `${h}h ${m}m ${s}s`;
         };
 
-        const pushwish = (time < "05:00:00") ? "Good Morning 🌄" :
-                         (time < "11:00:00") ? "Good Morning 🌄" :
-                         (time < "15:00:00") ? "Good Afternoon 🌅" :
-                         (time < "19:00:00") ? "Good Evening 🌃" : "Good Night 🌌";
+        let pushwish = "Good";
+        if (time < "05:00:00") pushwish = `Good Morning 🌄`;
+        else if (time < "11:00:00") pushwish = `Good Morning 🌄`;
+        else if (time < "15:00:00") pushwish = `Good Afternoon 🌅`;
+        else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
+        else pushwish = `Good Night 🌌`;
 
-        // En-tête
+        // Header
         let menuText = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
 ┃❃│ Prefix : *[${config.PREFIX}]*
-┃❃│ User : *${m.pushName}*
-┃❃│ Mode : *${config.MODE}*
-┃❃│ Date : *${date}*
-┃❃│ Time : *${time}*
+┃❃│ User :  *${m.pushName}*!
+┃❃│ Mode : *[${config.MODE}]*
+┃❃│ Date :   *${date}*
+┃❃│ Time :   *${time}*
 ┃❃│ Plugin : *${totalCommands}*
 ┃❃│ Uptime : *${uptime()}*
 ┃❃│ Dev : 𝐃𝐘𝐁𝐘 𝐓𝐄𝐂𝐇
@@ -45,41 +50,48 @@ cmd({
 
 > ${pushwish} *@${m.sender.split("@")[0]}*
 
-${String.fromCharCode(8206).repeat(4001)}`
+${String.fromCharCode(8206).repeat(4001)}
+`;
 
-        // Génération des catégories
-        const category = {};
-        for (const cmd of commands) {
+        // Tri des commandes par catégorie
+        let category = {};
+        for (let cmd of commands) {
             if (!cmd.category) continue;
             if (!category[cmd.category]) category[cmd.category] = [];
             category[cmd.category].push(cmd);
         }
 
         const keys = Object.keys(category).sort();
-        for (const k of keys) {
+        for (let k of keys) {
             menuText += `\n\n╭━──〔 *${k.toUpperCase()}* 〕──`;
             const cmds = category[k].sort((a, b) => (a.pattern || '').localeCompare(b.pattern || ''));
-            cmds.forEach(cmd => {
-                const usage = cmd.pattern.split('|')[0];
+            cmds.forEach((cmd) => {
+                const usage = cmd.pattern?.split('|')[0] || 'unknown';
                 menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
             });
             menuText += `\n╰──────────────❒`;
         }
 
-        // Chargement thumbnail
-        const imageUrl = 'https://files.catbox.moe/rful77.jpg';
-        const imageBuffer = await axios.get(imageUrl, { responseType: 'arraybuffer' }).then(res => res.data);
+        const thumbnailUrl = 'https://files.catbox.moe/rful77.jpg';
 
         await conn.sendMessage(from, {
-            image: { url: imageUrl, thumbnail: imageBuffer },
             caption: menuText,
+            image: { url: thumbnailUrl },
             contextInfo: {
-                mentionedJid: [m.sender]
+                mentionedJid: [m.sender],
+                externalAdReply: {
+                    title: "MEGALODON-MD MENU",
+                    body: "By DybyTech",
+                    mediaType: 1,
+                    thumbnailUrl: thumbnailUrl,
+                    renderLargerThumbnail: true,
+                    sourceUrl: 'https://github.com/DybyTech/MEGALODON-MD'
+                }
             }
         }, { quoted: mek });
 
     } catch (e) {
         console.error(e);
-        reply(`❌ Erreur dans le menu : ${e.message}`);
+        reply(`❌ Error: ${e.message}`);
     }
 });
