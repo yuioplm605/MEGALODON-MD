@@ -1,7 +1,6 @@
 const config = require('../config');
 const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
-const axios = require('axios');
 
 cmd({
     pattern: "menu",
@@ -11,7 +10,7 @@ cmd({
     category: "menu",
     react: "❄️",
     filename: __filename
-}, 
+},
 async (conn, mek, m, {
     from, reply
 }) => {
@@ -34,7 +33,6 @@ async (conn, mek, m, {
         else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
         else pushwish = `Good Night 🌌`;
 
-        // Header
         let menuText = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
 ┃❃│ Prefix : *[${config.PREFIX}]*
@@ -53,7 +51,7 @@ async (conn, mek, m, {
 ${String.fromCharCode(8206).repeat(4001)}
 `;
 
-        // Tri des commandes par catégorie
+        // Regroupement des commandes par catégorie
         let category = {};
         for (let cmd of commands) {
             if (!cmd.category) continue;
@@ -64,24 +62,24 @@ ${String.fromCharCode(8206).repeat(4001)}
         const keys = Object.keys(category).sort();
         for (let k of keys) {
             menuText += `\n\n╭━──〔 *${k.toUpperCase()}* 〕──`;
-            const cmds = category[k].sort((a, b) => (a.pattern || '').localeCompare(b.pattern || ''));
+            const cmds = category[k].sort((a, b) => a.pattern.localeCompare(b.pattern));
             cmds.forEach((cmd) => {
-                const usage = cmd.pattern?.split('|')[0] || 'unknown';
+                const usage = cmd.pattern.split('|')[0];
                 menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
             });
             menuText += `\n╰──────────────❒`;
         }
 
+        // thumbnailUrl dans externalAdReply
         const thumbnailUrl = 'https://files.catbox.moe/rful77.jpg';
 
         await conn.sendMessage(from, {
-            caption: menuText,
-            image: { url: thumbnailUrl },
+            text: menuText,
             contextInfo: {
                 mentionedJid: [m.sender],
                 externalAdReply: {
-                    title: "MEGALODON-MD MENU",
-                    body: "By DybyTech",
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ",
+                    body: "*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*",
                     mediaType: 1,
                     thumbnailUrl: thumbnailUrl,
                     renderLargerThumbnail: true,
