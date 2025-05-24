@@ -11,21 +11,22 @@ cmd({
 },
 async (conn, mek, m, { from, reply, args }) => {
     try {
-        // Check if URL is provided
-        if (!args) return reply("❌ Please provide a WhatsApp channel URL\nExample: .wstalk https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x");
+        // Rejoindre les arguments en une seule chaîne
+        const url = args.join(" ");
+        if (!url) return reply("❌ Please provide a WhatsApp channel URL\nExample: .wstalk https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x");
 
-        // Extract channel ID from URL
-        const channelId = args.match(/channel\/([0-9A-Za-z]+)/i)?.[1];
+        // Extraire l'ID du canal depuis l'URL
+        const channelId = url.match(/channel\/([0-9A-Za-z]+)/i)?.[1];
         if (!channelId) return reply("❌ Invalid WhatsApp channel URL");
 
         // API endpoint
         const apiUrl = `https://itzpire.com/stalk/whatsapp-channel?url=https://whatsapp.com/channel/${channelId}`;
 
-        // Fetch channel info
+        // Requête API
         const response = await axios.get(apiUrl);
         const data = response.data.data;
 
-        // Format the information
+        // Format des informations
         const channelInfo = `╭━━〔 *CHANNEL INFO* 〕━━┈⊷
 ┃◈╭─────────────·๏
 ┃◈┃• *📢 Title*: ${data.title}
@@ -35,7 +36,7 @@ async (conn, mek, m, { from, reply, args }) => {
 ╰──────────────┈⊷
 > © *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        // Send message with channel image
+        // Envoi de l'image avec les infos
         await conn.sendMessage(from, {
             image: { url: data.img },
             caption: channelInfo,
