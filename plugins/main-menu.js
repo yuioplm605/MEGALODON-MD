@@ -1,6 +1,12 @@
 const config = require('../config');
 const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
+const axios = require('axios');
+
+async function getBuffer(url) {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    return Buffer.from(response.data, 'binary');
+}
 
 cmd({
     pattern: "menu",
@@ -61,7 +67,7 @@ ${String.fromCharCode(8206).repeat(4001)}
 
         const keys = Object.keys(category).sort();
         for (let k of keys) {
-            menuText += `\n\n╭━──〔 *${k.toUpperCase()}* 〕──`;
+            menuText += `\n\n╭━─[ *${k.toUpperCase()}* ]──`;
             const cmds = category[k].sort((a, b) => a.pattern.localeCompare(b.pattern));
             cmds.forEach((cmd) => {
                 const usage = cmd.pattern.split('|')[0];
@@ -70,8 +76,7 @@ ${String.fromCharCode(8206).repeat(4001)}
             menuText += `\n╰──────────────❒`;
         }
 
-        // thumbnailUrl dans externalAdReply
-        const thumbnailUrl = 'https://files.catbox.moe/rful77.jpg';
+        const thumb = await getBuffer('https://files.catbox.moe/rful77.jpg');
 
         await conn.sendMessage(from, {
             text: menuText,
@@ -81,7 +86,7 @@ ${String.fromCharCode(8206).repeat(4001)}
                     title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ",
                     body: "*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*",
                     mediaType: 1,
-                    thumbnailUrl: thumbnailUrl,
+                    thumbnail: thumb,
                     renderLargerThumbnail: true,
                     sourceUrl: 'https://github.com/DybyTech/MEGALODON-MD'
                 }
