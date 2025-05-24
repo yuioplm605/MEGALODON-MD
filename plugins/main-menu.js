@@ -1,96 +1,96 @@
 const config = require('../config');
 const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
+const axios = require('axios');
+
+async function getBuffer(url) {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    return Buffer.from(response.data, 'binary');
+}
 
 cmd({
-  pattern: 'menu',
-  alias: ['allmenu', '❄️'],
-  use: '.menu',
-  desc: 'Show all bot commands',
-  category: 'menu',
-  react: '❄️',
-  filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
-  try {
-    // Date, heure, uptime
-    const date = moment().tz('America/Port-au-Prince').format('dddd, DD MMMM YYYY');
-    const time = moment().tz('America/Port-au-Prince').format('HH:mm:ss');
+    pattern: "menu",
+    alias: ["allmenu", "❄️"],
+    use: '.menu',
+    desc: "Show all bot commands",
+    category: "menu",
+    react: "❄️",
+    filename: __filename
+}, 
+async (conn, mek, m, {
+    from, reply
+}) => {
+    try {
+        const totalCommands = commands.length;
+        const date = moment().tz("America/Port-au-Prince").format("dddd, DD MMMM YYYY");
+        const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
+        const uptime = () => {
+            let sec = process.uptime();
+            let h = Math.floor(sec / 3600);
+            let m = Math.floor((sec % 3600) / 60);
+            let s = Math.floor(sec % 60);
+            return `${h}h ${m}m ${s}s`;
+        };
 
-    const uptimeSeconds = process.uptime();
-    const h = Math.floor(uptimeSeconds / 3600);
-    const m_ = Math.floor((uptimeSeconds % 3600) / 60);
-    const s = Math.floor(uptimeSeconds % 60);
-    const uptime = `${h}h ${m_}m ${s}s`;
+        let pushwish = "Good";
+        if (time < "05:00:00") pushwish = `Good Morning 🌄`;
+        else if (time < "11:00:00") pushwish = `Good Morning 🌄`;
+        else if (time < "15:00:00") pushwish = `Good Afternoon 🌅`;
+        else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
+        else pushwish = `Good Night 🌌`;
 
-    // Nombre total commandes
-    const totalCommands = commands.length;
-
-    // Message de salutation selon l’heure
-    const currentTime = moment().tz('America/Port-au-Prince').format('HH:mm:ss');
-    let pushwish = '';
-    if (currentTime < '05:00:00' || currentTime >= '19:00:00') pushwish = 'Good Night 🌌';
-    else if (currentTime < '11:00:00') pushwish = 'Good Morning 🌄';
-    else if (currentTime < '15:00:00') pushwish = 'Good Afternoon 🌅';
-    else if (currentTime < '19:00:00') pushwish = 'Good Evening 🌃';
-
-    // Header du menu
-    let header = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
+        // Header
+        let menuText = `╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
 ┃❃│ Prefix : *[${config.PREFIX}]*
-┃❃│ User :  *${m.pushName || 'Utilisateur'}*!
+┃❃│ User :  *${m.pushName}*!
 ┃❃│ Mode : *[${config.MODE}]*
 ┃❃│ Date :   *${date}*
-┃❃│ Version : *1.0.0 Bᴇᴛᴀ*
+┃❃│ Time :   *${time}*
 ┃❃│ Plugin : *${totalCommands}*
-┃❃│ Uptime : *${uptime}*
+┃❃│ Uptime : *${uptime()}*
 ┃❃│ Dev : 𝐃𝐘𝐁𝐘 𝐓𝐄𝐂𝐇
 ┃❃╰───────────────
 ╰═════════════════⊷
 
-> ${pushwish} *@${m.sender.split("@")[0]}*\n\n`;
+> ${pushwish} *@${m.sender.split("@")[0]}*
 
-    // Regrouper commandes par catégorie
-    let category = {};
-    for (let cmd of commands) {
-      if (!cmd.category) continue;
-      if (!category[cmd.category]) category[cmd.category] = [];
-      category[cmd.category].push(cmd);
+${String.fromCharCode(8206).repeat(4001)}
+`;
+
+        // Tri des commandes par catégorie
+        let category = {};
+        for (let cmd of commands) {
+            if (!cmd.category) continue;
+            if (!category[cmd.category]) category[cmd.category] = [];
+            category[cmd.category].push(cmd);
+        }
+
+        const keys = Object.keys(category).sort();
+        for (let k of keys) {
+            menuText += `\n\n╭━──〔 *${k.toUpperCase()}* 〕──`;
+            const cmds = category[k].sort((a, b) => a.pattern.localeCompare(b.pattern));
+            cmds.forEach((cmd) => {
+                const usage = cmd.pattern.split('|')[0];
+                menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
+            });
+            menuText += `\n╰──────────────❒`;
+        }
+
+        // Image principale + miniature
+        const imageUrl = 'https://files.catbox.moe/rful77.jpg';
+        const thumb = await getBuffer(imageUrl);
+
+        await conn.sendMessage(from, {
+            image: { url: imageUrl, thumbnail: thumb },
+            caption: menuText,
+            contextInfo: {
+                mentionedJid: [m.sender]
+            }
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error(e);
+        reply(`❌ Error: ${e.message}`);
     }
-
-    // Trier les catégories alphabétiquement
-    const keys = Object.keys(category).sort();
-
-    // Construire le texte du menu
-    let menuText = header + String.fromCharCode(8206).repeat(4001);
-    for (let k of keys) {
-      menuText += `\n\n╭━──〔 *${k.toUpperCase()}* 〕──`;
-      const cmds = category[k].sort((a, b) => a.pattern.localeCompare(b.pattern));
-      cmds.forEach(cmd => {
-        const usage = cmd.pattern.split('|')[0];
-        menuText += `\n┃ ⬡ ${config.PREFIX}${usage}`;
-      });
-      menuText += `\n╰──────────────❒`;
-    }
-
-    // URL d’une image sympa pour le menu (à changer si tu veux)
-    const menuImageUrl = 'https://files.catbox.moe/rful77.jpg';
-
-    // Envoi du menu avec image + caption
-    await conn.sendMessage(
-      from,
-      {
-        image: { url: menuImageUrl },
-        caption: menuText,
-        contextInfo: {
-          mentionedJid: [m.sender],
-          forwardingScore: 999,
-          isForwarded: true,
-        },
-      },
-      { quoted: mek }
-    );
-  } catch (e) {
-    console.error(e);
-    reply(`❌ Error: ${e.message}`);
-  }
 });
