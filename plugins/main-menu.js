@@ -3,11 +3,6 @@ const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
 const axios = require('axios');
 
-async function getBuffer(url) {
-  const response = await axios.get(url, { responseType: 'arraybuffer' });
-  return Buffer.from(response.data, 'binary');
-}
-
 cmd({
   pattern: "menu",
   alias: ["allmenu", "❄️"],
@@ -21,7 +16,6 @@ async (conn, mek, m, { from, reply }) => {
   try {
     const totalCommands = commands.length;
     const date = moment().tz("America/Port-au-Prince").format("dddd, DD MMMM YYYY");
-    const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
 
     const uptime = () => {
       let sec = process.uptime();
@@ -38,22 +32,19 @@ async (conn, mek, m, { from, reply }) => {
     else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
     else pushwish = `Good Night 🌌`;
 
-    // En-tête du menu en monospace
-    let menuText = `\`\`\`
+    // En-tête du menu (sans monospace)
+    let menuText = `
 ╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
 ┃❃╭──────────────
 ┃❃│ Prefix : [${config.PREFIX}]
 ┃❃│ User :  ${m.pushName}!
 ┃❃│ Mode : [${config.MODE}]
 ┃❃│ Date :   ${date}
-┃❃│ Time :   ${time}
 ┃❃│ Plugin : ${totalCommands}
 ┃❃│ Uptime : ${uptime()}
 ┃❃│ Dev : 𝐃𝐘𝐁𝐘 𝐓𝐄𝐂𝐇
 ┃❃╰───────────────
 ╰═════════════════⊷
-
-> ${pushwish} @${m.sender.split("@")[0]}
 
 ${String.fromCharCode(8206).repeat(4001)}
 `;
@@ -77,11 +68,9 @@ ${String.fromCharCode(8206).repeat(4001)}
       menuText += `\n┗━━━━━━━━━━━━━━❍`;
     }
 
-    menuText += `\n\`\`\``; // fermeture bloc monospace
+    menuText += `\n`;
 
-    // Image avec thumbnail uniquement
     const imageUrl = 'https://files.catbox.moe/rful77.jpg';
-    const thumb = await getBuffer(imageUrl);
 
     await conn.sendMessage(from, {
       image: { url: imageUrl },
@@ -91,8 +80,7 @@ ${String.fromCharCode(8206).repeat(4001)}
         externalAdReply: {
           title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
           body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-          thumbnail: thumb,
-          mediaType: 2,
+          mediaType: 3,
           renderLargerThumbnail: true,
           sourceUrl: 'https://github.com/Dybytech/MEGALODON-MD'
         }
