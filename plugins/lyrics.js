@@ -13,25 +13,22 @@ async (conn, mek, m, { text, reply }) => {
   try {
     if (!text) return reply('❌ Utilisation : .lyrics <titre de la chanson>\nExemple : .lyrics Faded Alan Walker');
 
-    const api = `https://api.gifted.my.id/api/search/lyrics?apikey=gifted&query=${encodeURIComponent(text)}`;
+    const [artist, ...songArray] = text.split(' ');
+    const song = songArray.join(' ');
+    const api = `https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(song)}`;
     const { data } = await axios.get(api);
 
-    console.log('[API GIFTED LYRICS]', JSON.stringify(data, null, 2)); // Debug
+    if (!data || !data.lyrics) {
+      return reply("❌ Paroles non trouvées.");
+    }
 
-    const lyrics = data?.data?.lyrics || data?.data?.result?.lyrics;
-
-    if (!lyrics) return reply("❌ Paroles non trouvées ou réponse invalide.");
-
-    const title = data.data.title || text;
-    const artist = data.data.artist || 'Inconnu';
-
-    const message = `*Titre:* ${title}\n*Artiste:* ${artist}\n\n${lyrics}`.trim();
+    const message = `*Artiste:* ${artist}\n*Titre:* ${song}\n\n${data.lyrics}`.trim();
 
     await conn.sendMessage(m.chat, {
       text: message,
       contextInfo: {
         externalAdReply: {
-          title: `${title} - ${artist}`,
+          title: `${song} - ${artist}`,
           body: 'ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ',
           thumbnailUrl: 'https://i.ibb.co/NnXWJsd/music-thumb.jpg',
           sourceUrl: 'https://github.com/Dybytech/MEGALODON-MD',
