@@ -14,21 +14,21 @@ cmd({
 async (conn, mek, m, { from, sender, reply }) => {
     try {
         const status = `
-╭───〔 *🤖 STATUS* 〕───◉
-│✨ *Bot is Active & Online!*
-│
-│🧠 *Owner:* ${config.OWNER_NAME}
-│⚡ *Version:* 1.0.0
-│📝 *Prefix:* [${config.PREFIX}]
-│📳 *Mode:* [${config.MODE}]
-│💾 *RAM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
-│🖥️ *Host:* ${os.hostname()}
-│⌛ *Uptime:* ${runtime(process.uptime())}
-╰────────────────────◉
+> ╭───〔 *ALIVE* 〕───◉
+> │✨ *Bot is Active & Online!*
+> │
+> │🧠 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ
+> │⚡ *Version:* 1.0.0
+> │📝 *Prefix:* [${config.PREFIX}]
+> │📳 *Mode:* [${config.MODE}]
+> │💾 *RAM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
+> │🖥️ *Host:* ${os.hostname()}
+> │⌛ *Uptime:* ${runtime(process.uptime())}
+> ╰────────────────────◉
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(from, {
-            image: { url: `https://files.catbox.moe/rful77.jpg` },
+            image: { url: `https://files.catbox.moe/frns4k.jpg` },
             caption: status,
             contextInfo: {
                 mentionedJid: [m.sender],
