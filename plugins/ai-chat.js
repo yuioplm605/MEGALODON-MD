@@ -13,7 +13,7 @@ async (conn, mek, m, { from, args, q, reply, react }) => {
     try {
         if (!q) return reply("Please provide a message for the AI.\nExample: `.ai Hello`");
 
-        const apiUrl = `https://lance-frank-asta.onrender.com/api/gpt?q=${encodeURIComponent(q)}`;
+        const apiUrl = `https://www.laurine.site/api/ai/heckai?query=${query}`;
         const { data } = await axios.get(apiUrl);
 
         if (!data || !data.message) {
