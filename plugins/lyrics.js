@@ -13,19 +13,22 @@ async (conn, mek, m, { text, reply }) => {
   try {
     if (!text) return reply('❌ Utilisation : .lyrics <titre de la chanson>\nExemple : .lyrics Faded Alan Walker');
 
-    const res = await axios.get(`https://api.gifted.my.id/api/search/lyrics?apikey=gifted&query=${encodeURIComponent(text)}`);
-    const data = res.data;
+    const api = `https://api.gifted.my.id/api/search/lyrics?apikey=gifted&query=${encodeURIComponent(text)}`;
+    const { data } = await axios.get(api);
 
-    if (!data || !data.data || !data.data.lyrics) {
-      return reply("❌ Paroles non trouvées.");
-    }
+    console.log('[API GIFTED LYRICS]', JSON.stringify(data, null, 2)); // Debug
 
-    const { title, artist, lyrics } = data.data;
+    const lyrics = data?.data?.lyrics || data?.data?.result?.lyrics;
 
-    const msg = `*Titre:* ${title}\n*Artiste:* ${artist}\n\n${lyrics}`.trim();
+    if (!lyrics) return reply("❌ Paroles non trouvées ou réponse invalide.");
+
+    const title = data.data.title || text;
+    const artist = data.data.artist || 'Inconnu';
+
+    const message = `*Titre:* ${title}\n*Artiste:* ${artist}\n\n${lyrics}`.trim();
 
     await conn.sendMessage(m.chat, {
-      text: msg,
+      text: message,
       contextInfo: {
         externalAdReply: {
           title: `${title} - ${artist}`,
@@ -37,7 +40,7 @@ async (conn, mek, m, { text, reply }) => {
         }
       }
     }, { quoted: mek });
-    
+
   } catch (e) {
     console.error(e);
     reply("❌ Une erreur est survenue lors de la récupération des paroles.");
