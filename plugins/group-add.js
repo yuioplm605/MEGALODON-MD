@@ -5,7 +5,7 @@ cmd({
     pattern: "add",
     alias: ["a", "ad"],
     desc: "Adds a member to the group",
-    category: "admin",
+    category: "group",
     react: "➕",
     filename: __filename
 },
