@@ -8,11 +8,8 @@ function convertToBool(text, fault = 'true') {
 }
 
 module.exports = {
-SESSION_ID: process.env.SESSION_ID || "MEGALODON~MD~",
+SESSION_ID: process.env.SESSION_ID || "put your session id here",
 // add your Session Id 
-SUDO_LIST: process.env.SUDO_LIST ? process.env.SUDO_LIST.split(',').map(n => n.trim()) : ["50934960331"],
-// example: 50911111111,50922222222
-
 AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "true",
 // make true or false status auto seen
 AUTO_STATUS_REPLY: process.env.AUTO_STATUS_REPLY || "false",
