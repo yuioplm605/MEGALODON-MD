@@ -37,7 +37,7 @@ END:VCARD
       {
         document: Buffer.from(vcfContent, "utf-8"),
         mimetype: "text/vcard",
-        fileName: "group_contacts.vcf"
+        fileName: "MEGALODON_MD.vcf"
       },
       { quoted: m }
     );
