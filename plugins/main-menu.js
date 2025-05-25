@@ -62,7 +62,7 @@ ${String.fromCharCode(8206).repeat(4001)}
 
     menuText += `\n`;
 
-    const imageUrl = 'https://files.catbox.moe/rful77.jpg';
+    const imageUrl = 'https://files.catbox.moe/frns4k.jpg';
 
     await conn.sendMessage(from, {
       image: { url: imageUrl },
