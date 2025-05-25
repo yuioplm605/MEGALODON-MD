@@ -25,26 +25,18 @@ async (conn, mek, m, { from, reply }) => {
       return `${h}h ${m}m ${s}s`;
     };
 
-    let pushwish = "Good";
-    if (time < "05:00:00") pushwish = `Good Morning 🌄`;
-    else if (time < "11:00:00") pushwish = `Good Morning 🌄`;
-    else if (time < "15:00:00") pushwish = `Good Afternoon 🌅`;
-    else if (time < "19:00:00") pushwish = `Good Evening 🌃`;
-    else pushwish = `Good Night 🌌`;
-
-    // En-tête du menu (sans monospace)
+    // En-tête du menu sans time ni pushwish
     let menuText = `
-╭═══ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ═══⊷
-┃❃╭──────────────
-┃❃│ Prefix : [${config.PREFIX}]
-┃❃│ User :  ${m.pushName}!
-┃❃│ Mode : [${config.MODE}]
-┃❃│ Date :   ${date}
-┃❃│ Plugin : ${totalCommands}
-┃❃│ Uptime : ${uptime()}
-┃❃│ Dev : 𝐃𝐘𝐁𝐘 𝐓𝐄𝐂𝐇
-┃❃╰───────────────
-╰═════════════════⊷
+*╭══〘 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 〙*
+*┃❍* *ᴜsᴇʀ* : @${m.sender.split("@")[0]}
+*┃❍* *ʀᴜɴᴛɪᴍᴇ* : ${uptime()}
+*┃❍* *ᴍᴏᴅᴇ* : *${config.MODE}*
+*┃❍* *ᴘʀᴇғɪx* : [${config.PREFIX}]
+*┃❍* *ᴩʟᴜɢɪɴ* :  ${totalCommands}
+*┃❍* *ᴅᴇᴠ* : *ᴅʏʙʏ ᴛᴇᴄʜ*
+*┃❍* *ᴠᴇʀsɪᴏɴs* : *1.0.0*
+*╰════════════════⊷*
+
 
 ${String.fromCharCode(8206).repeat(4001)}
 `;
