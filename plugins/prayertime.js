@@ -60,7 +60,7 @@ async(conn, mek, m, {from, l, quoted, body, isCmd, command, args, q, isGroup, se
                     forwardingScore: 999,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363372853772240@newsletter',
+                        newsletterJid: '120363401051937059@newsletter',
                         newsletterName: '𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡',
                         serverMessageId: 143
                     }
@@ -68,13 +68,7 @@ async(conn, mek, m, {from, l, quoted, body, isCmd, command, args, q, isGroup, se
             },
             { quoted: mek }
         );
-
-        // Optionally, send an audio file related to the prayer time
-        await conn.sendMessage(from, {
-            audio: { url: 'https://github.com/JawadYT36/KHAN-DATA/raw/refs/heads/main/autovoice/Islamic.m4a' },
-            mimetype: 'audio/mp4',
-            ptt: false
-        }, { quoted: mek });
+        
 
     } catch (e) {
         console.log(e);
