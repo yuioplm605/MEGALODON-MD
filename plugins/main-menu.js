@@ -36,7 +36,8 @@ async (conn, mek, m, { from, reply }) => {
 *┃❍* *ᴅᴇᴠ* : *ᴅʏʙʏ ᴛᴇᴄʜ*
 *┃❍* *ᴠᴇʀsɪᴏɴs* : *1.0.0*
 *╰════════════════⊷*
-${String.fromCharCode(8206).repeat(4001)}
+
+*_WELCOME TO MEGALODON MD_*
 `;
 
     // Regroupement par catégorie
