@@ -35,34 +35,12 @@ async (conn, mek, m, { from, reply }) => {
 ╰────────────────⳹
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        // Format 2: Minimalist
-        const style2 = `•——[ GITHUB INFO ]——•
-  │
-  ├─ 🏷️ ${repoData.name}
-  ├─ 👤 ${repoData.owner.login}
-  ├─ ✨ ${repoData.stargazers_count} Stars
-  ├─ ⑂  ${repoData.forks_count} Forks
-  ├─ 🔗 ${repoData.html_url}
-  •——[𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ]——•
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
-
-        // Format 3: Fancy Borders
-        const style3 = `▄▀▄▀▄ REPOSITORY INFO ▄▀▄▀▄
-
-  ♢ *Project*: ${repoData.name}
-  ♢ *Author*: ${repoData.owner.login}
-  ♢ *Stars*: ${repoData.stargazers_count} ✨
-  ♢ *Forks*: ${repoData.forks_count} ⑂
-  ♢ *Updated*: ${new Date(repoData.updated_at).toLocaleDateString()}
-  
-  🔗 ${repoData.html_url}
-  
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+    
 
         // Format 4: Code Style
         const style4 = `┌──────────────────────┐
-│  ⚡ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO   │
-├──────────────────────┤
+│  ⚡ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO   
+├──────────────────────
 │ • Name: ${repoData.name}
 │ • Owner: ${repoData.owner.login}
 │ • Stars: ${repoData.stargazers_count}
@@ -98,25 +76,7 @@ async (conn, mek, m, { from, reply }) => {
 ╚══════════════════════╝
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        // Format 7: Elegant
-        const style7 = `┌───────────────┐
-│  📂  REPO  │
-└───────────────┘
-│
-│ *Project*: ${repoData.name}
-│ *Author*: ${repoData.owner.login}
-│
-│ ✨ ${repoData.stargazers_count} Stars
-│ ⑂ ${repoData.forks_count} Forks
-│
-│ 🔗 ${repoData.html_url}
-│
-┌───────────────┐
-│  📝  DESC  │
-└───────────────┘
-${repoData.description || 'No description'}
-
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+        
 
         // Format 8: Social Media Style
         const style8 = `✦ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 Repository ✦
@@ -133,23 +93,6 @@ ${repoData.description || 'No description available'}
 
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        // Format 9: Fancy List
-        const style9 = `╔♫═🎧═♫══════════╗
-   𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 REPO
-╚♫═🎧═♫══════════╝
-
-•・゜゜・* ✧  *・゜゜・•
- ✧ *Name*: ${repoData.name}
- ✧ *Owner*: ${repoData.owner.login}
- ✧ *Stars*: ${repoData.stargazers_count}
- ✧ *Forks*: ${repoData.forks_count}
-•・゜゜・* ✧  *・゜゜・•
-
-🔗 ${repoData.html_url}
-
-${repoData.description || 'No description'}
-
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         // Format 10: Professional
         const style10 = `┏━━━━━━━━━━━━━━━━━━┓
@@ -167,7 +110,7 @@ ${repoData.description || 'No description provided'}
 
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*`;
 
-        const styles = [style1, style2, style3, style4, style5, style6, style7, style8, style9, style10];
+        const styles = [style1, style4, style5, style6, style8, style10];
         const selectedStyle = styles[Math.floor(Math.random() * styles.length)];
 
         // Send image with repo info
