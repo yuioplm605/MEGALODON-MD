@@ -1,4 +1,6 @@
 const axios = require("axios");
+const FormData = require("form-data");
+const fs = require("fs");
 const { cmd } = require("../command");
 
 cmd({
@@ -9,30 +11,40 @@ cmd({
   filename: __filename
 }, async (conn, m, store, { from, quoted, mime, reply }) => {
   try {
-    const img = quoted && /image/.test(mime) ? quoted : /image/.test(mime) ? m : false;
-    if (!img) return reply("❎ Veuillez répondre à une image avec la commande `.remini`");
+    const target = quoted ? quoted : m;
+    const mimetype = target.mimetype || mime;
 
-    reply("♻️ *Traitement de l'image en cours...*");
+    if (!/image\/(jpe?g|png)/.test(mimetype)) {
+      return reply("❎ Veuillez répondre à une image *ou envoyer une image* avec la commande `.remini`.");
+    }
 
-    const media = await conn.downloadAndSaveMediaMessage(img);
+    reply("♻️ *Traitement de l'image...*");
+
+    const path = await conn.downloadAndSaveMediaMessage(target);
+
     const form = new FormData();
-    form.append("image", require("fs").createReadStream(media));
+    form.append("image", fs.createReadStream(path));
 
     const response = await axios.post("https://api.hardianto.xyz/ai/remini", form, {
       headers: {
         ...form.getHeaders(),
-        'apikey': 'hardianto' // Change avec ta propre clé si nécessaire
+        apikey: "hardianto" // Clé gratuite publique
       }
     });
 
+    fs.unlinkSync(path); // Supprimer le fichier temporaire
+
     if (!response.data || !response.data.status) {
-      return reply("❌ Erreur lors du traitement de l'image.");
+      return reply("❌ Erreur lors de l'amélioration de l'image.");
     }
 
-    await conn.sendMessage(from, { image: { url: response.data.result }, caption: "✅ Image améliorée avec succès !" }, { quoted: m });
+    await conn.sendMessage(from, {
+      image: { url: response.data.result },
+      caption: "✅ *Image améliorée avec succès !*"
+    }, { quoted: m });
 
-  } catch (err) {
-    console.error("Erreur remini:", err);
-    reply("❌ Une erreur est survenue lors du traitement.");
+  } catch (e) {
+    console.error(e);
+    reply("⚠️ Une erreur est survenue. Vérifie que l'image est valide.");
   }
 });
