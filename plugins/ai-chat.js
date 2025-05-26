@@ -3,7 +3,7 @@ const axios = require('axios');
 
 cmd({
     pattern: "ai",
-    alias: ["bot", "dj", "gpt", "gpt4", "bing"],
+    alias: ["bot", "crazy", "gpt", "gpt4", "bing"],
     desc: "Chat with an AI model",
     category: "ai",
     react: "🤖",
@@ -13,7 +13,7 @@ async (conn, mek, m, { from, args, q, reply, react }) => {
     try {
         if (!q) return reply("Please provide a message for the AI.\nExample: `.ai Hello`");
 
-        const apiUrl = `https://www.laurine.site/api/ai/heckai?q=${encodeURIComponent(q)}}`;
+        const apiUrl = `https://lance-frank-asta.onrender.com/api/gpt?q=${encodeURIComponent(q)}`;
         const { data } = await axios.get(apiUrl);
 
         if (!data || !data.message) {
@@ -87,5 +87,4 @@ async (conn, mek, m, { from, args, q, reply, react }) => {
         reply("An error occurred while communicating with DeepSeek AI.");
     }
 });
-
 
