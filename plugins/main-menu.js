@@ -61,17 +61,17 @@ async (conn, mek, m, { from, reply }) => {
 
     menuText += `\n`;
 
-    const imageUrl = 'https://files.catbox.moe/frns4k.jpg';
+    const thumbnailUrl = 'https://files.catbox.moe/frns4k.jpg';
 
     await conn.sendMessage(from, {
-      image: { url: imageUrl },
+      image: { url: thumbnailUrl },
       caption: menuText,
       contextInfo: {
         mentionedJid: [m.sender],
         externalAdReply: {
           title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
           body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-          mediaType: 3,
+          mediaType: 4,
           renderLargerThumbnail: true,
           sourceUrl: 'https://github.com/Dybytech/MEGALODON-MD'
         }
