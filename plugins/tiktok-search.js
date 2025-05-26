@@ -6,7 +6,7 @@ cmd({
   alias: ["tiktoks", "tiks"],
   desc: "Search for TikTok videos using a query.",
   react: '✅',
-  category: 'tools',
+  category: 'search',
   filename: __filename
 }, async (conn, m, store, {
   from,
