@@ -15,7 +15,7 @@ cmd({
 async (conn, mek, m, { from, sender, reply }) => {
     try {
         const caption = `
-╭──〔 *MEGALODON-MD ALIVE* 〕─◉
+╭──〔 *STATUS ALIVE* 〕─◉
 │✨ *Bot is Active & Online!*
 │🧠 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ
 │⚡ *Version:* 1.0.0
@@ -24,7 +24,7 @@ async (conn, mek, m, { from, sender, reply }) => {
 │🖥️ *Host:* ${os.hostname()}
 │⌛ *Uptime:* ${runtime(process.uptime())}
 ╰────────────────────◉
-*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
         `.trim();
 
         const thumbnailBuffer = await axios.get('https://files.catbox.moe/frns4k.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
@@ -33,7 +33,7 @@ async (conn, mek, m, { from, sender, reply }) => {
             text: caption,
             contextInfo: {
                 externalAdReply: {
-                    title: "MEGALODON–MD",
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
                     body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                     mediaType: 1,
                     previewType: "PHOTO",
