@@ -5,7 +5,7 @@ const axios = require('axios');
 
 cmd({
   pattern: "menu",
-  alias: ["allmenu", "❄️"],
+  alias: ["❄️", "mega", "allmenu"],
   use: '.menu',
   desc: "Show all bot commands",
   category: "menu",
@@ -61,23 +61,24 @@ async (conn, mek, m, { from, reply }) => {
 
     menuText += `\n`;
 
-    const thumbnailUrl = 'https://files.catbox.moe/frns4k.jpg';
+    const thumbnailBuffer = await axios.get('https://files.catbox.moe/frns4k.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
 
-    await conn.sendMessage(from, {
-      image: { url: thumbnailUrl },
-      caption: menuText,
-      contextInfo: {
-        mentionedJid: [m.sender],
-        externalAdReply: {
-          title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-          body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-          mediaType: 4,
-          renderLargerThumbnail: true,
-          sourceUrl: 'https://github.com/Dybytech/MEGALODON-MD'
-        }
-      }
-    }, { quoted: mek });
-
+        await conn.sendMessage(from, {
+            text: caption,
+            contextInfo: {
+                externalAdReply: {
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                    mediaType: 1,
+                    previewType: "PHOTO",
+                    renderLargerThumbnail: true,
+                    thumbnail: thumbnailBuffer,
+                    mediaUrl: "https://wa.me/message/yourself",
+                    sourceUrl: "https://wa.me/message/yourself"
+                }
+            }
+        }, { quoted: mek });
+    
   } catch (e) {
     console.error(e);
     reply(`❌ Error: ${e.message}`);
