@@ -14,37 +14,33 @@ cmd({
 },
 async (conn, mek, m, { from, sender, reply }) => {
     try {
-        const status = `
-> ╭──〔 *MEGALODON-MD ALIVE* 〕─◉
-> │✨ *Bot is Active & Online!*
-> │
-> │🧠 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ
-> │⚡ *Version:* 1.0.0
-> │📝 *Prefix:* [${config.PREFIX}]
-> │📳 *Mode:* [${config.MODE}]
-> │🖥️ *Host:* ${os.hostname()}
-> │⌛ *Uptime:* ${runtime(process.uptime())}
-> ╰────────────────────◉
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+        const caption = `
+╭──〔 *MEGALODON-MD ALIVE* 〕─◉
+│✨ *Bot is Active & Online!*
+│🧠 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ
+│⚡ *Version:* 1.0.0
+│📝 *Prefix:* [${config.PREFIX}]
+│📳 *Mode:* [${config.MODE}]
+│🖥️ *Host:* ${os.hostname()}
+│⌛ *Uptime:* ${runtime(process.uptime())}
+╰────────────────────◉
+*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
+        `.trim();
 
-        const thumbnailBuffer = (await axios.get("https://files.catbox.moe/rful77.jpg", { responseType: "arraybuffer" })).data;
+        const thumbnailBuffer = await axios.get('https://files.catbox.moe/frns4k.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
 
         await conn.sendMessage(from, {
-            image: { url: `https://files.catbox.moe/frns4k.jpg` },
-            caption: status,
+            text: caption,
             contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 1000,
-                isForwarded: true,
                 externalAdReply: {
-                    title: "MEGALODON-MD 🥀",
-                    body: "> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*",
+                    title: "MEGALODON–MD",
+                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                     mediaType: 1,
+                    previewType: "PHOTO",
                     renderLargerThumbnail: true,
                     thumbnail: thumbnailBuffer,
-                    mediaUrl: "https://files.catbox.moe/frns4k.jpg",
-                    sourceUrl: "https://wa.me/message/yourself",
-                    showAdAttribution: true
+                    mediaUrl: "https://wa.me/message/yourself",
+                    sourceUrl: "https://wa.me/message/yourself"
                 }
             }
         }, { quoted: mek });
