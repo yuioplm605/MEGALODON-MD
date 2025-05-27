@@ -24,13 +24,6 @@ async (conn, mek, m, { from, reply }) => {
 ╰────────────────⳹
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        // Style 2: Minimalist
-        const style2 = `•——[ UPTIME ]——•
-  │
-  ├─ ⏳ ${uptime}
-  ├─ 🕒 Since: ${startTime.toLocaleTimeString()}
-  │
-  •——[ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 ]——•`;
 
         // Style 3: Fancy Borders
         const style3 = `▄▀▄▀▄ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 UPTIME ▄▀▄▀▄
@@ -65,17 +58,7 @@ async (conn, mek, m, { from, reply }) => {
 ║  SINCE: ${startTime.toLocaleString()}
 ╚══════════════════════╝`;
 
-        // Style 7: Elegant
-        const style7 = `┌───────────────┐
-│  ⏱️  UPTIME  │
-└───────────────┘
-│ ${uptime}
-│
-│ Since ${startTime.toLocaleDateString()}
-│
-┌───────────────┐
-│ 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 
-└───────────────┘`;
+    
 
         // Style 8: Social Media Style
         const style8 = `⏱️ *Uptime Report* ⏱️
@@ -86,19 +69,10 @@ async (conn, mek, m, { from, reply }) => {
 
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        // Style 9: Fancy List
-        const style9 = `╔♫═⏱️═♫══════════╗
-   𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 UPTIME
-╚♫═⏱️═♫══════════╝
-
-•・゜゜・* ✧  *・゜゜・•
- ✧ ${uptime}
- ✧ Since ${startTime.toLocaleDateString()}
-•・゜゜・* ✧  *・゜゜・•`;
-
+        
         // Style 10: Professional
         const style10 = `┏━━━━━━━━━━━━━━━━━━┓
-┃  𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃  ┃
+┃  𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃  
 ┗━━━━━━━━━━━━━━━━━━┛
 
 ◈ Duration: ${uptime}
@@ -108,7 +82,7 @@ async (conn, mek, m, { from, reply }) => {
 
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
-        const styles = [style1, style2, style3, style4, style5, style6, style7, style8, style9, style10];
+        const styles = [style1, style3, style4, style5, style6, style8, style10];
         const selectedStyle = styles[Math.floor(Math.random() * styles.length)];
 
         await conn.sendMessage(from, { 
@@ -119,7 +93,7 @@ async (conn, mek, m, { from, reply }) => {
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363401051937059@newsletter',
-                    newsletterName: config.OWNER_NAME || '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
+                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
                     serverMessageId: 143
                 }
             }
