@@ -23,21 +23,23 @@ async (conn, mek, m, { from }) => {
 > │🛠️ *𝙱𝙾𝚃 𝙽𝙰𝙼𝙴:* 𝙼𝙴𝙶𝙰𝙻𝙾𝙳𝙾𝙽 𝙼𝙳
 > │───────────────────────
 > │🙋‍♂️ 𝙷𝙴𝙻𝙻𝙾 @${m.sender.split("@")[0]}
-> │
 > ╰─────────────────────❏
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
+        const thumbnailBuffer = await axios.get('https://files.catbox.moe/frns4k.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
+
         await conn.sendMessage(from, {
-            image: { url: 'https://files.catbox.moe/frns4k.jpg' },
-            caption: message,
+            text: caption,
             contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 1000,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363401051937059@newsletter', // remplace avec ton vrai newsletterJid si besoin
-                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
-                    serverMessageId: 143
+                externalAdReply: {
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                    mediaType: 1,
+                    previewType: "PHOTO",
+                    renderLargerThumbnail: true,
+                    thumbnail: thumbnailBuffer,
+                    mediaUrl: "https://wa.me/message/yourself",
+                    sourceUrl: "https://wa.me/message/yourself"
                 }
             }
         }, { quoted: mek });
