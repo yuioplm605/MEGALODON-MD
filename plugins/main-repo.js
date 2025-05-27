@@ -114,17 +114,20 @@ ${repoData.description || 'No description provided'}
         const selectedStyle = styles[Math.floor(Math.random() * styles.length)];
 
         // Send image with repo info
+        const thumbnailBuffer = await axios.get('https://files.catbox.moe/c811p6.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
+
         await conn.sendMessage(from, {
-            image: { url: `https://files.catbox.moe/c811p6.jpg` },
-            caption: selectedStyle,
-            contextInfo: { 
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363401051937059@newsletter',
-                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
-                    serverMessageId: 143
+            text: caption,
+            contextInfo: {
+                externalAdReply: {
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                    mediaType: 1,
+                    previewType: "PHOTO",
+                    renderLargerThumbnail: true,
+                    thumbnail: thumbnailBuffer,
+                    mediaUrl: "https://wa.me/message/yourself",
+                    sourceUrl: "https://wa.me/message/yourself"
                 }
             }
         }, { quoted: mek });
