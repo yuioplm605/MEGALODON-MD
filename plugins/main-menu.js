@@ -73,8 +73,8 @@ async (conn, mek, m, { from, reply }) => {
             previewType: "PHOTO",
             renderLargerThumbnail: true,
             thumbnail: thumbnailBuffer,
-            mediaUrl: "https://wa.me/message/yourself",
-            sourceUrl: "https://wa.me/message/yourself"
+            mediaUrl: "https://github.com/DybyTech/MEGALODON-MD",
+            sourceUrl: "https://github.com/DybyTech/MEGALODON-MD"
         }
     }
 }, { quoted: mek });
