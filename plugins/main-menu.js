@@ -54,30 +54,27 @@ async (conn, mek, m, { from, reply }) => {
       const cmds = category[k].filter(c => c.pattern).sort((a, b) => a.pattern.localeCompare(b.pattern));
       cmds.forEach((cmd) => {
         const usage = cmd.pattern.split('|')[0];
-        menuText += `\n├❍ \`${config.PREFIX}${usage}\``;
+        menuText += `\n├❃ \`${config.PREFIX}${usage}\``;
       });
-      menuText += `\n┗━━━━━━━━━━━━━━❍`;
+      menuText += `\n┗━━━━━━━━━━━━━━❃`;
     }
 
     menuText += `\n`;
 
-    const thumbnailBuffer = await axios.get('https://files.catbox.moe/frns4k.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
-
-        await conn.sendMessage(from, {
-    text: menuText,
-    contextInfo: {
-        externalAdReply: {
-            title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-            body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-            mediaType: 1,
-            previewType: "PHOTO",
-            renderLargerThumbnail: true,
-            thumbnail: thumbnailBuffer,
-            mediaUrl: "https://github.com/DybyTech/MEGALODON-MD",
-            sourceUrl: "https://github.com/DybyTech/MEGALODON-MD"
+    await conn.sendMessage(from, {
+      image: { url: 'https://files.catbox.moe/frns4k.jpg' },
+      caption: menuText,
+      contextInfo: {
+        mentionedJid: [m.sender],
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: '120363401051937059@newsletter',
+          newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
+          serverMessageId: 143
         }
-    }
-}, { quoted: mek });
+      }
+    }, { quoted: mek });
     
   } catch (e) {
     console.error(e);
