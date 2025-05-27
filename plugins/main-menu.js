@@ -64,20 +64,20 @@ async (conn, mek, m, { from, reply }) => {
     const thumbnailBuffer = await axios.get('https://files.catbox.moe/frns4k.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
 
         await conn.sendMessage(from, {
-            text: caption,
-            contextInfo: {
-                externalAdReply: {
-                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-                    mediaType: 1,
-                    previewType: "PHOTO",
-                    renderLargerThumbnail: true,
-                    thumbnail: thumbnailBuffer,
-                    mediaUrl: "https://wa.me/message/yourself",
-                    sourceUrl: "https://wa.me/message/yourself"
-                }
-            }
-        }, { quoted: mek });
+    text: menuText,
+    contextInfo: {
+        externalAdReply: {
+            title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+            body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+            mediaType: 1,
+            previewType: "PHOTO",
+            renderLargerThumbnail: true,
+            thumbnail: thumbnailBuffer,
+            mediaUrl: "https://wa.me/message/yourself",
+            sourceUrl: "https://wa.me/message/yourself"
+        }
+    }
+}, { quoted: mek });
     
   } catch (e) {
     console.error(e);
