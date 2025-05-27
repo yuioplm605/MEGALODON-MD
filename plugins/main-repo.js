@@ -118,20 +118,20 @@ ${repoData.description || 'No description provided'}
         const thumbnailBuffer = await axios.get('https://files.catbox.moe/c811p6.jpg', { responseType: 'arraybuffer' }).then(res => res.data);
 
         await conn.sendMessage(from, {
-            text: caption,
-            contextInfo: {
-                externalAdReply: {
-                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-                    mediaType: 1,
-                    previewType: "PHOTO",
-                    renderLargerThumbnail: true,
-                    thumbnail: thumbnailBuffer,
-                    mediaUrl: "https://wa.me/message/yourself",
-                    sourceUrl: "https://wa.me/message/yourself"
-                }
-            }
-        }, { quoted: mek });
+    text: selectedStyle, // <-- au lieu de caption
+    contextInfo: {
+        externalAdReply: {
+            title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+            body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+            mediaType: 1,
+            previewType: "PHOTO",
+            renderLargerThumbnail: true,
+            thumbnail: thumbnailBuffer,
+            mediaUrl: "https://wa.me/message/yourself",
+            sourceUrl: "https://wa.me/message/yourself"
+        }
+    }
+}, { quoted: mek });
 
         
     } catch (error) {
