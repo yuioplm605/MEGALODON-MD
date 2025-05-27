@@ -3,18 +3,18 @@ const { cmd } = require('../command');
 cmd({
   pattern: "channelinfo",
   alias: ["idch", "idchannel", "nwt", "newsletter"],
-  desc: "Get WhatsApp Channel information by link or from within a channel",
+  desc: "Get WhatsApp Channel information by link or from inside a channel",
   category: "tools",
   react: "🧾",
   filename: __filename
-}, async (conn, mek, m, { args, reply }) => {
+}, async (conn, m, store, { args, reply }) => {
   const input = args.join(" ").trim();
   const currentJid = m.chat;
 
   const channelLinkRegex = /https?:\/\/whatsapp\.com\/channel\/([a-zA-Z0-9]+)/;
   const linkMatch = input.match(channelLinkRegex);
 
-  // Cas 1 : Lien vers un canal fourni
+  // Case 1: Link detected
   if (linkMatch) {
     const channelCode = linkMatch[1];
     const jid = `${channelCode}@newsletter`;
@@ -34,12 +34,12 @@ cmd({
       if (!metadata) return reply("❌ Failed to fetch channel metadata.");
 
       const message = `
-✅ *Channel Metadata:*
-*ID:* ${jid}
-*Name:* ${metadata.name || 'Unknown'}
-*Owner:* ${metadata.creator || 'Unavailable'}
-*Description:* ${metadata.description || 'No description'}
-*Creation Time:* ${metadata.creation || 'Unknown'}
+✅ *Channel Info:*
+• *ID:* ${jid}
+• *Name:* ${metadata.name || 'Unknown'}
+• *Owner:* ${metadata.creator || 'Unavailable'}
+• *Description:* ${metadata.description || 'None'}
+• *Created on:* ${metadata.creation || 'Unknown'}
 
 © Plugin by *DybyTech*
       `.trim();
@@ -51,13 +51,13 @@ cmd({
     }
   }
 
-  // Cas 2 : La commande est exécutée depuis un canal WhatsApp
+  // Case 2: Command used inside a WhatsApp channel
   if (currentJid.endsWith("@newsletter")) {
-    const now = new Date().toLocaleString("en-US", { timeZone: "UTC", hour12: true });
+    const now = new Date().toLocaleString("en-US", { timeZone: "UTC" });
 
     await conn.sendMessage(currentJid, {
-      text: `🆔 *Channel JID:*\n\n*${currentJid}*\n\n🕒 *Executed on:* ${now}\n\n© DybyTech`,
-    }, { quoted: mek });
+      text: `🆔 *Channel ID:*\n\n*${currentJid}*\n\n🕒 Executed on: ${now}\n\n© DybyTech`
+    }, { quoted: m });
 
     const fakeNewsletterJid = '120363312841480579@newsletter';
     const fakeNewsletterName = '𝑵𝒆𝒘𝒔𝒍𝒆𝒕𝒕𝒆𝒓 𝑿';
@@ -74,11 +74,9 @@ cmd({
           serverMessageId: serverMessageId
         }
       }
-    }, { quoted: mek });
+    }, { quoted: m });
   }
 
-  // Cas 3 : Aucun lien, pas dans un canal
+  // Case 3: Neither link nor inside channel
   return reply("❌ Please provide a WhatsApp *channel link* or use this command *inside a WhatsApp Channel*.");
 });
-
-//Powered by DybyTech 
