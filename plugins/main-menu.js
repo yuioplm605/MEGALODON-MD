@@ -3,6 +3,16 @@ const moment = require('moment-timezone');
 const { cmd, commands } = require('../command');
 const axios = require('axios');
 
+function toSmallCaps(str) {
+  const smallCaps = {
+    A: 'ᴀ', B: 'ʙ', C: 'ᴄ', D: 'ᴅ', E: 'ᴇ', F: 'ғ', G: 'ɢ', H: 'ʜ',
+    I: 'ɪ', J: 'ᴊ', K: 'ᴋ', L: 'ʟ', M: 'ᴍ', N: 'ɴ', O: 'ᴏ', P: 'ᴘ',
+    Q: 'ǫ', R: 'ʀ', S: 's', T: 'ᴛ', U: 'ᴜ', V: 'ᴠ', W: 'ᴡ', X: 'x',
+    Y: 'ʏ', Z: 'ᴢ'
+  };
+  return str.toUpperCase().split('').map(c => smallCaps[c] || c).join('');
+}
+
 cmd({
   pattern: "menu",
   alias: ["❄️", "mega", "allmenu"],
@@ -25,7 +35,6 @@ async (conn, mek, m, { from, reply }) => {
       return `${h}h ${m}m ${s}s`;
     };
 
-    // En-tête du menu sans time ni pushwish
     let menuText = `
 *╭══〘 𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 〙*
 *┃❍* *ᴜsᴇʀ* : @${m.sender.split("@")[0]}
@@ -40,7 +49,6 @@ async (conn, mek, m, { from, reply }) => {
 *_WELCOME TO MEGALODON MD_*
 `;
 
-    // Regroupement par catégorie
     let category = {};
     for (let cmd of commands) {
       if (!cmd.category) continue;
@@ -54,7 +62,7 @@ async (conn, mek, m, { from, reply }) => {
       const cmds = category[k].filter(c => c.pattern).sort((a, b) => a.pattern.localeCompare(b.pattern));
       cmds.forEach((cmd) => {
         const usage = cmd.pattern.split('|')[0];
-        menuText += `\n├❃ \`${config.PREFIX}${usage}\``;
+        menuText += `\n├❃ \`${config.PREFIX}${toSmallCaps(usage)}\``;
       });
       menuText += `\n┗━━━━━━━━━━━━━━❃`;
     }
