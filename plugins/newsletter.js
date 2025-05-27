@@ -79,28 +79,43 @@ cmd({
     return reply("❌ Missing link.\n\nExample:\n.idch https://whatsapp.com/channel/abc123XYZ");
   }
 
-  if (!text.includes("https://whatsapp.com/channel/")) {
-    return reply("❌ Invalid link. It must start with:\nhttps://whatsapp.com/channel/");
+  const match = text.match(/^https:\/\/whatsapp\.com\/channel\/([A-Za-z0-9]+)$/);
+  if (!match) {
+    return reply("❌ Invalid link format.\nIt must look like:\nhttps://whatsapp.com/channel/abc123XYZ");
   }
 
-  const channelCode = text.split('https://whatsapp.com/channel/')[1].trim();
+  const channelCode = match[1];
+  const jid = `${channelCode}@newsletter`;
 
   try {
-    const res = await conn.newsletterMetadata("invite", channelCode);
+    const res = await conn.query({
+      tag: "iq",
+      attrs: {
+        to: jid,
+        type: "get",
+        xmlns: "w:newsletter"
+      },
+      content: [{ tag: "newsletter", attrs: {} }]
+    });
 
-    if (!res) return reply("❌ Failed to fetch channel metadata.");
+    const metadata = res?.content?.[0]?.attrs;
 
-    let message = `
-✅ *Channel ID Retrieved:*
-*ID:* ${res.id}
-*Name:* ${res.name || 'Unknown'}
-*Owner:* ${res.owner || 'Unavailable'}
-*Subscribers:* ${res.subscriber_count || 'Unknown'}
-`.trim();
+    if (!metadata) {
+      return reply("❌ Failed to fetch channel metadata.");
+    }
+
+    const message = `
+✅ *Channel Metadata:*
+*ID:* ${jid}
+*Name:* ${metadata.name || 'Unknown'}
+*Owner:* ${metadata.creator || 'Unavailable'}
+*Description:* ${metadata.description || 'No description'}
+*Creation Time:* ${metadata.creation || 'Unknown'}
+    `.trim();
 
     return reply(message);
   } catch (error) {
-    console.error(error);
+    console.error("Metadata fetch error:", error);
     return reply("❌ An error occurred while fetching channel metadata.");
   }
 });
