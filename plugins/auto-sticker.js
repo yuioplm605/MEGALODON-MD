@@ -30,3 +30,6 @@ async (conn, mek, m, { from, body }) => {
         }
     }
 });
+
+
+//Powered by DybyTech 
