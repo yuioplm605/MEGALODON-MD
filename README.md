@@ -78,7 +78,7 @@
   <a href="https://dashboard.heroku.com/new?template=https://github.com/DybyTech/MEGALODON-MD/tree/main">
     <img src="https://img.shields.io/badge/Deploy-Heroku-FF004D?style=for-the-badge&logo=heroku&logoColor=white" />
   </a>
-  <a href="https://host.talkdrove.com/share-bot/82">
+  <a href="https://host.talkdrove.com/share-bot/73">
     <img src="https://img.shields.io/badge/Deploy-TaikDrove-6971FF?style=for-the-badge&logo=google-cloud&logoColor=white" />
   </a>
   <a href="https://app.koyeb.com/services/deploy?type=git&repository=DybyTech/MEGALODON-MD&ports=3000">
