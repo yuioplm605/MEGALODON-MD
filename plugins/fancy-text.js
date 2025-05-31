@@ -16,8 +16,6 @@ cmd({
   command,
   args,
   q,
-  isGroup,
-  sender,
   reply
 }) => {
   try {
@@ -26,12 +24,17 @@ cmd({
     const apiUrl = `https://www.dark-yasiya-api.site/other/font?text=${encodeURIComponent(q)}`;
     const res = await axios.get(apiUrl);
 
-    if (!res.data.status) return reply("❌ Error fetching fonts. Try again later.");
+    if (!res.data.status || !Array.isArray(res.data.result)) {
+      return reply("❌ Error fetching fonts. Try again later.");
+    }
 
     const fonts = res.data.result;
+    const maxDisplay = 44; // ➤ AFFICHER 44 STYLES
+    const displayList = fonts.slice(0, maxDisplay);
+
     let menuText = "╭──〔 *FANCY FONT STYLES* 〕──⬣\n";
-    fonts.forEach((f, i) => {
-      menuText += `┃ ${i + 1}. ${f.name}\n`;
+    displayList.forEach((f, i) => {
+      menuText += `┃ ${i + 1}. ${f.result}\n`;
     });
     menuText += "╰──────────────⬣\n\n📌 *Reply with the number to select a font style for:*\n❝ " + q + " ❞";
 
@@ -46,11 +49,11 @@ cmd({
       handlerActive = false;
       conn.ev.off("messages.upsert", messageHandler);
       reply("⌛ Fancy style selection timed out. Please try again.");
-    }, 120000);
+    }, 120000); // 2 minutes
 
     const messageHandler = async (msgData) => {
       if (!handlerActive) return;
-      const receivedMsg = msgData.messages[0];
+      const receivedMsg = msgData.messages?.[0];
       if (!receivedMsg || !receivedMsg.message) return;
 
       const receivedText = receivedMsg.message.conversation ||
@@ -65,12 +68,12 @@ cmd({
         handlerActive = false;
 
         const selectedNumber = parseInt(receivedText.trim());
-        if (isNaN(selectedNumber) || selectedNumber < 1 || selectedNumber > fonts.length) {
-          return reply("❎ Invalid option. Please reply with a number from the list.");
+        if (isNaN(selectedNumber) || selectedNumber < 1 || selectedNumber > displayList.length) {
+          return reply("❎ Invalid selection. Please reply with a number from 1 to " + displayList.length + ".");
         }
 
-        const chosen = fonts[selectedNumber - 1];
-        const finalText = `✨ *Your Text in ${chosen.name}:*\n\n${chosen.result}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
+        const chosen = displayList[selectedNumber - 1];
+        const finalText = `✨ *Your Text in ${chosen.name || 'Selected Style'}:*\n\n${chosen.result}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(from, {
           text: finalText
@@ -84,5 +87,3 @@ cmd({
     reply("⚠️ An error occurred while processing.");
   }
 });
-
-// powered by DybyTech*
