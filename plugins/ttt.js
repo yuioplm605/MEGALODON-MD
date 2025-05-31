@@ -1,165 +1,86 @@
-const { cmd } = require('../command');
-const TicTacToe = require('../lib/tictactoe');
+const { cmd } = require("../command");
+const TicTacToe = require("../lib/tictactoe");
 
 const games = {};
 
+function sendBoard(conn, room, from, message) {
+  const board = room.game.render();
+  return conn.sendMessage(from, {
+    text: `${message}\n\n${board}\n\n▢ Tape un nombre (1-9) pour jouer\n▢ Tape *surrender* ou *.tttstop* pour abandonner`,
+    mentions: [room.game.playerX, room.game.playerO],
+  }, { quoted: room.message });
+}
+
 cmd({
   pattern: "ttt",
-  alias: ["tictactoe"],
-  desc: "Jouer au jeu du morpion",
+  desc: "Lancer un jeu de TicTacToe",
   category: "game",
-  filename: __filename,
-  react: "🎮",
-}, async (conn, mek, m, { from, sender, args, reply, quoted }) => {
-  const text = args.join(' ');
+  filename: __filename
+}, async (conn, m, { sender, args, reply, from }) => {
+  const opponent = m.mentionedJid?.[0];
+  if (!opponent) return reply("❎ Mentionne un joueur pour démarrer le jeu.");
 
-  // Vérifie si le joueur est déjà dans une partie
-  if (Object.values(games).find(room => room.id.startsWith('tictactoe') &&
-    [room.game.playerX, room.game.playerO].includes(sender))) {
-    return reply('❌ Tu es déjà dans une partie. Tape *surrender* ou *.tttstop* pour abandonner.');
-  }
+  const roomId = `ttt-${from}`;
+  if (games[roomId]) return reply("⚠️ Une partie est déjà en cours dans ce chat.");
 
-  // Recherche une salle en attente ou crée une nouvelle
-  let room = Object.values(games).find(room =>
-    room.state === 'WAITING' && (text ? room.name === text : true)
-  );
-
-  if (room) {
-    // Rejoindre la partie
-    room.o = from;
-    room.game.playerO = sender;
-    room.state = 'PLAYING';
-
-    await sendBoard(conn, room, from, '🎮 *Jeu TicTacToe lancé !*');
-
-  } else {
-    // Créer une nouvelle salle
-    room = {
-      id: 'tictactoe-' + Date.now(),
-      x: from,
-      o: '',
-      game: new TicTacToe(sender),
-      state: 'WAITING',
-      name: text || ''
-    };
-
-    games[room.id] = room;
-
-    return reply(`⏳ En attente d'un adversaire...\nTape *.ttt ${text || ''}* pour rejoindre.`);
-  }
+  const game = new TicTacToe(sender, opponent);
+  const msg = await sendBoard(conn, { game, message: m }, from, `🎮 *Jeu TicTacToe lancé !*\n\nTour de @${sender.split("@")[0]}...`);
+  games[roomId] = { id: roomId, game, message: msg };
 });
 
 cmd({
   pattern: "tttstop",
-  desc: "Abandonner la partie TicTacToe en cours",
+  desc: "Arrêter la partie TicTacToe",
   category: "game",
-  filename: __filename,
-  react: "🏳️",
-}, async (conn, mek, m, { sender, from, reply }) => {
-  const room = Object.values(games).find(room =>
-    room.id.startsWith('tictactoe') &&
-    [room.game.playerX, room.game.playerO].includes(sender) &&
-    room.state === 'PLAYING'
-  );
-  if (!room) return reply('❌ Tu n\'es dans aucune partie.');
+  filename: __filename
+}, async (conn, m, { sender, from, reply }) => {
+  const roomId = `ttt-${from}`;
+  const room = games[roomId];
+  if (!room) return reply("❎ Il n’y a aucune partie en cours.");
+  if (![room.game.playerX, room.game.playerO].includes(sender)) return reply("❌ Tu ne participes pas à cette partie.");
 
-  const winner = sender === room.game.playerX ? room.game.playerO : room.game.playerX;
-
-  await conn.sendMessage(from, {
-    text: `🏳️ @${sender.split('@')[0]} a abandonné la partie !\n🎉 @${winner.split('@')[0]} gagne !`,
-    mentions: [sender, winner]
-  });
-
-  delete games[room.id];
+  delete games[roomId];
+  reply("🛑 Partie arrêtée.");
 });
 
-// Actions pendant la partie, sans préfixe (chiffre ou surrender)
 cmd({
   custom: true,
-  desc: "Jouer au TicTacToe ou abandonner",
   fromMe: false,
-  type: "game",
-}, async (conn, mek, m, { body, sender, from, reply, quoted  }) => {
-  if (!/^[1-9]$|^surrender$|^give up$/i.test(body)) return;
+  type: "game"
+}, async (conn, m, { sender, body, quoted, from, reply }) => {
+  const room = games[`ttt-${from}`];
+  if (!room || room.game.winner) return;
 
-  const room = Object.values(games).find(room =>
-    room.id.startsWith('tictactoe') &&
-    [room.game.playerX, room.game.playerO].includes(sender) &&
-    room.state === 'PLAYING'
-  );
-  if (!room) return;
+  const game = room.game;
+  const move = parseInt(body.trim()) - 1;
+  if (isNaN(move) && !/^surrender$/i.test(body)) return;
 
-  const isSurrender = /^(surrender|give up)$/i.test(body);
-  const isPlayerO = sender === room.game.playerO;
+  const isTurn = sender === game.currentTurn;
+  if (!isTurn && !/^surrender$/i.test(body)) return;
 
-  if (!isSurrender && sender !== room.game.currentTurn) {
-    return reply('❌ Ce n’est pas ton tour.');
-  }
-
-  let ok = isSurrender ? true : room.game.turn(isPlayerO, parseInt(body) - 1);
-  if (!ok && !isSurrender) {
-    return reply('❌ Case déjà prise ou mouvement invalide.');
-  }
-
-  if (isSurrender) {
-    const winner = sender === room.game.playerX ? room.game.playerO : room.game.playerX;
+  if (/^surrender$/i.test(body)) {
+    const opponent = sender === game.playerX ? game.playerO : game.playerX;
     await conn.sendMessage(from, {
-      text: `🏳️ @${sender.split('@')[0]} a abandonné la partie !\n🎉 @${winner.split('@')[0]} gagne !`,
-      mentions: [sender, winner]
+      text: `🏳️ @${sender.split("@")[0]} abandonne la partie.\n🎉 @${opponent.split("@")[0]} gagne !`,
+      mentions: [sender, opponent]
     });
-    delete games[room.id];
+    delete games[`ttt-${from}`];
     return;
   }
 
-  const winnerMark = room.game.winner;
-  const isTie = room.game.turns === 9 && !winnerMark;
+  const success = game.turn(sender, move);
+  if (!success) return reply("❌ Coup invalide ou case déjà prise.");
 
   let status;
-  if (winnerMark) {
-    const winnerId = winnerMark === 'X' ? room.game.playerX : room.game.playerO;
-    status = `🎉 @${winnerId.split('@')[0]} gagne la partie !`;
-  } else if (isTie) {
+  if (game.winner) {
+    status = `🎉 @${sender.split("@")[0]} gagne la partie !`;
+  } else if (game.turns >= 9) {
     status = `🤝 Match nul !`;
   } else {
-    status = `🎲 Tour de @${room.game.currentTurn.split('@')[0]}...`;
+    status = `🎲 Tour de @${game.currentTurn.split("@")[0]}...`;
   }
 
   await sendBoard(conn, room, from, `🎮 *TicTacToe*\n\n${status}`);
 
-  if (winnerMark || isTie) {
-    delete games[room.id];
-  }
+  if (game.winner || game.turns >= 9) delete games[`ttt-${from}`];
 });
-
-// Fonction d'affichage de la grille et message aux joueurs
-async function sendBoard(conn, room, to, title) {
-  const arr = room.game.render().map(v => ({
-    'X': '❎',
-    'O': '⭕',
-    '1': '1️⃣', '2': '2️⃣', '3': '3️⃣',
-    '4': '4️⃣', '5': '5️⃣', '6': '6️⃣',
-    '7': '7️⃣', '8': '8️⃣', '9': '9️⃣',
-  }[v]));
-
-  const str = `
-${title}
-
-Tour de @${room.game.currentTurn.split('@')[0]}...
-
-${arr.slice(0, 3).join('')}
-${arr.slice(3, 6).join('')}
-${arr.slice(6).join('')}
-
-▢ Tape un nombre (1-9) pour jouer
-▢ Tape *surrender* ou *.tttstop* pour abandonner
-`;
-
-  for (const jid of [room.x, room.o]) {
-    if (jid) {
-      await conn.sendMessage(jid, {
-        text: str,
-        mentions: [room.game.playerX, room.game.playerO]
-      });
-    }
-  }
-                                         }
