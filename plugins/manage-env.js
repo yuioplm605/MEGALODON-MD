@@ -40,7 +40,7 @@ cmd({
     category: "settings",
     filename: __filename
 },
-async (conn, mek, m, { from, args, isOwner, reply }) => {
+async (conn, mek, m, { from, args, isOwner, reply, isCreator, isDev }) => {
     if (!isOwner) return reply("*📛 ᴏɴʟʏ ᴛʜᴇ ᴏᴡɴᴇʀ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ!*");
 
     const status = args[0]?.toLowerCase();
