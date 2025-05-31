@@ -18,31 +18,33 @@ cmd({
     const groupName = body.slice(0, firstSpaceIndex).trim();
     const numbersRaw = body.slice(firstSpaceIndex + 1).trim();
 
-    // Nettoyage des numéros (digits only)
-    const numberList = numbersRaw.split(",")
+    if (!groupName) return reply("❌ Please provide a group name.");
+    if (groupName.length > 30) return reply("❌ Group name too long (max 30 chars).");
+
+    // Nettoyer les numéros, garder uniquement chiffres, min 10 chiffres
+    let numberList = numbersRaw.split(",")
       .map(n => n.trim().replace(/\D/g, ''))
       .filter(n => n.length >= 10);
 
-    if (!groupName) return reply("❌ Please provide a group name.");
-    if (groupName.length > 30) return reply("❌ Group name too long (max 30 chars).");
     if (numberList.length === 0) return reply("❌ Provide at least one valid phone number (digits only).");
 
-    console.log("GroupName:", groupName);
-    console.log("Number list:", numberList);
+    // Inclure le bot lui-même dans le groupe
+    const me = sender.split("@")[0] + "@s.whatsapp.net";
 
-    // Créer le groupe avec le premier numéro (ou le sender s'il existe)
-    const firstParticipant = numberList[0] + "@s.whatsapp.net";
+    // Préparer participants, maximum 10 au moment de la création (limite WhatsApp)
+    // On met le bot + au max 9 autres membres
+    const participants = [me, ...numberList.slice(0, 9).map(n => n + "@s.whatsapp.net")];
 
-    const group = await conn.groupCreate(groupName, [firstParticipant]);
+    // Créer le groupe avec le bot + max 9 membres
+    const group = await conn.groupCreate(groupName, participants);
 
-    // Ajouter les autres membres un par un
+    // Ajouter les autres membres (au-delà de 9) un par un
     const failedAdds = [];
-    for (let i = 1; i < numberList.length; i++) {
+    for (let i = 9; i < numberList.length; i++) {
       const jid = numberList[i] + "@s.whatsapp.net";
       try {
         await conn.groupParticipantsUpdate(group.id, [jid], "add");
       } catch (err) {
-        console.log(`Failed to add ${jid}:`, err.message);
         failedAdds.push(numberList[i]);
       }
     }
