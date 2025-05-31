@@ -1,171 +1,106 @@
-const { cmd } = require('../command');
-const TicTacToe = require('../lib/tictactoe');
-const games = {};
+const { cmd } = require("../command");
 
 cmd({
-  pattern: "ttt",
-  alias: ["tictactoe"],
-  desc: "Jouer au jeu du morpion",
+  pattern: "tictactoe",
+  alias: ["xo", "ttt"],
+  react: "🎮",
+  desc: "Jouer au jeu du Tic Tac Toe.",
   category: "game",
   filename: __filename,
-}, async (conn, mek, m, { from, sender, args, reply }) => {
-  const text = args.join(' ');
+}, async (conn, mek, m, {
+  from,
+  sender,
+  reply
+}) => {
+  let board = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
+  let currentPlayer = "❌";
+  let gameActive = true;
+  let turns = 0;
 
-  if (Object.values(games).find(room => room.id.startsWith('tictactoe') &&
-    [room.game.playerX, room.game.playerO].includes(sender))) {
-    return reply('❌ Tu es déjà dans une partie. Tape *.tttstop* pour abandonner.');
-  }
+  const renderBoard = () => {
+    return `
+🎮 *Tic Tac Toe*
+${board[0]} | ${board[1]} | ${board[2]}
+${board[3]} | ${board[4]} | ${board[5]}
+${board[6]} | ${board[7]} | ${board[8]}
 
-  let room = Object.values(games).find(room =>
-    room.state === 'WAITING' && (text ? room.name === text : true));
-
-  if (room) {
-    room.o = from;
-    room.game.playerO = sender;
-    room.state = 'PLAYING';
-
-    const arr = room.game.render().map(v => ({
-      'X': '❎', 'O': '⭕',
-      '1': '1️⃣', '2': '2️⃣', '3': '3️⃣',
-      '4': '4️⃣', '5': '5️⃣', '6': '6️⃣',
-      '7': '7️⃣', '8': '8️⃣', '9': '9️⃣',
-    }[v]));
-
-    const str = `
-🎮 *Jeu TicTacToe lancé !*
-
-Tour de @${room.game.currentTurn.split('@')[0]}...
-
-${arr.slice(0, 3).join('')}
-${arr.slice(3, 6).join('')}
-${arr.slice(6).join('')}
-
-▢ Tape un nombre (1-9) pour jouer
-▢ Tape *surrender* ou *.tttstop* pour abandonner
+*Tour de:* ${currentPlayer}
+Réponds avec un chiffre (1-9) pour jouer. ⏳
 `;
+  };
 
-    await conn.sendMessage(from, {
-      text: str,
-      mentions: [room.game.playerX, room.game.playerO]
-    });
-  } else {
-    room = {
-      id: 'tictactoe-' + Date.now(),
-      x: from,
-      o: '',
-      game: new TicTacToe(sender),
-      state: 'WAITING'
-    };
+  const checkWin = () => {
+    const winPatterns = [
+      [0,1,2], [3,4,5], [6,7,8], // rows
+      [0,3,6], [1,4,7], [2,5,8], // columns
+      [0,4,8], [2,4,6],          // diagonals
+    ];
+    return winPatterns.some(([a,b,c]) =>
+      board[a] === currentPlayer && board[b] === currentPlayer && board[c] === currentPlayer
+    );
+  };
 
-    if (text) room.name = text;
-    games[room.id] = room;
+  const sent = await conn.sendMessage(from, {
+    text: renderBoard()
+  }, { quoted: m });
 
-    return reply(`⏳ En attente d'un adversaire...\nTape *.ttt ${text || ''}* pour rejoindre.`);
-  }
-});
+  const messageID = sent.key.id;
 
-// Surrender command
-cmd({
-  pattern: "tttstop",
-  desc: "Arrêter la partie en cours",
-  category: "game",
-  filename: __filename,
-}, async (conn, mek, m, { sender, reply }) => {
-  const room = Object.values(games).find(room =>
-    room.id.startsWith('tictactoe') &&
-    [room.game.playerX, room.game.playerO].includes(sender) &&
-    room.state === 'PLAYING'
-  );
+  const timeout = setTimeout(() => {
+    gameActive = false;
+    conn.ev.off("messages.upsert", gameHandler);
+    reply("⌛ Temps écoulé. Partie annulée !");
+  }, 180000); // 3 minutes
 
-  if (!room) return reply('❌ Tu n’es pas dans une partie active.');
+  const gameHandler = async (msgData) => {
+    if (!gameActive) return;
 
-  const opponent = sender === room.game.playerX ? room.game.playerO : room.game.playerX;
-  delete games[room.id];
+    const msg = msgData.messages?.[0];
+    if (!msg || !msg.message) return;
 
-  return conn.sendMessage(room.x, {
-    text: `🏳️ @${sender.split('@')[0]} a abandonné la partie.`,
-    mentions: [sender, opponent]
-  });
-});
+    const text = msg.message.conversation || msg.message.extendedTextMessage?.text;
+    const senderID = msg.key.remoteJid;
+    const isReplyToGame = msg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
 
-// Input Handler
-cmd({
-  custom: true,
-  fromMe: false,
-  type: "game",
-}, async (conn, mek, m, { body, sender, from, reply }) => {
-  if (!/^[1-9]$|^surrender$|^give up$/i.test(body)) return;
+    if (isReplyToGame && senderID === from) {
+      const move = parseInt(text.trim());
+      if (isNaN(move) || move < 1 || move > 9 || !/^\d$/.test(text.trim())) {
+        return conn.sendMessage(from, { text: "❎ Choix invalide. Envoie un chiffre de 1 à 9." }, { quoted: msg });
+      }
 
-  const room = Object.values(games).find(room =>
-    room.id.startsWith('tictactoe') &&
-    [room.game.playerX, room.game.playerO].includes(sender) &&
-    room.state === 'PLAYING'
-  );
-  if (!room) return;
+      const index = move - 1;
+      if (board[index] === "❌" || board[index] === "⭕") {
+        return conn.sendMessage(from, { text: "❎ Case déjà prise. Choisis une autre." }, { quoted: msg });
+      }
 
-  const isSurrender = /^(surrender|give up)$/i.test(body);
-  const isPlayerO = sender === room.game.playerO;
+      board[index] = currentPlayer;
+      turns++;
 
-  if (!isSurrender && sender !== room.game.currentTurn) {
-    return reply('❌ Ce n’est pas ton tour.');
-  }
+      if (checkWin()) {
+        gameActive = false;
+        clearTimeout(timeout);
+        conn.ev.off("messages.upsert", gameHandler);
+        return conn.sendMessage(from, {
+          text: `🎉 *${currentPlayer} gagne !*\n\n${renderBoard()}`
+        }, { quoted: msg });
+      }
 
-  let ok = isSurrender ? true : room.game.turn(isPlayerO, parseInt(body) - 1);
-  if (!ok && !isSurrender) {
-    return reply('❌ Case déjà prise.');
-  }
+      if (turns === 9) {
+        gameActive = false;
+        clearTimeout(timeout);
+        conn.ev.off("messages.upsert", gameHandler);
+        return conn.sendMessage(from, {
+          text: `🤝 *Match nul !*\n\n${renderBoard()}`
+        }, { quoted: msg });
+      }
 
-  let winner = room.game.winner;
-  const isTie = room.game.turns === 9;
-
-  const arr = room.game.render().map(v => ({
-    'X': '❎', 'O': '⭕',
-    '1': '1️⃣', '2': '2️⃣', '3': '3️⃣',
-    '4': '4️⃣', '5': '5️⃣', '6': '6️⃣',
-    '7': '7️⃣', '8': '8️⃣', '9': '9️⃣',
-  }[v]));
-
-  if (isSurrender) {
-    winner = sender === room.game.playerX ? room.game.playerO : room.game.playerX;
-    await conn.sendMessage(from, {
-      text: `🏳️ @${sender.split('@')[0]} a abandonné ! @${winner.split('@')[0]} gagne !`,
-      mentions: [sender, winner]
-    });
-    delete games[room.id];
-    return;
-  }
-
-  const status = winner
-    ? `🎉 @${winner.split('@')[0]} gagne la partie !`
-    : isTie
-    ? `🤝 Match nul !`
-    : `🎲 Tour de @${room.game.currentTurn.split('@')[0]}`;
-
-  const str = `
-🎮 *TicTacToe*
-
-${status}
-
-${arr.slice(0, 3).join('')}
-${arr.slice(3, 6).join('')}
-${arr.slice(6).join('')}
-
-▢ ❎ : @${room.game.playerX.split('@')[0]}
-▢ ⭕ : @${room.game.playerO.split('@')[0]}
-
-${!winner && !isTie ? 'Tape un chiffre (1-9) ou *surrender*' : ''}
-`;
-
-  for (const jid of [room.x, room.o]) {
-    if (jid) {
-      await conn.sendMessage(jid, {
-        text: str,
-        mentions: [room.game.playerX, room.game.playerO, ...(winner ? [winner] : [])]
-      });
+      // Changer de joueur
+      currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+      conn.sendMessage(from, {
+        text: renderBoard()
+      }, { quoted: msg });
     }
-  }
+  };
 
-  if (winner || isTie) {
-    delete games[room.id];
-  }
+  conn.ev.on("messages.upsert", gameHandler);
 });
