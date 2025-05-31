@@ -1,26 +1,24 @@
 const { cmd } = require("../command");
 
+// Dictionnaire temporaire de scores (mémoire vive, disparaît au redémarrage)
+const scores = {};
+
 cmd({
   pattern: "tictactoe",
   alias: ["xo", "ttt"],
   react: "🎮",
-  desc: "Jouer à Tic Tac Toe à 2 joueurs.",
+  desc: "Jouer à Tic Tac Toe à 2 joueurs avec score.",
   category: "game",
   filename: __filename,
 }, async (conn, mek, m, {
   from,
   sender,
-  participants,
-  reply,
-  args
+  reply
 }) => {
-  if (!m.mentionedJid || m.mentionedJid.length < 1) {
-    return reply("👥 Mentionne un joueur pour démarrer.\n\n*Exemple:* .tictactoe @user");
-  }
-
   const playerX = sender;
-  const playerO = m.mentionedJid[0];
+  const playerO = m.mentionedJid?.[0];
 
+  if (!playerO) return reply("👥 Mentionne un joueur pour commencer.\nEx: .tictactoe @user");
   if (playerX === playerO) return reply("❎ Tu ne peux pas jouer contre toi-même.");
 
   let board = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
@@ -31,16 +29,15 @@ cmd({
 
   const renderBoard = () => {
     return `
-🎮 *Tic Tac Toe 2 Joueurs*
+🎮 *Tic Tac Toe*
 
 ${board[0]} | ${board[1]} | ${board[2]}
 ${board[3]} | ${board[4]} | ${board[5]}
 ${board[6]} | ${board[7]} | ${board[8]}
 
-*Tour de:* ${currentPlayer === "❌" ? "@user1" : "@user2"} (${currentPlayer})
-Réponds avec un chiffre (1-9) pour jouer.
-`.replace("@user1", "@" + playerX.split("@")[0])
- .replace("@user2", "@" + playerO.split("@")[0]);
+👤 *Tour de:* ${currentPlayer === "❌" ? "@" + playerX.split("@")[0] : "@" + playerO.split("@")[0]} (${currentPlayer})
+Réponds avec un chiffre de 1 à 9.
+`.trim();
   };
 
   const checkWin = () => {
@@ -54,18 +51,18 @@ Réponds avec un chiffre (1-9) pour jouer.
     );
   };
 
+  const initScore = (id) => {
+    if (!scores[id]) scores[id] = 0;
+  };
+  initScore(playerX);
+  initScore(playerO);
+
   const sent = await conn.sendMessage(from, {
     text: renderBoard(),
     mentions: [playerX, playerO]
   }, { quoted: m });
 
-  const messageID = sent.key.id;
-
-  const timeout = setTimeout(() => {
-    gameActive = false;
-    conn.ev.off("messages.upsert", gameHandler);
-    reply("⌛ Temps écoulé. Partie annulée !");
-  }, 180000); // 3 minutes
+  let messageID = sent.key.id;
 
   const gameHandler = async (msgData) => {
     if (!gameActive) return;
@@ -75,51 +72,53 @@ Réponds avec un chiffre (1-9) pour jouer.
 
     const text = msg.message.conversation || msg.message.extendedTextMessage?.text;
     const senderID = msg.key.participant || msg.key.remoteJid;
-    const isReplyToGame = msg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
 
-    if (isReplyToGame && senderID === currentID) {
-      const move = parseInt(text.trim());
-      if (isNaN(move) || move < 1 || move > 9) {
-        return conn.sendMessage(from, { text: "❎ Choix invalide. Envoie un chiffre de 1 à 9." }, { quoted: msg });
-      }
+    const isReplyToBot = msg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
 
-      const index = move - 1;
-      if (board[index] === "❌" || board[index] === "⭕") {
-        return conn.sendMessage(from, { text: "❎ Cette case est déjà prise." }, { quoted: msg });
-      }
+    if (senderID !== currentID || !isReplyToBot) return;
 
-      board[index] = currentPlayer;
-      turns++;
+    const move = parseInt(text.trim());
+    if (isNaN(move) || move < 1 || move > 9) {
+      return conn.sendMessage(from, { text: "❎ Choix invalide. Envoie un chiffre entre 1 et 9." }, { quoted: msg });
+    }
 
-      if (checkWin()) {
-        gameActive = false;
-        clearTimeout(timeout);
-        conn.ev.off("messages.upsert", gameHandler);
-        return conn.sendMessage(from, {
-          text: `🎉 *${currentPlayer} gagne la partie !*\n\n${renderBoard()}`,
-          mentions: [playerX, playerO]
-        }, { quoted: msg });
-      }
+    const index = move - 1;
+    if (["❌", "⭕"].includes(board[index])) {
+      return conn.sendMessage(from, { text: "❎ Cette case est déjà prise." }, { quoted: msg });
+    }
 
-      if (turns === 9) {
-        gameActive = false;
-        clearTimeout(timeout);
-        conn.ev.off("messages.upsert", gameHandler);
-        return conn.sendMessage(from, {
-          text: `🤝 *Match nul !*\n\n${renderBoard()}`,
-          mentions: [playerX, playerO]
-        }, { quoted: msg });
-      }
+    board[index] = currentPlayer;
+    turns++;
 
-      // Changer de joueur
-      currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
-      currentID = currentID === playerX ? playerO : playerX;
+    if (checkWin()) {
+      gameActive = false;
+      const winnerID = currentID;
+      scores[winnerID]++;
 
-      conn.sendMessage(from, {
-        text: renderBoard(),
+      return conn.sendMessage(from, {
+        text: `🎉 *${currentPlayer} gagne la partie !*\n\n${renderBoard()}\n\n🏆 *Scores:*\n@${playerX.split("@")[0]}: ${scores[playerX]}\n@${playerO.split("@")[0]}: ${scores[playerO]}`,
         mentions: [playerX, playerO]
       }, { quoted: msg });
     }
+
+    if (turns === 9) {
+      gameActive = false;
+      return conn.sendMessage(from, {
+        text: `🤝 *Match nul !*\n\n${renderBoard()}\n\n🏆 *Scores:*\n@${playerX.split("@")[0]}: ${scores[playerX]}\n@${playerO.split("@")[0]}: ${scores[playerO]}`,
+        mentions: [playerX, playerO]
+      }, { quoted: msg });
+    }
+
+    // Prochain tour
+    currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+    currentID = currentID === playerX ? playerO : playerX;
+
+    const updated = await conn.sendMessage(from, {
+      text: renderBoard(),
+      mentions: [playerX, playerO]
+    }, { quoted: msg });
+
+    messageID = updated.key.id;
   };
 
   conn.ev.on("messages.upsert", gameHandler);
