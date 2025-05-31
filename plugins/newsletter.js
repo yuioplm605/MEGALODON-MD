@@ -1,82 +1,52 @@
-const { cmd } = require('../command');
+const { cmd } = require("../command");
 
 cmd({
-  pattern: "channelinfo",
-  alias: ["idch", "idchannel", "nwt", "newsletter"],
-  desc: "Get WhatsApp Channel information by link or from inside a channel",
-  category: "tools",
-  react: "🧾",
+  pattern: "cid",
+  alias: ["newsletter", "id"],
+  react: "📡",
+  desc: "Get WhatsApp Channel info from link",
+  category: "whatsapp",
   filename: __filename
-}, async (conn, m, store, { args, reply }) => {
-  const input = args.join(" ").trim();
-  const currentJid = m.chat;
+}, async (conn, mek, m, {
+  from,
+  args,
+  q,
+  reply
+}) => {
+  try {
+    if (!q) return reply("❎ Please provide a WhatsApp Channel link.\n\n*Example:* .cinfo https://whatsapp.com/channel/123456789");
 
-  const channelLinkRegex = /https?:\/\/whatsapp\.com\/channel\/([a-zA-Z0-9]+)/;
-  const linkMatch = input.match(channelLinkRegex);
+    const match = q.match(/whatsapp\.com\/channel\/([\w-]+)/);
+    if (!match) return reply("⚠️ *Invalid channel link format.*\n\nMake sure it looks like:\nhttps://whatsapp.com/channel/xxxxxxxxx");
 
-  // Case 1: Link detected
-  if (linkMatch) {
-    const channelCode = linkMatch[1];
-    const jid = `${channelCode}@newsletter`;
+    const inviteId = match[1];
 
+    let metadata;
     try {
-      const res = await conn.query({
-        tag: "iq",
-        attrs: {
-          to: jid,
-          type: "get",
-          xmlns: "w:newsletter"
-        },
-        content: [{ tag: "newsletter", attrs: {} }]
-      });
-
-      const metadata = res?.content?.[0]?.attrs;
-      if (!metadata) return reply("❌ Failed to fetch channel metadata.");
-
-      const message = `
-✅ *Channel Info:*
-• *ID:* ${jid}
-• *Name:* ${metadata.name || 'Unknown'}
-• *Owner:* ${metadata.creator || 'Unavailable'}
-• *Description:* ${metadata.description || 'None'}
-• *Created on:* ${metadata.creation || 'Unknown'}
-
-© Plugin by *DybyTech*
-      `.trim();
-
-      return reply(message);
-    } catch (error) {
-      console.error("Metadata fetch error:", error);
-      return reply("❌ An error occurred while fetching channel metadata.");
+      metadata = await conn.newsletterMetadata("invite", inviteId);
+    } catch (e) {
+      return reply("❌ Failed to fetch channel metadata. Make sure the link is correct.");
     }
+
+    if (!metadata || !metadata.id) return reply("❌ Channel not found or inaccessible.");
+
+    const infoText = `*— 乂 Channel Info —*\n\n` +
+      `🆔 *ID:* ${metadata.id}\n` +
+      `📌 *Name:* ${metadata.name}\n` +
+      `👥 *Followers:* ${metadata.subscribers?.toLocaleString() || "N/A"}\n` +
+      `📅 *Created on:* ${metadata.creation_time ? new Date(metadata.creation_time * 1000).toLocaleString("id-ID") : "Unknown"}`;
+
+    if (metadata.preview) {
+      await conn.sendMessage(from, {
+        image: { url: `https://pps.whatsapp.net${metadata.preview}` },
+        caption: infoText
+      }, { quoted: m });
+    } else {
+      await reply(infoText);
+    }
+
+  } catch (error) {
+    console.error("❌ Error in .cinfo plugin:", error);
+    reply("⚠️ An unexpected error occurred.");
   }
-
-  // Case 2: Command used inside a WhatsApp channel
-  if (currentJid.endsWith("@newsletter")) {
-    const now = new Date().toLocaleString("en-US", { timeZone: "UTC" });
-
-    await conn.sendMessage(currentJid, {
-      text: `🆔 *Channel ID:*\n\n*${currentJid}*\n\n🕒 Executed on: ${now}\n\n© DybyTech`
-    }, { quoted: m });
-
-    const fakeNewsletterJid = '120363312841480579@newsletter';
-    const fakeNewsletterName = '𝑵𝒆𝒘𝒔𝒍𝒆𝒕𝒕𝒆𝒓 𝑿';
-    const serverMessageId = 101;
-
-    return conn.sendMessage(currentJid, {
-      text: `📨 *Forwarded from another newsletter:*\n\n*${currentJid}*`,
-      contextInfo: {
-        forwardingScore: 999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: fakeNewsletterJid,
-          newsletterName: fakeNewsletterName,
-          serverMessageId: serverMessageId
-        }
-      }
-    }, { quoted: m });
-  }
-
-  // Case 3: Neither link nor inside channel
-  return reply("❌ Please provide a WhatsApp *channel link* or use this command *inside a WhatsApp Channel*.");
 });
