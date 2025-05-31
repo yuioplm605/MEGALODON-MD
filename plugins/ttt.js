@@ -4,36 +4,50 @@ cmd({
   pattern: "tictactoe",
   alias: ["xo", "ttt"],
   react: "🎮",
-  desc: "Jouer au jeu du Tic Tac Toe.",
+  desc: "Jouer à Tic Tac Toe à 2 joueurs.",
   category: "game",
   filename: __filename,
 }, async (conn, mek, m, {
   from,
   sender,
-  reply
+  participants,
+  reply,
+  args
 }) => {
+  if (!m.mentionedJid || m.mentionedJid.length < 1) {
+    return reply("👥 Mentionne un joueur pour démarrer.\n\n*Exemple:* .tictactoe @user");
+  }
+
+  const playerX = sender;
+  const playerO = m.mentionedJid[0];
+
+  if (playerX === playerO) return reply("❎ Tu ne peux pas jouer contre toi-même.");
+
   let board = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
   let currentPlayer = "❌";
-  let gameActive = true;
+  let currentID = playerX;
   let turns = 0;
+  let gameActive = true;
 
   const renderBoard = () => {
     return `
-🎮 *Tic Tac Toe*
+🎮 *Tic Tac Toe 2 Joueurs*
+
 ${board[0]} | ${board[1]} | ${board[2]}
 ${board[3]} | ${board[4]} | ${board[5]}
 ${board[6]} | ${board[7]} | ${board[8]}
 
-*Tour de:* ${currentPlayer}
-Réponds avec un chiffre (1-9) pour jouer. ⏳
-`;
+*Tour de:* ${currentPlayer === "❌" ? "@user1" : "@user2"} (${currentPlayer})
+Réponds avec un chiffre (1-9) pour jouer.
+`.replace("@user1", "@" + playerX.split("@")[0])
+ .replace("@user2", "@" + playerO.split("@")[0]);
   };
 
   const checkWin = () => {
     const winPatterns = [
-      [0,1,2], [3,4,5], [6,7,8], // rows
-      [0,3,6], [1,4,7], [2,5,8], // columns
-      [0,4,8], [2,4,6],          // diagonals
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
     ];
     return winPatterns.some(([a,b,c]) =>
       board[a] === currentPlayer && board[b] === currentPlayer && board[c] === currentPlayer
@@ -41,7 +55,8 @@ Réponds avec un chiffre (1-9) pour jouer. ⏳
   };
 
   const sent = await conn.sendMessage(from, {
-    text: renderBoard()
+    text: renderBoard(),
+    mentions: [playerX, playerO]
   }, { quoted: m });
 
   const messageID = sent.key.id;
@@ -59,18 +74,18 @@ Réponds avec un chiffre (1-9) pour jouer. ⏳
     if (!msg || !msg.message) return;
 
     const text = msg.message.conversation || msg.message.extendedTextMessage?.text;
-    const senderID = msg.key.remoteJid;
+    const senderID = msg.key.participant || msg.key.remoteJid;
     const isReplyToGame = msg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
 
-    if (isReplyToGame && senderID === from) {
+    if (isReplyToGame && senderID === currentID) {
       const move = parseInt(text.trim());
-      if (isNaN(move) || move < 1 || move > 9 || !/^\d$/.test(text.trim())) {
+      if (isNaN(move) || move < 1 || move > 9) {
         return conn.sendMessage(from, { text: "❎ Choix invalide. Envoie un chiffre de 1 à 9." }, { quoted: msg });
       }
 
       const index = move - 1;
       if (board[index] === "❌" || board[index] === "⭕") {
-        return conn.sendMessage(from, { text: "❎ Case déjà prise. Choisis une autre." }, { quoted: msg });
+        return conn.sendMessage(from, { text: "❎ Cette case est déjà prise." }, { quoted: msg });
       }
 
       board[index] = currentPlayer;
@@ -81,7 +96,8 @@ Réponds avec un chiffre (1-9) pour jouer. ⏳
         clearTimeout(timeout);
         conn.ev.off("messages.upsert", gameHandler);
         return conn.sendMessage(from, {
-          text: `🎉 *${currentPlayer} gagne !*\n\n${renderBoard()}`
+          text: `🎉 *${currentPlayer} gagne la partie !*\n\n${renderBoard()}`,
+          mentions: [playerX, playerO]
         }, { quoted: msg });
       }
 
@@ -90,14 +106,18 @@ Réponds avec un chiffre (1-9) pour jouer. ⏳
         clearTimeout(timeout);
         conn.ev.off("messages.upsert", gameHandler);
         return conn.sendMessage(from, {
-          text: `🤝 *Match nul !*\n\n${renderBoard()}`
+          text: `🤝 *Match nul !*\n\n${renderBoard()}`,
+          mentions: [playerX, playerO]
         }, { quoted: msg });
       }
 
       // Changer de joueur
       currentPlayer = currentPlayer === "❌" ? "⭕" : "❌";
+      currentID = currentID === playerX ? playerO : playerX;
+
       conn.sendMessage(from, {
-        text: renderBoard()
+        text: renderBoard(),
+        mentions: [playerX, playerO]
       }, { quoted: msg });
     }
   };
