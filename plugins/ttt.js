@@ -10,7 +10,7 @@ cmd({
   category: "game",
   filename: __filename,
   react: "🎮",
-}, async (conn, mek, m, { from, sender, args, reply }) => {
+}, async (conn, mek, m, { from, sender, args, reply, quoted }) => {
   const text = args.join(' ');
 
   // Vérifie si le joueur est déjà dans une partie
@@ -79,7 +79,7 @@ cmd({
   desc: "Jouer au TicTacToe ou abandonner",
   fromMe: false,
   type: "game",
-}, async (conn, mek, m, { body, sender, from, reply }) => {
+}, async (conn, mek, m, { body, sender, from, reply, quoted  }) => {
   if (!/^[1-9]$|^surrender$|^give up$/i.test(body)) return;
 
   const room = Object.values(games).find(room =>
