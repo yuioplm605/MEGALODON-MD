@@ -225,8 +225,12 @@ JOINING OUR OFFICIAL WHATSAPP GROUP AND CHANNEL. YOU CAN ALSO CONTACT THE OWNER 
 
  
 
+THANKS TO 
 
-***
+<a href="https://github.com/Itxxwasi"><img src="https://github.com/Itxxwasi.png" width="250" height="250" alt="Itxx Me Wasi"/></a>
+
+<p><b>THANKS TO WASI TECH.</b></p>
+
 
 ## <h2 align="left">⚠️ REMINDER </h2>
 <p style="text-align: center; font-size: 1.2em;">
@@ -254,8 +258,3 @@ JOINING OUR OFFICIAL WHATSAPP GROUP AND CHANNEL. YOU CAN ALSO CONTACT THE OWNER 
 
 <br>
 
-CREDIT 💫
-
-<a href="https://github.com/Itxxwasi"><img src="https://github.com/Itxxwasi.png" width="250" height="250" alt="Itxx Me Wasi"/></a>
-
-<p><b>THANKS TO WASI TECH.</b></p>
