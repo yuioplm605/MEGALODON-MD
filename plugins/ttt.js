@@ -1,13 +1,13 @@
 const { cmd } = require("../command");
 
-// Dictionnaire temporaire de scores (mémoire vive, disparaît au redémarrage)
-const scores = {};
+const scores = {}; // Scores temporaires en mémoire
+const activeGames = {}; // Parties actives avec leur ID de message
 
 cmd({
   pattern: "tictactoe",
   alias: ["xo", "ttt"],
   react: "🎮",
-  desc: "Jouer à Tic Tac Toe à 2 joueurs avec score.",
+  desc: "Jouer à Tic Tac Toe à 2 joueurs (temps illimité).",
   category: "game",
   filename: __filename,
 }, async (conn, mek, m, {
@@ -18,8 +18,9 @@ cmd({
   const playerX = sender;
   const playerO = m.mentionedJid?.[0];
 
-  if (!playerO) return reply("👥 Mentionne un joueur pour commencer.\nEx: .tictactoe @user");
+  if (!playerO) return reply("👥 Mentionne un joueur pour jouer.\nEx: .tictactoe @user");
   if (playerX === playerO) return reply("❎ Tu ne peux pas jouer contre toi-même.");
+  if (activeGames[from]) return reply("⚠️ Une partie est déjà en cours dans ce groupe.");
 
   let board = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
   let currentPlayer = "❌";
@@ -27,8 +28,7 @@ cmd({
   let turns = 0;
   let gameActive = true;
 
-  const renderBoard = () => {
-    return `
+  const renderBoard = () => `
 🎮 *Tic Tac Toe*
 
 ${board[0]} | ${board[1]} | ${board[2]}
@@ -38,7 +38,6 @@ ${board[6]} | ${board[7]} | ${board[8]}
 👤 *Tour de:* ${currentPlayer === "❌" ? "@" + playerX.split("@")[0] : "@" + playerO.split("@")[0]} (${currentPlayer})
 Réponds avec un chiffre de 1 à 9.
 `.trim();
-  };
 
   const checkWin = () => {
     const winPatterns = [
@@ -63,6 +62,7 @@ Réponds avec un chiffre de 1 à 9.
   }, { quoted: m });
 
   let messageID = sent.key.id;
+  activeGames[from] = true;
 
   const gameHandler = async (msgData) => {
     if (!gameActive) return;
@@ -75,16 +75,16 @@ Réponds avec un chiffre de 1 à 9.
 
     const isReplyToBot = msg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
 
-    if (senderID !== currentID || !isReplyToBot) return;
+    if (!isReplyToBot || senderID !== currentID) return;
 
     const move = parseInt(text.trim());
     if (isNaN(move) || move < 1 || move > 9) {
-      return conn.sendMessage(from, { text: "❎ Choix invalide. Envoie un chiffre entre 1 et 9." }, { quoted: msg });
+      return conn.sendMessage(from, { text: "❎ Envoie un chiffre entre 1 et 9." }, { quoted: msg });
     }
 
     const index = move - 1;
     if (["❌", "⭕"].includes(board[index])) {
-      return conn.sendMessage(from, { text: "❎ Cette case est déjà prise." }, { quoted: msg });
+      return conn.sendMessage(from, { text: "❎ Case déjà occupée." }, { quoted: msg });
     }
 
     board[index] = currentPlayer;
@@ -92,17 +92,17 @@ Réponds avec un chiffre de 1 à 9.
 
     if (checkWin()) {
       gameActive = false;
-      const winnerID = currentID;
-      scores[winnerID]++;
-
+      scores[currentID]++;
+      delete activeGames[from];
       return conn.sendMessage(from, {
-        text: `🎉 *${currentPlayer} gagne la partie !*\n\n${renderBoard()}\n\n🏆 *Scores:*\n@${playerX.split("@")[0]}: ${scores[playerX]}\n@${playerO.split("@")[0]}: ${scores[playerO]}`,
+        text: `🎉 *${currentPlayer} gagne !*\n\n${renderBoard()}\n\n🏆 *Scores:*\n@${playerX.split("@")[0]}: ${scores[playerX]}\n@${playerO.split("@")[0]}: ${scores[playerO]}`,
         mentions: [playerX, playerO]
       }, { quoted: msg });
     }
 
     if (turns === 9) {
       gameActive = false;
+      delete activeGames[from];
       return conn.sendMessage(from, {
         text: `🤝 *Match nul !*\n\n${renderBoard()}\n\n🏆 *Scores:*\n@${playerX.split("@")[0]}: ${scores[playerX]}\n@${playerO.split("@")[0]}: ${scores[playerO]}`,
         mentions: [playerX, playerO]
