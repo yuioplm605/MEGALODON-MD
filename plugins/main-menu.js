@@ -46,9 +46,8 @@ async (conn, mek, m, { from, reply }) => {
 *┃❍* *ᴠᴇʀsɪᴏɴs* : *1.0.0*
 *╰════════════════⊷*
 
-*_WELCOME TO MEGALODON MD_*
+💧 *_WELCOME TO MEGALODON MD_* 💧
 `;
-
     let category = {};
     for (let cmd of commands) {
       if (!cmd.category) continue;
@@ -73,14 +72,7 @@ async (conn, mek, m, { from, reply }) => {
       image: { url: 'https://files.catbox.moe/frns4k.jpg' },
       caption: menuText,
       contextInfo: {
-        mentionedJid: [m.sender],
-        forwardingScore: 999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: '120363401051937059@newsletter',
-          newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
-          serverMessageId: 143
-        }
+        mentionedJid: [m.sender]
       }
     }, { quoted: mek });
     
