@@ -1,6 +1,6 @@
 {
   "name": "MEGALODON-MD",
-  "description": "Javascript WhatsApp bot made ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+  "description": "Javascript WhatsApp bot made by ᴅʏʙʏ ᴛᴇᴄʜ",
   "logo": "https://files.catbox.moe/frns4k.jpg",
   "keywords": ["MEGALODON-MD"],
   "success_url": "/",
@@ -31,20 +31,19 @@
       "value": "public"
       
     },
-    
+
+     "ANTI_DELETE": {
+      "description": "set true for show deleted messages.",
+      "required": false,
+      "value": "true"  
+    },
     
     "ALWAYS_ONLINE": {
       "description": "Make it true if want always online.",
       "required": false,
       "value": "false"  
     },    
-  
-    "AUTO_VOICE": {
-      "description": "Make it true if want automatic voice reply .",
-      "required": false,
-      "value": "false"
-    }, 
-
+   
     "AUTO_REPLY": {
       "description": "Make it true if you want automatic reply.",
       "required": false,
@@ -79,20 +78,20 @@
     "AUTO_STATUS_MSG": {
       "description": "Type custom message on status reply",
       "required": true,
-      "value": "*SEEN YOUR STATUS BY MEGALODON-MD 🖤*"
+      "value": "*SEEN YOUR STATUS BY MEGALODON-MD 🥶*"
    
      }, 
     
     "OWNER_NAME": {
       "description": "Type Bot Owner Name.",
       "required": false,
-      "value": "ᴅʏʙʏ ᴛᴇᴄʜ"
+      "value": "ᴅʏʙʏ ᴛᴇᴄʜ*"
 }, 
 
     "OWNER_NUMBER": {
       "description": "put the owner number for bot.",
       "required": false,
-      "value": "509xxxxxx"
+      "value": "92310344XXXX"
 
     }, 
 
@@ -132,13 +131,13 @@
     "MENU_IMAGE_URL": {
       "description": "add url for mention reply and menu if want.",
       "required": false,
-      "value": "https://files.catbox.moe/rful77.jpg"
+      "value": "https://files.catbox.moe/frns4k.jpg"
     },
     
      "DESCRIPTION": {
       "description": "add caption for menu and other",
       "required": false,
-      "value": "> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*"
+      "value": "*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*"
     },
 
       "DELETE_LINKS": {
@@ -179,9 +178,9 @@
     }, 
     
     "ANTI_DEL_PATH": {
-      "description": "change it to -same- if you want to resend deleted message in same chat",
+      "description": "change it to -same- if you want to resend deleted message in same chat othwise inbox",
       "required": false,
-      "value": "log"
+      "value": "inbox"
     }, 
 
     "ADMIN_EVENTS": {
