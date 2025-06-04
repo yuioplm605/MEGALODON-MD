@@ -30,7 +30,7 @@ async (conn, mek, m, { from, sender, reply }) => {
         const caption = 
 ╭──〔 *ALIVE STATUS* 〕─◉
 │✅ *Online & Running!*
-│👤 *Dev:* ${config.OWNER_NAME}
+│👤 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ*
 │📦 *Version:* 1.0.0
 │📍 *Prefix:* [${config.PREFIX}]
 │📡 *Mode:* [${config.MODE}]
@@ -47,7 +47,7 @@ async (conn, mek, m, { from, sender, reply }) => {
             contextInfo: {
                 externalAdReply: {
                     title: config.BOT_NAME || "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                    body: config.DESCRIPTION || "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                     mediaType: 1,
                     previewType: "PHOTO",
                     renderLargerThumbnail: true,
