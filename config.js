@@ -52,9 +52,9 @@ OWNER_NAME: process.env.OWNER_NAME || "ᴅʏʙʏ ᴛᴇᴄʜ",
 // add bot owner name
 DESCRIPTION: process.env.DESCRIPTION || "*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴇɢᴀʟᴏᴅᴏɴ ᴍᴅ*",
 // bot description    
-ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/rful77.jpg",
+ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/frns4k.jpg",
 // image for alive msg
-LIVE_MSG: process.env.LIVE_MSG || "> Zinda Hun Yar *MEGALODON-MD*⚡",
+LIVE_MSG: process.env.LIVE_MSG || "> *MEGALODON-MD*⚡",
 // alive msg content
 READ_MESSAGE: process.env.READ_MESSAGE || "false",
 // Turn true or false for automatic read msgs
@@ -84,8 +84,6 @@ DEV: process.env.DEV || "50934960331",
 // your whatsapp number        
 ANTI_VV: process.env.ANTI_VV || "true",
 // anti view once 
-ANTI_DEL_PATH: process.env.ANTI_DEL_PATH || "log", 
-// path to save deleted messages
 AUTO_RECORDING: process.env.AUTO_RECORDING || "false"
 // auto recording status 
 };
