@@ -7,7 +7,7 @@ const config = require('../config');
 
 cmd({
     pattern: "alive",
-    alias: ["bot", "live"],
+    alias: ["mega", "live"],
     desc: "Check bot is alive or not",
     category: "main",
     react: ["🤍", "🌟", "🗿", "🥋", "💫", "☠", "🤍"][Math.floor(Math.random() * 7)],
@@ -15,20 +15,23 @@ cmd({
 },
 async (conn, mek, m, { from, sender, reply }) => {
     try {
-        const time = moment().tz("Africa/Port-au-Prince").format("HH:mm:ss");
-        const date = moment().tz("Africa/Port-au-Prince").format("DD/MM/YYYY");
+        const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
+        const date = moment().tz("America/Port-au-Prince").format("DD/MM/YYYY");
 
         let thumbnailBuffer = null;
         try {
-            thumbnailBuffer = (await axios.get(config.ALIVE_IMG || 'https://files.catbox.moe/frns4k.jpg', {
+            const response = await axios.get('https://files.catbox.moe/frns4k.jpg', {
                 responseType: 'arraybuffer'
-            })).data;
+            });
+            if (response && response.data) {
+                thumbnailBuffer = Buffer.from(response.data);
+            }
         } catch (err) {
-            console.warn("Thumbnail could not be loaded.");
+            console.warn("Thumbnail could not be loaded.", err.message);
         }
 
         const caption = 
-╭──〔 *ALIVE STATUS* 〕─◉
+`╭──〔 *ALIVE STATUS* 〕─◉
 │✅ *Online & Running!*
 │👤 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ*
 │📦 *Version:* 1.0.0
@@ -39,27 +42,29 @@ async (conn, mek, m, { from, sender, reply }) => {
 │📅 *Date:* ${date}
 │⏰ *Time:* ${time}
 ╰────────────────────◉
-> ${config.DESCRIPTION}
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`
         .trim();
+
+        const contextInfo = {
+            externalAdReply: {
+                title: config.BOT_NAME || "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                mediaType: 1,
+                previewType: "PHOTO",
+                renderLargerThumbnail: true,
+                mediaUrl: "https://wa.me/" + config.OWNER_NUMBER,
+                sourceUrl: "https://wa.me/" + config.OWNER_NUMBER,
+                ...(thumbnailBuffer ? { thumbnail: thumbnailBuffer } : {})
+            }
+        };
 
         await conn.sendMessage(from, {
             text: caption,
-            contextInfo: {
-                externalAdReply: {
-                    title: config.BOT_NAME || "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-                    mediaType: 1,
-                    previewType: "PHOTO",
-                    renderLargerThumbnail: true,
-                    thumbnail: thumbnailBuffer,
-                    mediaUrl: "https://wa.me/" + config.OWNER_NUMBER,
-                    sourceUrl: "https://wa.me/" + config.OWNER_NUMBER
-                }
-            }
+            contextInfo
         }, { quoted: mek });
 
     } catch (e) {
         console.error("Alive Error:", e);
-        reply(An error occurred: ${e.message});
+        reply(`An error occurred: ${e.message}`);
     }
 });
