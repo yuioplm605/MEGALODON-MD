@@ -15,14 +15,12 @@ cmd({
 },
 async (conn, mek, m, { from, sender, reply }) => {
     try {
-        // Heure & date locale
-        const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
-        const date = moment().tz("America/Port-au-Prince").format("DD/MM/YYYY");
+        const time = moment().tz("Africa/Port-au-Prince").format("HH:mm:ss");
+        const date = moment().tz("Africa/Port-au-Prince").format("DD/MM/YYYY");
 
-        // Chargement de l'image (avec fallback)
         let thumbnailBuffer = null;
         try {
-            thumbnailBuffer = (await axios.get('https://files.catbox.moe/frns4k.jpg', {
+            thumbnailBuffer = (await axios.get(config.ALIVE_IMG || 'https://files.catbox.moe/frns4k.jpg', {
                 responseType: 'arraybuffer'
             })).data;
         } catch (err) {
@@ -30,9 +28,9 @@ async (conn, mek, m, { from, sender, reply }) => {
         }
 
         const caption = 
-╭──〔 *𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 𝗦𝘁𝗮𝘁𝘂𝘀* 〕─◉
+╭──〔 *ALIVE STATUS* 〕─◉
 │✅ *Online & Running!*
-│👤 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ
+│👤 *Dev:* ${config.OWNER_NAME}
 │📦 *Version:* 1.0.0
 │📍 *Prefix:* [${config.PREFIX}]
 │📡 *Mode:* [${config.MODE}]
@@ -41,15 +39,15 @@ async (conn, mek, m, { from, sender, reply }) => {
 │📅 *Date:* ${date}
 │⏰ *Time:* ${time}
 ╰────────────────────◉
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*
+> ${config.DESCRIPTION}
         .trim();
 
         await conn.sendMessage(from, {
             text: caption,
             contextInfo: {
                 externalAdReply: {
-                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                    body: "© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                    title: config.BOT_NAME || "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    body: config.DESCRIPTION || "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                     mediaType: 1,
                     previewType: "PHOTO",
                     renderLargerThumbnail: true,
