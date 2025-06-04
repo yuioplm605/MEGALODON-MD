@@ -47,7 +47,7 @@ async (conn, mek, m, { from, sender, reply }) => {
 
         const contextInfo = {
             externalAdReply: {
-                title: config.BOT_NAME || "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
                 body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                 mediaType: 1,
                 previewType: "PHOTO",
