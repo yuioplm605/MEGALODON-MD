@@ -82,7 +82,7 @@ cmd({
     category: "settings",
     filename: __filename,
 }, async (conn, mek, m, { from, args, isOwner, reply }) => {
-    if (!isOwner) return reply("*📛 Only the owner can use this command!*");
+    if (!isOwner) return reply("*📛 ᴏɴʟʏ ᴛʜᴇ ᴏᴡɴᴇʀ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ!*");
 
     // Si aucun argument n'est fourni, afficher le mode actuel et l'usage
     if (!args[0]) {
@@ -93,7 +93,7 @@ cmd({
 
     if (modeArg === "private") {
         config.MODE = "private";
-        return reply("✅ Bot mode is now set to *PRIVATE*.");
+        return reply("✅  ʙᴏᴛ ᴍᴏᴅᴇ ɪꜱ ɴᴏᴡ ꜱᴇᴛ ᴛᴏ *ᴩʀɪᴠᴀᴛᴇ*.");
     } else if (modeArg === "public") {
         config.MODE = "public";
         return reply("✅ Bot mode is now set to *PUBLIC*.");
