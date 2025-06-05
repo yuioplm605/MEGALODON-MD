@@ -1,5 +1,15 @@
+//POWERED BY DYBYTECH 
 const config = require('../config');
-const { cmd, commands } = require('../command');
+const { cmd } = require('../command');
+const axios = require('axios');
+
+function formatUptime(seconds) {
+    const pad = (s) => (s < 10 ? '0' : '') + s;
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${pad(hrs)}h ${pad(mins)}m ${pad(secs)}s`;
+}
 
 cmd({
     pattern: "ping",
@@ -8,15 +18,39 @@ cmd({
     react: "🍂",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, reply }) => {
     try {
-        const startTime = Date.now()
-        const message = await conn.sendMessage(from, { text: '*WOW 🤩💫*' })
-        const endTime = Date.now()
-        const ping = endTime - startTime
-        await conn.sendMessage(from, { text: `> *𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃 𝐒𝐏𝐄𝐄𝐃 : ${ping}ms*` }, { quoted: message })
+        const start = Date.now();
+        const tempMsg = await conn.sendMessage(from, { text: '*🏓 Pinging...*' });
+        const latency = Date.now() - start;
+        const uptime = process.uptime();
+
+        const imageUrl = "https://files.catbox.moe/upypnp.jpg";
+        let imageBuffer;
+
+        try {
+            const res = await axios.get(imageUrl, {
+                responseType: 'arraybuffer',
+                timeout: 5000
+            });
+            imageBuffer = res.data;
+        } catch (err) {
+            console.error('Erreur image :', err?.response?.status, err.message);
+            imageBuffer = null;
+        }
+
+        await conn.sendMessage(from, {
+            document: imageBuffer,
+            mimetype: 'image/jpeg',
+            fileName: 'ping.jpg',
+            jpegThumbnail: imageBuffer,
+            caption: `> *⚡ ᴍᴇɢᴀʟᴏᴅᴏɴ-ᴍᴅ ᴘɪɴɢ ʀᴇsᴘᴏɴsᴇ*\n\n🍃 Speed: *${latency}ms*\n⏱️ Uptime: *${formatUptime(uptime)}*`
+        }, { quoted: tempMsg });
+
     } catch (e) {
-        console.log(e)
-        reply(`${e}`)
+        console.error('Erreur Ping:', e?.response?.status, e.message);
+        if (reply) reply(`❌ Erreur : ${e?.message}`);
     }
-})
+});
+
+// Powered by DybyTech 
