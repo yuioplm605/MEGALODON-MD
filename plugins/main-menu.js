@@ -69,7 +69,7 @@ async (conn, mek, m, { from, reply }) => {
     menuText += `\n`;
 
     await conn.sendMessage(from, {
-      image: { url: 'https://files.catbox.moe/frns4k.jpg' },
+      image: { url: MENU_IMAGE_URL },
       caption: menuText,
       contextInfo: {
         mentionedJid: [m.sender]
