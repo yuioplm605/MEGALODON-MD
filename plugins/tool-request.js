@@ -30,7 +30,7 @@ cmd({
         }
         global.reportedMessages[messageId] = true;
 
-        const reportText = `*| REQUEST / BUG REPORT |*\n\n*User*: @${sender.split("@")[0]}\n*Time:* ${time}\n*Message:* ${args.join(" ")}`;
+        const reportText = `*| REQUEST / MEGALODON-MD |*\n\n*User*: @${sender.split("@")[0]}\n*Time:* ${time}\n*Message:* ${args.join(" ")}`;
         const confirmation = `✅ Thanks ${msg.pushName || "user"}, your report has been sent to the developers.`;
 
         // Sauvegarde dans le fichier
