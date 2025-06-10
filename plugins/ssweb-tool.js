@@ -1,60 +1,68 @@
-const {
-  cmd
-} = require("../command");
+const { cmd } = require("../command");
 const fetch = require("node-fetch");
+
 cmd({
-  'pattern': 'ss',
-  'alias': ['ssweb'],
-  'react': '🚀',
-  'desc': "Download screenshot of a given link.",
-  'category': "other",
-  'use': ".ss <link>",
-  'filename': __filename
-}, async (_0x52bc95, _0x383ec4, _0x1aa466, {
-  from: _0x583811,
-  reply: _0x323267,
-  q: _0x439dca
-}) => {
-  if (!_0x439dca) {
-    return _0x323267("Please provide a URL to capture a screenshot.");
+  pattern: 'ss',
+  alias: ['ssweb'],
+  react: '🖼',
+  desc: "Download screenshot of a given link.",
+  category: "other",
+  use: ".ss <link>",
+  filename: __filename
+}, async (client, m, msg, { from, reply, q }) => {
+
+  // Vérifie si un lien est fourni
+  if (!q) {
+    return reply("Please provide a URL to capture a screenshot.");
   }
-  if (!/^https?:\/\//.test(_0x439dca)) {
-    return _0x323267("❗ Please provide a valid URL starting with http:// or https://");
+
+  // Vérifie si l'URL commence bien par http:// ou https://
+  if (!/^https?:\/\//.test(q)) {
+    return reply("❗ Please provide a valid URL starting with http:// or https://");
   }
-  const _0x32aee6 = async _0x5c08e5 => {
-    return await _0x52bc95.sendMessage(_0x583811, {
-      'image': _0x5c08e5,
-      'caption': "*📸 Screenshot Tool*\n\n🌐 *URL:* " + _0x439dca + "\n\n> _*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*_",
-      'contextInfo': {
-        'mentionedJid': [_0x1aa466.sender],
-        'forwardingScore': 0x3e7,
-        'isForwarded': true,
-        'forwardedNewsletterMessageInfo': {
-          'newsletterJid': "120363401051937059@newsletter",
-          'newsletterName': "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-          'serverMessageId': 0x8f
+
+  // Fonction pour envoyer l'image
+  const sendScreenshot = async (imageBuffer) => {
+    return await client.sendMessage(from, {
+      image: imageBuffer,
+      caption: `*📸 Screenshot Tool*\n\n🌐 *URL:* ${q}\n\n> _*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*_`,
+      contextInfo: {
+        mentionedJid: [msg.sender],
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: "120363401051937059@newsletter",
+          newsletterName: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+          serverMessageId: 143
         }
       }
-    }, {
-      'quoted': _0x1aa466
-    });
+    }, { quoted: msg });
   };
+
   try {
-    const _0x43c8ed = "https://zenz.biz.id/tools/ssweb?url=" + encodeURIComponent(_0x439dca);
-    const _0x332fa9 = await fetch(_0x43c8ed);
-    const _0x4cf262 = _0x332fa9.headers.get("content-type");
-    if (_0x4cf262 && _0x4cf262.startsWith("image/")) {
-      const _0x546e46 = await _0x332fa9.buffer();
-      return await _0x32aee6(_0x546e46);
+    // Appel API Zenz pour obtenir la capture d'écran
+    const apiUrl = "https://zenz.biz.id/tools/ssweb?url=" + encodeURIComponent(q);
+    const response = await fetch(apiUrl);
+
+    const contentType = response.headers.get("content-type");
+
+    // Si l’API renvoie directement une image
+    if (contentType && contentType.startsWith("image/")) {
+      const imageBuffer = await response.buffer();
+      return await sendScreenshot(imageBuffer);
     }
-    const _0x1dff52 = await _0x332fa9.json();
-    if (!_0x1dff52.status || !_0x1dff52.result) {
+
+    // Sinon, on récupère l’URL de l’image dans la réponse JSON
+    const json = await response.json();
+    if (!json.status || !json.result) {
       throw new Error("Failed to get screenshot");
     }
-    const _0x388545 = await fetch(_0x1dff52.result).then(_0x3ac4eb => _0x3ac4eb.buffer());
-    return await _0x32aee6(_0x388545);
-  } catch (_0x3207f1) {
-    console.error(_0x3207f1);
-    _0x323267("❌ Failed to capture the screenshot. Please try again later.");
+
+    const imageBuffer = await fetch(json.result).then(res => res.buffer());
+    return await sendScreenshot(imageBuffer);
+
+  } catch (error) {
+    console.error(error);
+    reply("❌ Failed to capture the screenshot. Please try again later.");
   }
 });
