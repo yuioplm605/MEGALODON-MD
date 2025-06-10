@@ -4,6 +4,7 @@ const axios = require("axios");
 const moment = require("moment-timezone");
 const { runtime } = require('../lib/functions');
 const config = require('../config');
+const fs = require('fs');
 
 cmd({
     pattern: "alive",
@@ -18,16 +19,17 @@ async (conn, mek, m, { from, sender, reply }) => {
         const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
         const date = moment().tz("America/Port-au-Prince").format("DD/MM/YYYY");
 
-        let thumbnailBuffer = null;
+        // Charger l'image en buffer pour envoyer en thumbnail et image
+        let imageBuffer;
         try {
-            const response = await axios.get('https://files.catbox.moe/frns4k.jpg', {
+            // Tu peux aussi mettre un chemin local ici, ex: fs.readFileSync('./alive.jpg')
+            const response = await axios.get('https://files.catbox.moe/vmqovi.jpg', {
                 responseType: 'arraybuffer'
             });
-            if (response && response.data) {
-                thumbnailBuffer = Buffer.from(response.data);
-            }
+            imageBuffer = Buffer.from(response.data);
         } catch (err) {
-            console.warn("Thumbnail could not be loaded.", err.message);
+            console.warn("Image could not be loaded.", err.message);
+            return reply("Impossible de charger l'image d'alive.");
         }
 
         const caption = 
@@ -45,22 +47,32 @@ async (conn, mek, m, { from, sender, reply }) => {
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`
         .trim();
 
-        const contextInfo = {
-            externalAdReply: {
-                title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
-                body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
-                mediaType: 1,
-                previewType: "PHOTO",
-                renderLargerThumbnail: true,
-                mediaUrl: "https://wa.me/" + config.OWNER_NUMBER,
-                sourceUrl: "https://wa.me/" + config.OWNER_NUMBER,
-                ...(thumbnailBuffer ? { thumbnail: thumbnailBuffer } : {})
-            }
-        };
-
         await conn.sendMessage(from, {
-            text: caption,
-            contextInfo
+            image: {
+                mimetype: 'image/jpeg',
+                data: imageBuffer,
+            },
+            caption: caption,
+            contextInfo: {
+                mentionedJid: [m.sender],
+                forwardingScore: 999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363401051937059@newsletter',
+                    newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
+                    serverMessageId: 143
+                },
+                externalAdReply: {
+                    title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
+                    mediaType: 1,
+                    previewType: "PHOTO",
+                    renderLargerThumbnail: true,
+                    mediaUrl: "https://wa.me/" + config.OWNER_NUMBER,
+                    sourceUrl: "https://wa.me/" + config.OWNER_NUMBER,
+                    thumbnail: imageBuffer
+                }
+            }
         }, { quoted: mek });
 
     } catch (e) {
