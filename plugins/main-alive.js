@@ -1,10 +1,10 @@
+
 const { cmd } = require('../command');
 const os = require("os");
-const axios = require("axios");
+const fs = require("fs");
 const moment = require("moment-timezone");
 const { runtime } = require('../lib/functions');
 const config = require('../config');
-const fs = require('fs');
 
 cmd({
     pattern: "alive",
@@ -19,23 +19,14 @@ async (conn, mek, m, { from, sender, reply }) => {
         const time = moment().tz("America/Port-au-Prince").format("HH:mm:ss");
         const date = moment().tz("America/Port-au-Prince").format("DD/MM/YYYY");
 
-        // Charger l'image en buffer pour envoyer en thumbnail et image
-        let imageBuffer;
-        try {
-            // Tu peux aussi mettre un chemin local ici, ex: fs.readFileSync('./alive.jpg')
-            const response = await axios.get('https://files.catbox.moe/vmqovi.jpg', {
-                responseType: 'arraybuffer'
-            });
-            imageBuffer = Buffer.from(response.data);
-        } catch (err) {
-            console.warn("Image could not be loaded.", err.message);
-            return reply("Impossible de charger l'image d'alive.");
-        }
+        const imagePath = './DybyTech/alive.jpg';
+        if (!fs.existsSync(imagePath)) return reply("❌ Image 'alive.jpg' introuvable dans /DybyTech.");
+        const imageBuffer = fs.readFileSync(imagePath);
 
         const caption = 
-`╭──〔 *ALIVE STATUS* 〕─◉
-│✅ *Online & Running!*
-│👤 *Dev:* ᴅʏʙʏ ᴛᴇᴄʜ*
+`╭──────〔 *ALIVE STATUS* 〕─◉
+│ *Online & Running!*
+│👤 *Dev: ᴅʏʙʏ ᴛᴇᴄʜ*
 │📦 *Version:* 1.0.0
 │📍 *Prefix:* [${config.PREFIX}]
 │📡 *Mode:* [${config.MODE}]
@@ -44,15 +35,11 @@ async (conn, mek, m, { from, sender, reply }) => {
 │📅 *Date:* ${date}
 │⏰ *Time:* ${time}
 ╰────────────────────◉
-> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`
-        .trim();
+> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*`;
 
         await conn.sendMessage(from, {
-            image: {
-                mimetype: 'image/jpeg',
-                data: imageBuffer,
-            },
-            caption: caption,
+            image: imageBuffer,
+            caption,
             contextInfo: {
                 mentionedJid: [m.sender],
                 forwardingScore: 999,
@@ -63,20 +50,19 @@ async (conn, mek, m, { from, sender, reply }) => {
                     serverMessageId: 143
                 },
                 externalAdReply: {
+                    showAdAttribution: true,
                     title: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
                     body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ",
                     mediaType: 1,
                     previewType: "PHOTO",
-                    renderLargerThumbnail: true,
-                    mediaUrl: "https://wa.me/" + config.OWNER_NUMBER,
-                    sourceUrl: "https://wa.me/" + config.OWNER_NUMBER,
-                    thumbnail: imageBuffer
+                    thumbnailUrl: null, // Important: Ne pas utiliser `thumbnail` avec image directe
+                    sourceUrl: "https://wa.me/" + config.OWNER_NUMBER
                 }
             }
         }, { quoted: mek });
 
     } catch (e) {
-        console.error("Alive Error:", e);
-        reply(`An error occurred: ${e.message}`);
+        console.error("❌ Alive Error:", e);
+        reply(`❌ Une erreur est survenue : ${e.message}`);
     }
 });
