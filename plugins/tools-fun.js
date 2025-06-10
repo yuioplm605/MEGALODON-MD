@@ -358,13 +358,17 @@ cmd({
   filename: __filename
 }, async (conn, m, store, { args, reply }) => {
   try {
-    const inputText = args.join(" ") || "No text provided.";
-    const readMore = String.fromCharCode(8206).repeat(4000); // Creates a large hidden gap
-    const message = `${inputText} ${readMore} Continue Reading...`;
+    // Vérifie si du texte est fourni
+    if (!args.length) return reply("❌ Please provide some text.\n\nUse: `.readmore Your long message`");
 
-    await conn.sendMessage(m.from, { text: message }, { quoted: m });
+    const inputText = args.join(" ");
+    const readMore = String.fromCharCode(8206).repeat(4001); // Unicode invisible "gap"
+    
+    const finalMessage = `${inputText}${readMore}Continue Reading...`;
+
+    await conn.sendMessage(m.from, { text: finalMessage }, { quoted: m });
   } catch (error) {
-    console.error("❌ Error in readmore command:", error);
+    console.error("❌ Error in .readmore command:", error);
     reply("❌ An error occurred: " + error.message);
   }
 });
