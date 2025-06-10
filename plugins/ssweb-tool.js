@@ -1,1 +1,60 @@
-const _0x2ed697=_0x3e4c;function _0x2e2a(){const _0x27d8f4=['sender','𝗠𝗘𝗚𝗔𝗟𝗢𝗗𝗢𝗡','105451gPsKdH','error','120363372853772240@newsletter','9368010JtPhuV','https://api.davidcyriltech.my.id/ssweb?url=','1208sebWgP','../command','3948YajAFs','screenshotUrl','url','result','4aSoepZ','Download\x20screenshot\x20of\x20a\x20given\x20link.','message','Screenshot\x20error:','.ss\x20<link>','*🖼️\x20WEB\x20SCREENSHOT\x20DOWNLOADED*\x0a\x0a>\x20*ᴘᴏᴡᴇʀᴇᴅ\x20ʙʏ\x20ᴍᴇɢᴀʟᴏᴅᴏɴ\x20ᴍᴅ*','../config','data','3633UbpDYC','188946CClPoe','ssweb','⚠️\x20Please\x20provide\x20a\x20URL\x20to\x20capture\x20a\x20screenshot.','60440RrJjkc','axios','sendMessage','1027335GPsRfh','get','21762bsXPZn'];_0x2e2a=function(){return _0x27d8f4;};return _0x2e2a();}(function(_0x1296e7,_0x3e6737){const _0x40e94d=_0x3e4c,_0x45b631=_0x1296e7();while(!![]){try{const _0x554e2f=-parseInt(_0x40e94d(0xbc))/0x1+-parseInt(_0x40e94d(0xb4))/0x2+-parseInt(_0x40e94d(0xb1))/0x3+parseInt(_0x40e94d(0xa8))/0x4*(parseInt(_0x40e94d(0xb7))/0x5)+parseInt(_0x40e94d(0xc3))/0x6*(-parseInt(_0x40e94d(0xb0))/0x7)+parseInt(_0x40e94d(0xc1))/0x8*(-parseInt(_0x40e94d(0xb9))/0x9)+parseInt(_0x40e94d(0xbf))/0xa;if(_0x554e2f===_0x3e6737)break;else _0x45b631['push'](_0x45b631['shift']());}catch(_0x2bccb3){_0x45b631['push'](_0x45b631['shift']());}}}(_0x2e2a,0x39dc3));function _0x3e4c(_0x8b0b1a,_0x494033){const _0x2e2ab6=_0x2e2a();return _0x3e4c=function(_0x3e4c62,_0x2db15d){_0x3e4c62=_0x3e4c62-0xa6;let _0x2ec2a4=_0x2e2ab6[_0x3e4c62];return _0x2ec2a4;},_0x3e4c(_0x8b0b1a,_0x494033);}const axios=require(_0x2ed697(0xb5)),config=require(_0x2ed697(0xae)),{cmd}=require(_0x2ed697(0xc2));cmd({'pattern':'ss','alias':[_0x2ed697(0xb2)],'react':'💫','desc':_0x2ed697(0xa9),'category':'other','use':_0x2ed697(0xac),'filename':__filename},async(_0x492ab5,_0x2f0554,_0x24bfea,{from:_0x45cda0,quoted:_0x57f621,q:_0x5bd129,reply:_0x48a14f})=>{const _0x2ebba3=_0x2ed697;if(!_0x5bd129)return _0x48a14f(_0x2ebba3(0xb3));try{const _0x453505=await axios[_0x2ebba3(0xb8)](_0x2ebba3(0xc0)+encodeURIComponent(_0x5bd129));console['log'](_0x453505[_0x2ebba3(0xaf)]);const _0x28b571=_0x453505[_0x2ebba3(0xaf)]?.[_0x2ebba3(0xc4)]||_0x453505[_0x2ebba3(0xaf)]?.[_0x2ebba3(0xa7)]||_0x453505[_0x2ebba3(0xaf)]?.[_0x2ebba3(0xa6)];if(!_0x28b571)return _0x48a14f('❌\x20Unable\x20to\x20retrieve\x20screenshot\x20URL.');await _0x492ab5[_0x2ebba3(0xb6)](_0x45cda0,{'image':{'url':_0x28b571},'caption':_0x2ebba3(0xad),'contextInfo':{'mentionedJid':[_0x24bfea[_0x2ebba3(0xba)]],'forwardingScore':0x3e7,'isForwarded':!![],'forwardedNewsletterMessageInfo':{'newsletterJid':_0x2ebba3(0xbe),'newsletterName':_0x2ebba3(0xbb),'serverMessageId':0x8f}}},{'quoted':_0x24bfea});}catch(_0x5ce7e4){console[_0x2ebba3(0xbd)](_0x2ebba3(0xab),_0x5ce7e4?.[_0x2ebba3(0xaa)]||_0x5ce7e4),_0x48a14f('❌\x20Failed\x20to\x20capture\x20screenshot.\x20The\x20link\x20might\x20be\x20invalid\x20or\x20the\x20API\x20is\x20down.');}});
+const {
+  cmd
+} = require("../command");
+const fetch = require("node-fetch");
+cmd({
+  'pattern': 'ss',
+  'alias': ['ssweb'],
+  'react': '🚀',
+  'desc': "Download screenshot of a given link.",
+  'category': "other",
+  'use': ".ss <link>",
+  'filename': __filename
+}, async (_0x52bc95, _0x383ec4, _0x1aa466, {
+  from: _0x583811,
+  reply: _0x323267,
+  q: _0x439dca
+}) => {
+  if (!_0x439dca) {
+    return _0x323267("Please provide a URL to capture a screenshot.");
+  }
+  if (!/^https?:\/\//.test(_0x439dca)) {
+    return _0x323267("❗ Please provide a valid URL starting with http:// or https://");
+  }
+  const _0x32aee6 = async _0x5c08e5 => {
+    return await _0x52bc95.sendMessage(_0x583811, {
+      'image': _0x5c08e5,
+      'caption': "*📸 Screenshot Tool*\n\n🌐 *URL:* " + _0x439dca + "\n\n> _*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʏʙʏ ᴛᴇᴄʜ*_",
+      'contextInfo': {
+        'mentionedJid': [_0x1aa466.sender],
+        'forwardingScore': 0x3e7,
+        'isForwarded': true,
+        'forwardedNewsletterMessageInfo': {
+          'newsletterJid': "120363401051937059@newsletter",
+          'newsletterName': "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+          'serverMessageId': 0x8f
+        }
+      }
+    }, {
+      'quoted': _0x1aa466
+    });
+  };
+  try {
+    const _0x43c8ed = "https://zenz.biz.id/tools/ssweb?url=" + encodeURIComponent(_0x439dca);
+    const _0x332fa9 = await fetch(_0x43c8ed);
+    const _0x4cf262 = _0x332fa9.headers.get("content-type");
+    if (_0x4cf262 && _0x4cf262.startsWith("image/")) {
+      const _0x546e46 = await _0x332fa9.buffer();
+      return await _0x32aee6(_0x546e46);
+    }
+    const _0x1dff52 = await _0x332fa9.json();
+    if (!_0x1dff52.status || !_0x1dff52.result) {
+      throw new Error("Failed to get screenshot");
+    }
+    const _0x388545 = await fetch(_0x1dff52.result).then(_0x3ac4eb => _0x3ac4eb.buffer());
+    return await _0x32aee6(_0x388545);
+  } catch (_0x3207f1) {
+    console.error(_0x3207f1);
+    _0x323267("❌ Failed to capture the screenshot. Please try again later.");
+  }
+});
