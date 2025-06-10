@@ -1,56 +1,50 @@
-//POWERED BY DYBYTECH 
-const config = require('../config');
-const { cmd } = require('../command');
-const axios = require('axios');
-
-function formatUptime(seconds) {
-    const pad = (s) => (s < 10 ? '0' : '') + s;
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${pad(hrs)}h ${pad(mins)}m ${pad(secs)}s`;
-}
-
 cmd({
     pattern: "ping",
-    desc: "Check bot's response time.",
+    alias: ["speed", "pong", "ping2", "ping3"],
+    use: ".ping",
+    desc: "Check bot's latency",
     category: "main",
-    react: "🍂",
+    react: "📟",
     filename: __filename
 },
-async (conn, mek, m, { from, reply }) => {
+async (conn, mek, m, { from, sender, reply }) => {
     try {
         const start = Date.now();
-        const tempMsg = await conn.sendMessage(from, { text: '*🏓 Pinging...*' });
-        const latency = Date.now() - start;
-        const uptime = process.uptime();
 
-        const imageUrl = "https://files.catbox.moe/upypnp.jpg";
-        let imageBuffer;
+        const reactionEmojis = ['🔥', '🌩️', '👑', '🎋', '📟'];
+        const textEmojis = ['🚀', '✨', '🌀', '📍'];
 
-        try {
-            const res = await axios.get(imageUrl, {
-                responseType: 'arraybuffer',
-                timeout: 5000
-            });
-            imageBuffer = res.data;
-        } catch (err) {
-            console.error('Erreur image :', err?.response?.status, err.message);
-            imageBuffer = null;
+        const reactionEmoji = reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)];
+        let textEmoji = textEmojis[Math.floor(Math.random() * textEmojis.length)];
+
+        while (textEmoji === reactionEmoji) {
+            textEmoji = textEmojis[Math.floor(Math.random() * textEmojis.length)];
         }
 
         await conn.sendMessage(from, {
-            document: imageBuffer,
-            mimetype: 'image/jpeg',
-            fileName: 'ping.jpg',
-            jpegThumbnail: imageBuffer,
-            caption: `> *⚡ ᴍᴇɢᴀʟᴏᴅᴏɴ-ᴍᴅ ᴘɪɴɢ ʀᴇsᴘᴏɴsᴇ*\n\n🍃 Speed: *${latency}ms*\n⏱️ Uptime: *${formatUptime(uptime)}*`
-        }, { quoted: tempMsg });
+            react: { text: textEmoji, key: mek.key }
+        });
+
+        const message = await conn.sendMessage(from, { text: '*_Testing Ping..._*' });
+        const end = Date.now();
+        const ping = end - start;
+
+        await conn.sendMessage(from, {
+            text: `*${reactionEmoji} 𝐏๏፝֟ƞ̽g ${ping} ms 📶*`,
+            contextInfo: {
+                mentionedJid: [sender],
+                forwardingScore: 999,
+                isForwarded: false,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363401051937059@newsletter',
+                    newsletterName: "𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃",
+                    serverMessageId: 143
+                }
+            }
+        }, { quoted: message });
 
     } catch (e) {
-        console.error('Erreur Ping:', e?.response?.status, e.message);
-        if (reply) reply(`❌ Erreur : ${e?.message}`);
+        console.error("Ping error:", e);
+        reply(`❌ Error: ${e.message}`);
     }
 });
-
-// Powered by DybyTech 
