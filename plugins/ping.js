@@ -1,3 +1,10 @@
+
+const config = require('../config')
+let fs = require('fs')
+const os = require("os")
+const { cmd, commands } = require('../command')
+const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson} = require('../lib/functions')
+
 cmd({
     pattern: "ping",
     alias: ["speed", "pong", "ping2", "ping3"],
@@ -48,3 +55,4 @@ async (conn, mek, m, { from, sender, reply }) => {
         reply(`❌ Error: ${e.message}`);
     }
 });
+
