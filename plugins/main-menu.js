@@ -67,14 +67,22 @@ async (conn, mek, m, { from, reply }) => {
     }
 
     menuText += `\n`;
-
-    await conn.sendMessage(from, {
+    
+await conn.sendMessage(from, {
       image: { url: config.MENU_IMAGE_URL },
       caption: menuText,
       contextInfo: {
-        mentionedJid: [m.sender]
+        mentionedJid: [m.sender],
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: '120363401051937059@newsletter',
+          newsletterName: '𝐌𝐄𝐆𝐀𝐋𝐎𝐃𝐎𝐍-𝐌𝐃',
+          serverMessageId: 143
+        }
       }
     }, { quoted: mek });
+
     
   } catch (e) {
     console.error(e);
