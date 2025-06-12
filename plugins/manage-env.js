@@ -24,10 +24,10 @@ async (conn, mek, m, { from, args, isOwner, reply }) => {
     const status = args[0]?.toLowerCase();
     if (status === "on") {
         config.ADMIN_EVENTS = "true";
-        return reply("✅ Admin event notifications are now enabled.");
+        return reply("✅ ᴀᴅᴍɪɴ ᴇᴠᴇɴᴛ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴs ᴀʀᴇ ɴᴏᴡ ᴇɴᴀʙʟᴇᴅ.");
     } else if (status === "off") {
         config.ADMIN_EVENTS = "false";
-        return reply("❌ Admin event notifications are now disabled.");
+        return reply("❌ ᴀᴅᴍɪɴ ᴇᴠᴇɴᴛ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴs ᴀʀᴇ ɴᴏᴡ ᴅɪ.");
     } else {
         return reply(`Example: .admin-events on`);
     }
@@ -46,10 +46,10 @@ async (conn, mek, m, { from, args, isOwner, reply, isCreator, isDev }) => {
     const status = args[0]?.toLowerCase();
     if (status === "on") {
         config.WELCOME = "true";
-        return reply("✅ Welcome messages are now enabled.");
+        return reply("✅  ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ᴀʀᴇ ɴᴏᴡ ᴇɴᴀʙʟᴇᴅ.");
     } else if (status === "off") {
         config.WELCOME = "false";
-        return reply("❌ Welcome messages are now disabled.");
+        return reply("❌ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ᴀʀᴇ ɴᴏᴡ ᴅɪsᴀʙʟᴇᴅ.");
     } else {
         return reply(`Example: .welcome on`);
     }
@@ -79,9 +79,9 @@ cmd({
         return reply("✅  ʙᴏᴛ ᴍᴏᴅᴇ ɪꜱ ɴᴏᴡ ꜱᴇᴛ ᴛᴏ *ᴩʀɪᴠᴀᴛᴇ*.");
     } else if (modeArg === "public") {
         config.MODE = "public";
-        return reply("✅ Bot mode is now set to *PUBLIC*.");
+        return reply("✅ ʙᴏᴛ ᴍᴏᴅᴇ ɪs ɴᴏᴡ sᴇᴛ ᴛᴏ *ᴘᴜʙʟɪᴄ*.");
     } else {
-        return reply("❌ Invalid mode. Please use `.mode private` or `.mode public`.");
+        return reply("❌ ɪɴᴠᴀʟɪᴅ ᴍᴏᴅᴇ. ᴘʟᴇᴀsᴇ ᴜsᴇ `.ᴍᴏᴅᴇ ᴘʀɪᴠᴀᴛᴇ` ᴏʀ `.ᴍᴏᴅᴇ ᴘᴜʙʟɪᴄ`.");
     }
 });
 
@@ -101,7 +101,7 @@ async (conn, mek, m, { from, args, isOwner, reply }) => {
     }
 
     config.AUTO_TYPING = status === "on" ? "true" : "false";
-    return reply(`Auto typing has been turned ${status}.`);
+    return reply(`ᴀᴜᴛᴏ ᴛʏᴘɪɴɢ ʜᴀs ʙᴇᴇɴ ᴛᴜʀɴᴇᴅ ${status}.`);
 });
 
 //mention reply 
@@ -147,10 +147,10 @@ async (conn, mek, m, { from, args, isOwner, reply }) => {
     const status = args[0]?.toLowerCase();
     if (status === "on") {
         config.ALWAYS_ONLINE = "true";
-        await reply("*✅ always online mode is now enabled.*");
+        await reply("*✅ ᴀʟᴡᴀʏs ᴏɴʟɪɴᴇ ᴍᴏᴅᴇ ɪs ɴᴏᴡ ᴇɴᴀʙʟᴇᴅ.*");
     } else if (status === "off") {
         config.ALWAYS_ONLINE = "false";
-        await reply("*❌ always online mode is now disabled.*");
+        await reply("*❌ ᴀʟᴡᴀʏs ᴏɴʟɪɴᴇ ᴍᴏᴅᴇ ɪs ɴᴏᴡ ᴅɪsᴀʙʟᴇᴅ.*");
     } else {
         await reply(`*🛠️ ᴇxᴀᴍᴘʟᴇ: .ᴀʟᴡᴀʏs-ᴏɴʟɪɴᴇ ᴏɴ*`);
     }
@@ -177,10 +177,10 @@ async (conn, mek, m, { from, args, isOwner, reply }) => {
     config.AUTO_RECORDING = status === "on" ? "true" : "false";
     if (status === "on") {
         await conn.sendPresenceUpdate("recording", from);
-        return reply("Auto recording is now enabled. Bot is recording...");
+        return reply("ᴀᴜᴛᴏ ʀᴇᴄᴏʀᴅɪɴɢ ɪs ɴᴏᴡ ᴇɴᴀʙʟᴇᴅ. ʙᴏᴛ ɪs ʀᴇᴄᴏʀᴅɪɴɢ...");
     } else {
         await conn.sendPresenceUpdate("available", from);
-        return reply("Auto recording has been disabled.");
+        return reply("ᴀᴜᴛᴏ ʀᴇᴄᴏʀᴅɪɴɢ ʜᴀs ʙᴇᴇɴ ᴅɪsᴀʙʟᴇᴅ.");
     }
 });
 //--------------------------------------------
@@ -200,10 +200,10 @@ async (conn, mek, m, { from, args, isOwner, reply }) => {
     // Default value for AUTO_VIEW_STATUS is "false"
     if (args[0] === "on") {
         config.AUTO_STATUS_SEEN = "true";
-        return reply("Auto-viewing of statuses is now enabled.");
+        return reply("ᴀᴜᴛᴏ-ᴠɪᴇᴡɪɴɢ ᴏғ sᴛᴀᴛᴜsᴇs ɪs ɴᴏᴡ ᴇɴᴀʙʟᴇᴅ.");
     } else if (args[0] === "off") {
         config.AUTO_STATUS_SEEN = "false";
-        return reply("Auto-viewing of statuses is now disabled.");
+        return reply("ᴀᴜᴛᴏ-ᴠɪᴇᴡɪɴɢ ᴏғ sᴛᴀᴛᴜsᴇs ɪs ɴᴏᴡ ᴅɪsᴀʙʟᴇᴅ.");
     } else {
         return reply(`*🫟 ᴇxᴀᴍᴘʟᴇ:  .ᴀᴜᴛᴏ-sᴇᴇɴ ᴏɴ*`);
     }
@@ -260,30 +260,6 @@ async (conn, mek, m, { from, args, isOwner, reply }) => {
     }
 });
 
-// AUTO_VOICE
-
-cmd({
-    pattern: "auto-voice",
-    alias: ["autovoice"],
-    desc: "enable or disable readmessage.",
-    category: "settings",
-    filename: __filename
-},    
-async (conn, mek, m, { from, args, isOwner, reply }) => {
-    if (!isOwner) return reply("*📛 ᴏɴʟʏ ᴛʜᴇ ᴏᴡɴᴇʀ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ!*");
-
-    const status = args[0]?.toLowerCase();
-    // Check the argument for enabling or disabling the anticall feature
-    if (args[0] === "on") {
-        config.AUTO_VOICE = "true";
-        return reply("AUTO_VOICE feature is now enabled.");
-    } else if (args[0] === "off") {
-        config.AUTO_VOICE = "false";
-        return reply("AUTO_VOICE feature is now disabled.");
-    } else {
-        return reply(`_example:  .autovoice on_`);
-    }
-});
 
 
 //--------------------------------------------
