@@ -10,7 +10,7 @@ DONT FORGET TO FORK 🍴 & STAR 🌟 REPO😇
 <a href="https://github.com/mrfrank-ofc/followers"><img title="Followers" src="https://img.shields.io/github/followers/DybyTech?color=blue&style=flat-square"></a>
 <a href="https://github.com/DybyTech/MEGALODON-MD/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/DybyTech/MEGALODON-MD?color=blue&style=flat-square"></a>
 <a href="https://github.com/DybyTech/MEGALODON-MD/network/members"><img title="Forks" src="https://img.shields.io/github/forks/DybyTech/MEGALODON-MD?color=blue&style=flat-square"></a>
-<a href="https://github.com/DybyTech/MEGALODON-MD/"><img title="Size" src="https://img.shields.io/github/repo-size/MEGALODON-MD/MEGALODON-MD?style=flat-square&color=green"></a>
+<a href="https://github.com/DybyTech/MEGALODON-MD"><img title="Size" src="https://img.shields.io/github/repo-size/MEGALODON-MD/MEGALODON-MD?style=flat-square&color=green"></a>
 <a href="https://github.com/DybyTech/graphs/commit-activity"><img height="20" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg"></a>&nbsp;&nbsp;
 </p>
 
@@ -51,7 +51,7 @@ DONT FORGET TO FORK 🍴 & STAR 🌟 REPO😇
 
 > **2. PAIR CODE SESSION ID**
 
-<a href='https://MEGALODON-MD-session.onrender.com/' target="_blank">
+<a href='https://MEGALODON-MD-session.onrender.com/pair' target="_blank">
   <img alt='Pairing Code' src='https://img.shields.io/badge/Get%20Pairing%20Code-darkpink?style=for-the-badge&logo=opencv&logoColor=black'/>
 </a>
 <br> 
