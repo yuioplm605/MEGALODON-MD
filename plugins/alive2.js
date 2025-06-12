@@ -29,7 +29,7 @@ cmd({
 }, async (client, quotedMsg, message, { from, reply }) => {
   const settings = getAlive2Settings();
   if (!settings || !settings.img || !settings.msg) {
-    return reply("Alive2 message/image not set yet!\nUse .setalive <image/video_url> | <caption>\nEx: ${config.Prefix}setalive https://example.com/image.jpg | Hello, I am alive! 🌟");
+    return reply("Alive2 message/image not set yet!\nUse ${config.PREFIX} setalive <image/video_url> | <caption>\nEx: ${config.Prefix}setalive https://example.com/image.jpg | Hello, I am alive! 🌟");
   }
 
   try {
@@ -77,5 +77,5 @@ cmd({
   }
 
   setAlive2Settings(url.trim(), caption);
-  reply("✅ Alive2 message and image saved! Use .alive2 to test.");
+  reply("✅ Alive2 message and image saved! Use $config.PREFIX} alive2 to test.");
 });
